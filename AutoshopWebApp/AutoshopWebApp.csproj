@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-AutoshopWebApp-BB11B1A4-1ACE-4BA2-BB5B-963A451C12FF</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180922094609_FirstMigration.cs" />
+    <Compile Remove="Data\Migrations\20180922094609_FirstMigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180928145333_DatabaseSchemeCreation.cs" />
+    <Compile Remove="Data\Migrations\20180928145333_DatabaseSchemeCreation.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" PrivateAssets="All" />
+  </ItemGroup>
+
+</Project>
