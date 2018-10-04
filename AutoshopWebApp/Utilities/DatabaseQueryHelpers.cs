@@ -10,45 +10,6 @@ namespace AutoshopWebApp.Utilities
 {
     public static class DatabaseQueryHelpers
     {
-        static IQueryable<BuyingOrder> GetOrderQuery(ApplicationDbContext context)
-        {
-            return
-                from seller in context.ClientSellers
-                join car in context.Cars on seller.CarId equals car.CarId
-                join street in context.Streets on seller.StreetId equals street.StreetId
-                join mark in context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
-                join carReference in context.CarReferences on car.CarId equals carReference.CarReferenceId
-                select new BuyingOrder
-                {
-                    OrderNumber = seller.ClientSellerId,
-                    SellingDate = seller.SellingDate,
-                    LastName = seller.LastName,
-                    Firstname = seller.Firstname,
-                    Patronymic = seller.Patronymic,
-                    PasNumber = seller.PasNumber,
-                    StreetName = street.StreetName,
-                    HouseNumber = seller.HouseNumber,
-                    ApartmentNumber = seller.ApartmentNumber,
-                    CarMark = mark.CarMark,
-                    CarModel = mark.CarModel,
-                    Color = car.Color,
-                    ReleaseDate = car.ReleaseDate,
-                    ReferenceNumber = carReference.ReferenceNumber,
-                    ReferenceDate = carReference.ReferenceDate,
-                    Expert = carReference.Expert,
-                    ExpertisePrice = carReference.ExpertisePrice,
-                    SellingPrice = car.SellingPrice ?? default(decimal),
-                    DocName = seller.DocName,
-                    DocNumber = seller.DocNumber,
-                    IssueDate = seller.IssueDate,
-                    IssuedBy = seller.IssuedBy,
-                    BodyNumber = car.BodyNumber,
-                    EngineNumber = car.EngineNumber,
-                    ChassisNumber = car.ChassisNumber,
-                    Run = car.Run
-                };
-        }
-
         static PoolExpertiseReference GetPoolExpertise(ApplicationDbContext context, int workerId, int carId)
         {
             var workerData =

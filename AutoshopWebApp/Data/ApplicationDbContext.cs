@@ -16,6 +16,11 @@ namespace AutoshopWebApp.Data
         { 
         }
 
+        public ApplicationDbContext()
+        {
+            InitQueries();
+        }
+
         public DbSet<Car> Cars { get; set; }
 
         public DbSet<CarReference> CarReferences { get; set; }
