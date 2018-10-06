@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AutoshopWebApp.Pages.Admin
 {
-    public static class AdminNavPages
+    public static class AdminPages
     {
         public static string WorkersManagment => "WorkersAccuntManagment";
     }
