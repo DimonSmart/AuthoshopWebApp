@@ -11,14 +11,25 @@ namespace AutoshopWebApp.Data
 {
     public static class SeedData
     {
-        public static async Task Initialize(IServiceProvider provider, string userTestPw)
+        public static async Task Initialize(IServiceProvider provider)
         {
             using (var context = new ApplicationDbContext(
                 provider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                var adminID = await EnsureUser(provider, userTestPw, "admin@default.com");
-                await EnsureRole(provider, adminID, Constants.AdministratorRole);
+                if (!await IsRoleUsersExist(provider, Constants.AdministratorRole))
+                {
+                    var defaultAdminPw = "Default_123";
+                    var adminID = await EnsureUser(provider, defaultAdminPw, "admin@default.com");
+                    await EnsureRole(provider, adminID, Constants.AdministratorRole);
+                }
             }
+        }
+
+        public static async Task<bool> IsRoleUsersExist(IServiceProvider serviceProvider, string role)
+        {
+            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
+            var query1 = await userManager.GetUsersInRoleAsync(role);
+            return query1.Count != 0;
         }
 
         public static async Task<string> EnsureUser(IServiceProvider serviceProvider, string userPw, string userName)
