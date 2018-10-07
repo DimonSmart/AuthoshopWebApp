@@ -11,7 +11,7 @@ namespace AutoshopWebApp.Pages.Admin
     {
         public IActionResult OnGet()
         {
-            return RedirectToPage("./AdminAccountManagment");
+            return RedirectToPage("./ChangeLogin");
         }
     }
 }

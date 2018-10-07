@@ -1,5 +1,10 @@
 ﻿
 <ul class="nav nav-pills nav-stacked">
-    <li class="active"><a asp-page="./WorkersAccuntManagment">Данные аккаунта</a></li>
+    <li class=@AdminNavPages.PageNavClass(ViewContext, AdminNavPages.changeLogin)>
+        <a asp-page="./ChangeLogin">Изменить имя пользователя</a>
+    </li>
+    <li class=@AdminNavPages.PageNavClass(ViewContext, AdminNavPages.changePassword)>
+        <a asp-page="./ChangePassword">Изменить пароль</a>
+    </li>
 </ul>
 

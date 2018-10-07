@@ -9,36 +9,29 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 
 namespace AutoshopWebApp.Pages.Admin
 {
-    public class AdminAccountManagmentModel : AdminBasePage
+    public class AdminChangePasswordModel : AdminBasePage
     {
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AdminAccountManagmentModel(
+        public AdminChangePasswordModel(
             ApplicationDbContext context, 
-            IAuthorizationService authorizationService, 
+            IAuthorizationService authorizationService,
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager) 
-            : base(context, authorizationService, userManager)
+            SignInManager<IdentityUser> signInManager) :
+            base(context, authorizationService, userManager)
         {
             _signInManager = signInManager;
         }
 
-        public class InputLoginModel
+        public class InputPasswordModel
         {
             public string UserID { get; set; }
 
-            [Display(Name = "Электронная почта")]
-            [DataType(DataType.EmailAddress)]
-            [Required]
-            public string Email { get; set; }
-        }
+            public string UserName { get; set; }
 
-        public class InputPasswordModel
-        {
             [Display(Name = "Старый пароль")]
             [DataType(DataType.Password)]
             [Required]
@@ -57,7 +50,10 @@ namespace AutoshopWebApp.Pages.Admin
         }
 
         [BindProperty]
-        public InputLoginModel LoginModel { get; set; }
+        public InputPasswordModel PasswordModel { get; set; }
+
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -69,7 +65,7 @@ namespace AutoshopWebApp.Pages.Admin
 
             IdentityUser user;
 
-            if(string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
                 user = await UserManager.GetUserAsync(User);
             }
@@ -77,25 +73,25 @@ namespace AutoshopWebApp.Pages.Admin
             {
                 user = await UserManager.FindByIdAsync(id);
             }
-            
-            if(user == null)
+
+            if (user == null)
             {
                 return NotFound($"This user not found");
             }
 
-            LoginModel = new InputLoginModel { Email = user.Email, UserID = user.Id };
+            PasswordModel = new InputPasswordModel { UserID = user.Id, UserName = user.UserName };
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostLoginAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
-            if(!TryValidateModel(LoginModel))
+            if (!TryValidateModel(PasswordModel))
             {
                 return Page();
             }
 
-            var user = await UserManager.FindByIdAsync(LoginModel.UserID);
+            var user = await UserManager.FindByIdAsync(PasswordModel.UserID);
 
             if (user == null)
             {
@@ -108,14 +104,12 @@ namespace AutoshopWebApp.Pages.Admin
                 return new ChallengeResult();
             }
 
-            user.UserName = LoginModel.Email;
-            user.Email = LoginModel.Email;
+            var changePassResult = await UserManager
+                .ChangePasswordAsync(user, PasswordModel.OldPassword, PasswordModel.NewPassword);
 
-            var changeLogin = await UserManager.UpdateAsync(user);
-
-            if(!changeLogin.Succeeded)
+            if (!changePassResult.Succeeded)
             {
-                foreach(var err in changeLogin.Errors)
+                foreach (var err in changePassResult.Errors)
                 {
                     ModelState.AddModelError(string.Empty, err.Description);
                 }
@@ -123,6 +117,7 @@ namespace AutoshopWebApp.Pages.Admin
             }
 
             await _signInManager.RefreshSignInAsync(user);
+            StatusMessage = "Пароль успешно изменён";
 
             return RedirectToPage();
         }

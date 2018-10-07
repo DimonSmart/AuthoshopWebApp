@@ -11,6 +11,8 @@ namespace AutoshopWebApp.Data
 {
     public static class SeedData
     {
+        public static readonly string defaultAdminUserName = "admin@default.com";
+
         public static async Task Initialize(IServiceProvider provider)
         {
             using (var context = new ApplicationDbContext(
@@ -19,7 +21,7 @@ namespace AutoshopWebApp.Data
                 if (!await IsRoleUsersExist(provider, Constants.AdministratorRole))
                 {
                     var defaultAdminPw = "Default_123";
-                    var adminID = await EnsureUser(provider, defaultAdminPw, "admin@default.com");
+                    var adminID = await EnsureUser(provider, defaultAdminPw, defaultAdminUserName);
                     await EnsureRole(provider, adminID, Constants.AdministratorRole);
                 }
             }
@@ -40,7 +42,11 @@ namespace AutoshopWebApp.Data
 
             if(user == null)
             {
-                user = new IdentityUser(userName);
+                user = new IdentityUser()
+                {
+                    UserName = defaultAdminUserName,
+                    Email = defaultAdminUserName
+                };
                 await userManager.CreateAsync(user, userPw);
             }
 

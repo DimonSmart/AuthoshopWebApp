@@ -1,0 +1,31 @@
+﻿@page
+@model AutoshopWebApp.Pages.Admin.AdminChangeLoginModel
+@{
+    ViewData["Title"] = "Изменение имени пользователя";
+}
+
+<h4>Изменение имени пользователя @Model.LoginModel.Email</h4>
+<partial name="_StatusMessage" model=@Model.StatusMessage>
+<div class="row">
+    <div class="col-md-6">
+        <form id="change-login-form" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="LoginModel.Email"></label>
+                <input asp-for="LoginModel.Email" class="form-control" />
+                <span asp-validation-for="LoginModel.Email" class="text-danger"></span>
+            </div>
+            <input asp-for="LoginModel.UserID" class="hidden" />
+            <button type="submit" class="btn btn-default">Изменить</button>
+        </form>
+
+        @if (Model.LoginModel.Email == SeedData.defaultAdminUserName)
+        {
+            <div>
+                <p class="text-danger">Вы используете стандартное имя пользователя. Настоятельно рекомендуем его изменить.</p>
+            </div>
+        }
+    </div>
+</div>
+
+
