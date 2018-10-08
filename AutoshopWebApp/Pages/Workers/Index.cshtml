@@ -8,7 +8,7 @@
 <h3>Список сотрудников</h3>
 
 <p>
-    <a class="btn btn-default" asp-route="Index">Добавить сотрудника</a>
+    <a class="btn btn-default" asp-page="AddWorker">Добавить сотрудника</a>
 </p>
 
 <table class="table">
@@ -45,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Position)
             </td>
             <td>
-                <button class="btn btn-default">Действия</button>
+                <a class="btn btn-default">Действия</a>
             </td>
             <!--<td>
                 <a asp-page="./Edit" asp-route-id="item.WorkerId">Edit</a> |

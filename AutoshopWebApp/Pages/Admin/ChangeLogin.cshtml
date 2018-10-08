@@ -5,7 +5,7 @@
 }
 
 <h4>Изменение имени пользователя @Model.LoginModel.Email</h4>
-<partial name="_StatusMessage" model=@Model.StatusMessage>
+<partial name="_StatusMessage" model=@Model.StatusMessage />
 <div class="row">
     <div class="col-md-6">
         <form id="change-login-form" method="post">
@@ -28,4 +28,6 @@
     </div>
 </div>
 
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

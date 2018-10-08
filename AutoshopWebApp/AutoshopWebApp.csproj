@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Pages\Workers\Worker\" />
+    <Folder Include="Pages\Workers\Worker1\" />
   </ItemGroup>
 
 </Project>

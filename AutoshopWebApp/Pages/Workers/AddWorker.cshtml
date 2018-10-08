@@ -1,0 +1,69 @@
+﻿@page
+@model AutoshopWebApp.Pages.Workers.AddWorkerModel
+
+@{
+    ViewData["Title"] = "AddWorker";
+}
+
+<h2>Добавление сотрудника</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Worker.Firstname" class="control-label"></label>
+                <input asp-for="Worker.Firstname" class="form-control" />
+                <span asp-validation-for="Worker.Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.Lastname" class="control-label"></label>
+                <input asp-for="Worker.Lastname" class="form-control" />
+                <span asp-validation-for="Worker.Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.Patronymic" class="control-label"></label>
+                <input asp-for="Worker.Patronymic" class="form-control" />
+                <span asp-validation-for="Worker.Patronymic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.BornDate" class="control-label"></label>
+                <input asp-for="Worker.BornDate" class="form-control" />
+                <span asp-validation-for="Worker.BornDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Street.StreetName" class="control-label"></label>
+                <input asp-for="Street.StreetName" class="form-control" />
+                <span asp-validation-for="Street.StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.HouseNumber" class="control-label"></label>
+                <input asp-for="Worker.HouseNumber" class="form-control" />
+                <span asp-validation-for="Worker.HouseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Worker.ApartmentNumber" class="control-label"></label>
+                <input asp-for="Worker.ApartmentNumber" class="form-control" />
+                <span asp-validation-for="Worker.ApartmentNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Должность</label>
+                <select class="form-control" asp-for="SelectedPosition" asp-items="Model.Positions">
+                    <option value="">Выберите должность</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
