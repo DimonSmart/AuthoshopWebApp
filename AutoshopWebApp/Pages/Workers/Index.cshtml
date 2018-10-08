@@ -1,0 +1,58 @@
+﻿@page
+@model AutoshopWebApp.Pages.Workers.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h3>Список сотрудников</h3>
+
+<p>
+    <a class="btn btn-default" asp-route="Index">Добавить сотрудника</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Worker[0].Firstname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Worker[0].Lastname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Worker[0].Patronymic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Worker[0].Position)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Worker) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Firstname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lastname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patronymic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+            <td>
+                <button class="btn btn-default">Действия</button>
+            </td>
+            <!--<td>
+                <a asp-page="./Edit" asp-route-id="item.WorkerId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="item.WorkerId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="item.WorkerId">Delete</a>
+            </td>-->
+        </tr>
+}
+    </tbody>
+</table>

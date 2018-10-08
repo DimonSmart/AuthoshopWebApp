@@ -26,17 +26,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-page="/Index" class="navbar-brand">AutoshopWebApp</a>
+                <a asp-page="/Index" class="navbar-brand">Автомагазин</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-page="/Index">Home</a></li>
-                    @if(User.IsInRole(Authorization.Constants.AdministratorRole))
+                    <li><a asp-page="/Index">Главное меню</a></li>
+                    @if (User.IsInRole(Authorization.Constants.AdministratorRole))
                     {
                         <li><a asp-page="/Admin/Index">Администрирование</a></li>
                     }
-                    <li><a asp-page="/About">About</a></li>
-                    <li><a asp-page="/Contact">Contact</a></li>
+                    <li><a asp-page="/Index">Сотрудники</a></li>
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

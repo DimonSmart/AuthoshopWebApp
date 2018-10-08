@@ -42,7 +42,7 @@ namespace AutoshopWebApp
 
             services
                 .AddIdentity<IdentityUser, IdentityRole>()
-                .AddDefaultUI()
+                //.AddDefaultUI()
                 .AddDefaultTokenProviders()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

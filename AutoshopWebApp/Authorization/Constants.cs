@@ -25,4 +25,15 @@ namespace AutoshopWebApp.Authorization
         public static readonly string ManagerRole = "Managers";
         public static readonly string Employee = "Employee";
     }
+
+    public static class WorkerOperations
+    {
+        public static readonly OperationAuthorizationRequirement ShowDetails =
+            new OperationAuthorizationRequirement { Name = ShowDetailsOperationName };
+        public static readonly OperationAuthorizationRequirement AddWorker =
+            new OperationAuthorizationRequirement { Name = AddWorkerOperationName };
+
+        public static readonly string ShowDetailsOperationName = "ShowWorkerDetails";
+        public static readonly string AddWorkerOperationName = "AddWorker";
+    }
 }
