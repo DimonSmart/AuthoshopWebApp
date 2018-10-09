@@ -21,7 +21,26 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Pages\Workers\Worker1\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\currency.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\date.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\message.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\number.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\plural.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\relative-time.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize-runtime\unit.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\currency.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\date.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\message.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\number.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\plural.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\relative-time.js" />
+    <None Include="wwwroot\lib\globalization\dist\globalize\unit.js" />
+    <None Include="wwwroot\lib\globalization\dist\node-main.js" />
   </ItemGroup>
 
 </Project>

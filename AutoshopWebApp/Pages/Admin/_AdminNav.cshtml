@@ -1,9 +1,10 @@
-﻿
+﻿@using AutoshopWebApp.Utilities
+
 <ul class="nav nav-pills nav-stacked">
-    <li class=@AdminNavPages.PageNavClass(ViewContext, AdminNavPages.changeLogin)>
+    <li class=@PageNavUtilities.PageNavClass(ViewContext, AdminNavPages.changeLogin)>
         <a asp-page="./ChangeLogin">Изменить имя пользователя</a>
     </li>
-    <li class=@AdminNavPages.PageNavClass(ViewContext, AdminNavPages.changePassword)>
+    <li class=@PageNavUtilities.PageNavClass(ViewContext, AdminNavPages.changePassword)>
         <a asp-page="./ChangePassword">Изменить пароль</a>
     </li>
 </ul>

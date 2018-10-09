@@ -43,6 +43,8 @@ namespace AutoshopWebApp.Data
 
         public DbSet<Worker> Workers { get; set; }
 
+        public DbSet<WorkerUser> WorkerUsers { get; set; }
+
         public IQueryable<BuyingOrder> BuyingOrders { get; private set; }
     }
 }

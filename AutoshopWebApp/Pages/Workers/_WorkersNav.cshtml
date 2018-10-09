@@ -1,9 +1,11 @@
-﻿<h3>Списки</h3>
+﻿@using AutoshopWebApp.Utilities
+
+<h3>Списки</h3>
 <ul class="nav nav-pills nav-stacked">
-    <li class="active">
+    <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.WorkersMain)>
         <a asp-page="./Index">Список сотрудников</a>
     </li>
-    <li class="">
-        <a asp-page="./Index">Перечень должностей</a>
+    <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.PositionsMain)>
+        <a asp-page="./PositionsMain">Перечень должностей</a>
     </li>
 </ul>

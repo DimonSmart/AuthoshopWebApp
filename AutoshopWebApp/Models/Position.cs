@@ -16,7 +16,7 @@ namespace AutoshopWebApp.Models
         public string PositionName { get; set; }
 
         [Display(Name = "Оклад")]
-        [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
     }
 }

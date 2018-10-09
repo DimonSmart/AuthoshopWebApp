@@ -14,6 +14,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace AutoshopWebApp
 {
@@ -46,7 +48,7 @@ namespace AutoshopWebApp
                 .AddDefaultTokenProviders()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            
 
             services.AddMvc(config =>
             {
@@ -71,6 +73,12 @@ namespace AutoshopWebApp
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
+
+            //Локализационный костыль
+
+            app.UseRequestLocalization("ru-RU");
+
+            //Конец костыля
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
