@@ -1,0 +1,19 @@
+﻿@model AutoshopWebApp.Pages.Workers.WorkerDetails.IWorkerPage
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+<h2>Данные сотрудника @Model.WorkerCrossPage.Lastname</h2>
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <partial name="_WorkerNav" />
+        </div>
+        <div class="col-md-9">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+

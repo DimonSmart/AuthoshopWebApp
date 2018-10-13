@@ -1,13 +1,12 @@
 ﻿@page
-@model AutoshopWebApp.Pages.Workers.DeleteModel
+@model AutoshopWebApp.Pages.Workers.WorkerDetails.IndexModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Index";
 }
 
-<h2>Delete</h2>
+<h2>Index</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Worker</h4>
     <hr />
@@ -37,10 +36,10 @@
             @Html.DisplayFor(model => model.Worker.BornDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.StreetId)
+            @Html.DisplayNameFor(model => model.Worker.Street)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.StreetId)
+            @Html.DisplayFor(model => model.Worker.Street)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Worker.HouseNumber)
@@ -55,16 +54,14 @@
             @Html.DisplayFor(model => model.Worker.ApartmentNumber)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.PositionId)
+            @Html.DisplayNameFor(model => model.Worker.Position)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.PositionId)
+            @Html.DisplayFor(model => model.Worker.Position)
         </dd>
     </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="Worker.WorkerId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Worker.WorkerID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
 </div>

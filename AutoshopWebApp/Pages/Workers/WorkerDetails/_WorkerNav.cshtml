@@ -1,0 +1,21 @@
+﻿@model AutoshopWebApp.Pages.Workers.WorkerDetails.IWorkerPage
+@using AutoshopWebApp.Utilities
+
+<h3>Списки</h3>
+<ul class="nav nav-pills nav-stacked">
+    <li class="active">
+        <a asp-page="./Index" asp-route-id=@Model.WorkerCrossPage.WorkerID>Данные сотрудника</a>
+    </li>
+    <li class="">
+        <a asp-page="./Index">Сведния о переводах</a>
+    </li>
+    <li class="">
+        <a asp-page="./Index">Редактирование данных</a>
+    </li>
+    <li class="">
+        <a asp-page="./Index">Оформление перевода</a>
+    </li>
+    <li class="">
+        <a asp-page="./Index">Редактирование учётной записи</a>
+    </li>
+</ul>

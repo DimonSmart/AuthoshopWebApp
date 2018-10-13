@@ -45,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.Position)
             </td>
             <td>
-                <a class="btn btn-default">Действия</a>
+                <a class="btn btn-default" asp-page="./WorkerDetails/Index" asp-route-id=@item.WorkerId>Действия</a>
             </td>
             <!--<td>
                 <a asp-page="./Edit" asp-route-id="item.WorkerId">Edit</a> |

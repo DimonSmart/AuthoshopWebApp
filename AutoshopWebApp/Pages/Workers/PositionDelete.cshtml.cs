@@ -10,17 +10,17 @@ using AutoshopWebApp.Models;
 
 namespace AutoshopWebApp.Pages.Workers
 {
-    public class DeleteModel : PageModel
+    public class PositionDeleteModel : PageModel
     {
         private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
 
-        public DeleteModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public PositionDeleteModel(AutoshopWebApp.Data.ApplicationDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Worker Worker { get; set; }
+        public Position Position { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,9 +29,9 @@ namespace AutoshopWebApp.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Workers.FirstOrDefaultAsync(m => m.WorkerId == id);
+            Position = await _context.Positions.FirstOrDefaultAsync(m => m.PositionId == id);
 
-            if (Worker == null)
+            if (Position == null)
             {
                 return NotFound();
             }
@@ -45,15 +45,15 @@ namespace AutoshopWebApp.Pages.Workers
                 return NotFound();
             }
 
-            Worker = await _context.Workers.FindAsync(id);
+            Position = await _context.Positions.FindAsync(id);
 
-            if (Worker != null)
+            if (Position != null)
             {
-                _context.Workers.Remove(Worker);
+                _context.Positions.Remove(Position);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./PositionsMain");
         }
     }
 }
