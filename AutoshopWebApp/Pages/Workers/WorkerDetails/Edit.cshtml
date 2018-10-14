@@ -1,0 +1,67 @@
+﻿@page
+@model AutoshopWebApp.Pages.Workers.WorkerDetails.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Worker</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OutputModel.Worker.WorkerId" />
+            <div class="form-group">
+                <label asp-for="OutputModel.Worker.Firstname" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.Firstname" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Worker.Lastname" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.Lastname" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Worker.Patronymic" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.Patronymic" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.Patronymic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Worker.BornDate" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.BornDate" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.BornDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Street.StreetName" class="control-label"></label>
+                <input asp-for="OutputModel.Street.StreetName" class="form-control" />
+                <span asp-validation-for="OutputModel.Street.StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Worker.HouseNumber" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.HouseNumber" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.HouseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Worker.ApartmentNumber" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.ApartmentNumber" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.ApartmentNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OutputModel.Position.PositionName" class="control-label"></label>
+                <p class="form-control" readonly="readonly">@Model.OutputModel.Position.PositionName</p>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+

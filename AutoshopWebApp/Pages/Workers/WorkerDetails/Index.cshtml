@@ -12,56 +12,62 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.Firstname)
+            @Html.DisplayNameFor(model => model.OutputModel.Worker.Firstname)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.Firstname)
+            @Html.DisplayFor(model => model.OutputModel.Worker.Firstname)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.Lastname)
+            @Html.DisplayNameFor(model => model.OutputModel.Worker.Lastname)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.Lastname)
+            @Html.DisplayFor(model => model.OutputModel.Worker.Lastname)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.Patronymic)
+            @Html.DisplayNameFor(model => model.OutputModel.Worker.Patronymic)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.Patronymic)
+            @Html.DisplayFor(model => model.OutputModel.Worker.Patronymic)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.BornDate)
+            @Html.DisplayNameFor(model => model.OutputModel.Worker.BornDate)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.BornDate)
+            @Html.DisplayFor(model => model.OutputModel.Worker.BornDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.Street)
+            @Html.DisplayNameFor(model => model.OutputModel.Street.StreetName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.Street)
+            @Html.DisplayFor(model => model.OutputModel.Street.StreetName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.HouseNumber)
+            @Html.DisplayNameFor(model => model.OutputModel.Worker.HouseNumber)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.HouseNumber)
+            @Html.DisplayFor(model => model.OutputModel.Worker.HouseNumber)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.ApartmentNumber)
+            @Html.DisplayNameFor(model => model.OutputModel.Worker.ApartmentNumber)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.ApartmentNumber)
+            @Html.DisplayFor(model => model.OutputModel.Worker.ApartmentNumber)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Worker.Position)
+            @Html.DisplayNameFor(model => model.OutputModel.Position.PositionName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Worker.Position)
+            @Html.DisplayFor(model => model.OutputModel.Position.PositionName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OutputModel.Position.Salary)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OutputModel.Position.Salary)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Worker.WorkerID">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.OutputModel.WorkerID">Edit</a> |
+    <a asp-page="../Index">Back to List</a>
 </div>

@@ -1,0 +1,49 @@
+﻿@page
+@model AutoshopWebApp.Pages.Workers.WorkerDetails.TransactionListModel
+
+@{
+    ViewData["Title"] = "TransactionList";
+}
+
+<h2>TransactionList</h2>
+
+<p>
+    <a class="btn btn-default" asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionOrder[0].TransactionOrder.OrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionOrder[0].Position.PositionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionOrder[0].TransactionOrder.OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionOrder[0].TransactionOrder.Reason)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TransactionOrder) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.TransactionOrder[0].TransactionOrder.OrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.TransactionOrder[0].Position.PositionName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.TransactionOrder[0].TransactionOrder.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.TransactionOrder[0].TransactionOrder.Reason)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

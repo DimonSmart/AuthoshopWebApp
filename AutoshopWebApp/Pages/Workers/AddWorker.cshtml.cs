@@ -52,13 +52,13 @@ namespace AutoshopWebApp.Pages.Workers
                 return Page();
             }
 
-            var street =
-                (from str in _context.Streets
-                 where str.StreetName == Street.StreetName
-                 select str).FirstOrDefault();
+            var street = await _context.Streets
+                .FirstOrDefaultAsync(item => 
+                item.StreetName.Equals(Street.StreetName, StringComparison.OrdinalIgnoreCase));
 
             if(street==null)
             {
+                street = Street;
                 _context.Streets.Add(street);
                 await _context.SaveChangesAsync();
             }
