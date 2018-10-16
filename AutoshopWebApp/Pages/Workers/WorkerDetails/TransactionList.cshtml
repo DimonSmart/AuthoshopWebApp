@@ -32,16 +32,16 @@
 @foreach (var item in Model.TransactionOrder) {
         <tr>
             <td>
-                @Html.DisplayFor(model => model.TransactionOrder[0].TransactionOrder.OrderNumber)
+                @Html.DisplayFor(model => item.TransactionOrder.OrderNumber)
             </td>
             <td>
-                @Html.DisplayFor(model => model.TransactionOrder[0].Position.PositionName)
+                @Html.DisplayFor(model => item.Position.PositionName)
             </td>
             <td>
-                @Html.DisplayFor(model => model.TransactionOrder[0].TransactionOrder.OrderDate)
+                @Html.DisplayFor(model => item.TransactionOrder.OrderDate)
             </td>
             <td>
-                @Html.DisplayFor(model => model.TransactionOrder[0].TransactionOrder.Reason)
+                @Html.DisplayFor(model => item.TransactionOrder.Reason)
             </td>
         </tr>
 }

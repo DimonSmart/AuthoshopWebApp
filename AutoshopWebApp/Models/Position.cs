@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AutoshopWebApp.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,5 +21,17 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Оклад")]
         [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
+
+
+        public static async Task<IList<SelectListItem>> GetSelectListItems(ApplicationDbContext context)
+        {
+            return await
+                (from pos in context.Positions
+                 select new SelectListItem
+                 {
+                     Value = pos.PositionId.ToString(),
+                     Text = pos.PositionName
+                 }).ToListAsync();
+        }
     }
 }

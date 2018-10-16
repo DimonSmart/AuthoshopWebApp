@@ -27,20 +27,11 @@ namespace AutoshopWebApp.Pages.Workers
         [BindProperty]
         public Street Street { get; set; }
 
-        [BindProperty]
-        public int SelectedPosition { get; set; }
-
         public IList<SelectListItem> Positions { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            Positions = await
-                (from pos in _context.Positions
-                 select new SelectListItem
-                 {
-                     Value = pos.PositionId.ToString(),
-                     Text = pos.PositionName
-                 }).ToListAsync();
+            Positions = await Position.GetSelectListItems(_context);
 
             return Page();
         }
@@ -63,10 +54,7 @@ namespace AutoshopWebApp.Pages.Workers
                 await _context.SaveChangesAsync();
             }
 
-            Worker.StreetId = street.StreetId;
-
-            Worker.PositionId = SelectedPosition;
-                
+            Worker.StreetId = street.StreetId;     
 
             _context.Workers.Add(Worker);
             await _context.SaveChangesAsync();

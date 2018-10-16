@@ -18,6 +18,7 @@ namespace AutoshopWebApp.Models
 
         [Display(Name = "Причина перевода")]
         [MaxLength(200)]
+        [DataType(DataType.MultilineText)]
         public string Reason { get; set; }
 
         [Display(Name = "Номер приказа")]

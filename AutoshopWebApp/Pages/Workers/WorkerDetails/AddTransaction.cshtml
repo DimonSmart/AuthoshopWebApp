@@ -13,15 +13,24 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TransactionOrder.WorkerId" value="@Model.WorkerCrossPage.WorkerID" />
             <div class="form-group">
-                <label asp-for="TransactionOrder.WorkerId" class="control-label"></label>
-                <input asp-for="TransactionOrder.WorkerId" class="form-control" />
-                <span asp-validation-for="TransactionOrder.WorkerId" class="text-danger"></span>
+                <label asp-for="WorkerCrossPage.Firstname" class="control-label"></label>
+                <p class="form-control" readonly="readonly">@Model.WorkerCrossPage.Firstname</p>
             </div>
             <div class="form-group">
-                <label asp-for="TransactionOrder.PositionId" class="control-label"></label>
-                <input asp-for="TransactionOrder.PositionId" class="form-control" />
-                <span asp-validation-for="TransactionOrder.PositionId" class="text-danger"></span>
+                <label asp-for="WorkerCrossPage.Lastname" class="control-label"></label>
+                <p class="form-control" readonly="readonly">@Model.WorkerCrossPage.Lastname</p>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkerCrossPage.Lastname" class="control-label"></label>
+                <p class="form-control" readonly="readonly">@Model.WorkerCrossPage.Patronymic</p>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Должность</label>
+                <select class="form-control" asp-for="TransactionOrder.PositionId" asp-items="@Model.Positions">
+                    <option value="">Выберите должность</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="TransactionOrder.Reason" class="control-label"></label>
