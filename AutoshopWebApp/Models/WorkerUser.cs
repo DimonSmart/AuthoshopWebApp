@@ -9,6 +9,6 @@ namespace AutoshopWebApp.Models
     {
         public int Id { get; set; }
         public int WorkerID { get; set; }
-        public int UserID { get; set; }
+        public string UserID { get; set; }
     }
 }

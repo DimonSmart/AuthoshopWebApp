@@ -31,7 +31,8 @@ namespace AutoshopWebApp.Models
                  {
                      Value = pos.PositionId.ToString(),
                      Text = pos.PositionName
-                 }).ToListAsync();
+                 }
+                 ).AsNoTracking().ToListAsync();
         }
     }
 }

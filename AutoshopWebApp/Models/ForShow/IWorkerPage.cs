@@ -33,7 +33,7 @@ namespace AutoshopWebApp.Models.ForShow
                     Lastname = worker.Lastname,
                     Patronymic = worker.Patronymic,
                     WorkerID = worker.WorkerId
-                }).FirstOrDefaultAsync();
+                }).AsNoTracking().FirstOrDefaultAsync();
         }
     }
 

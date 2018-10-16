@@ -36,6 +36,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             OutputModel = await OutputWorkerModel
                 .GetQuery(_context)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(item => item.WorkerID == id);
 
             if (OutputModel == null)

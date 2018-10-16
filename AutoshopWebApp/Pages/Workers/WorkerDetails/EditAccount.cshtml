@@ -1,0 +1,17 @@
+﻿@page "{id:int?}"
+@model AutoshopWebApp.Pages.Workers.WorkerDetails.EditAccountModel
+@{
+    ViewData["Title"] = "Редактировать аккаунт";
+}
+
+<h3>Редактировать аккаунт</h3>
+
+@if (Model.PageData == null)
+{
+    <h4>У этого сотрудника нет учётной записи</h4>
+    <a class="btn btn-default">Создать учётную запись</a>
+}
+else
+{
+    <p>Нашёл</p>
+}

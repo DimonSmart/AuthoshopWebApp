@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model AutoshopWebApp.Pages.Workers.WorkerDetails.TransactionListModel
 
 @{
@@ -29,21 +29,22 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.TransactionOrder) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.TransactionOrder.OrderNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Position.PositionName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TransactionOrder.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.TransactionOrder.Reason)
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.TransactionOrder)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.TransactionOrder.OrderNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.Position.PositionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.TransactionOrder.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.TransactionOrder.Reason)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

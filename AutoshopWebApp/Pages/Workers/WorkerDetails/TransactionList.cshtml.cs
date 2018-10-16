@@ -53,7 +53,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                          OrderNumber = order.OrderNumber,
                          Reason = order.Reason,
                      }
-                 }).ToListAsync();
+                 }).AsNoTracking().ToListAsync();
 
             return Page();
         }
