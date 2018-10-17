@@ -9,6 +9,27 @@ namespace AutoshopWebApp.Data
 {
     public partial class ApplicationDbContext
     {
+        public async Task AddUserToWorkerAsync(int workerId, string userId)
+        {
+            var workerUser = new WorkerUser
+            {
+                WorkerID = workerId,
+                UserID = userId
+            };
+            await WorkerUsers.AddAsync(workerUser);
+            await SaveChangesAsync();
+        }
+
+        public async Task RemoveUserFromWorkerAsync(int workerId)
+        {
+            var workerUser = WorkerUsers.FirstOrDefault(item => item.WorkerID == workerId);
+            if (workerUser == null) return;
+
+            WorkerUsers.Remove(workerUser);
+            await SaveChangesAsync();
+        }
+
+
         void InitQueries()
         {
             BuyingOrders =

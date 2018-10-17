@@ -1,17 +1,39 @@
 ﻿@page "{id:int?}"
 @model AutoshopWebApp.Pages.Workers.WorkerDetails.EditAccountModel
 @{
-    ViewData["Title"] = "Редактировать аккаунт";
+    ViewData["Title"] = "Данные учётной записи";
 }
 
-<h3>Редактировать аккаунт</h3>
+<h3>Данные учётной записи</h3>
 
 @if (Model.PageData == null)
 {
     <h4>У этого сотрудника нет учётной записи</h4>
-    <a class="btn btn-default">Создать учётную запись</a>
+    <a class="btn btn-default" asp-page="AddAccount" asp-route-id=@Model.WorkerCrossPageData.WorkerID>
+        Создать учётную запись
+    </a>
 }
 else
 {
-    <p>Нашёл</p>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PageData.Login)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PageData.Login)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PageData.Role)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PageData.Role)
+        </dd>
+    </dl>
+    <a class="btn btn-default">Изменить имя и роль</a>
+    <a class="btn btn-default">Изменить пароль</a>
+
+    <form method="post">
+        <input class="btn btn-default" type="submit" value="Удалить аккаунт" asp-page-handler="RemoveAccount" />
+    </form>
 }

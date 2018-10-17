@@ -24,6 +24,8 @@ namespace AutoshopWebApp.Data
                     var adminID = await EnsureUser(provider, defaultAdminPw, defaultAdminUserName);
                     await EnsureRole(provider, adminID, Constants.AdministratorRole);
                 }
+                await EnsureRole(provider, Constants.ManagerRole);
+                await EnsureRole(provider, Constants.Employee);
             }
         }
 
@@ -69,6 +71,20 @@ namespace AutoshopWebApp.Data
             var user = await userManager.FindByIdAsync(uid);
 
             identityResult = await userManager.AddToRoleAsync(user, role);
+
+            return identityResult;
+        }
+
+        public static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider, string role)
+        {
+            IdentityResult identityResult = null;
+
+            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                identityResult = await roleManager.CreateAsync(new IdentityRole(role));
+            }
 
             return identityResult;
         }

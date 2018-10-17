@@ -3,7 +3,12 @@
     Layout = "/Pages/Shared/_Layout.cshtml";
 }
 
-<h2>Данные сотрудника @Model.WorkerCrossPageData.Lastname</h2>
+<h2>
+    Данные сотрудника 
+    @Model.WorkerCrossPageData.Lastname 
+    @Model.WorkerCrossPageData.Firstname 
+    @Model.WorkerCrossPageData.Patronymic
+</h2>
 
 <div>
     <hr />

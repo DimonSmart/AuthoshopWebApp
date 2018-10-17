@@ -40,6 +40,11 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             WorkerCrossPageData = await WorkerCrossPage.FindWorkerByIdAsync(_context, id.Value);
 
+            if(WorkerCrossPageData==null)
+            {
+                return NotFound();
+            }
+
             TransactionOrder = await
                 (from order in _context.TransactionOrders
                  join position in _context.Positions on order.PositionId equals position.PositionId
