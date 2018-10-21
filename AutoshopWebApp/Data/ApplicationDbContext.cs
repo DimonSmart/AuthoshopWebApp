@@ -23,7 +23,7 @@ namespace AutoshopWebApp.Data
 
         public DbSet<Car> Cars { get; set; }
 
-        public DbSet<ReferenceTS> CarReferences { get; set; }
+        public DbSet<CarStateRef> CarStateRefId { get; set; }
 
         public DbSet<ClientBuyer> ClientBuyers { get; set; }
 

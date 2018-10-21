@@ -58,9 +58,7 @@ namespace AutoshopWebApp.Models
         [DataType(DataType.Currency)]
         public decimal? BuyingPrice { get; set; }
 
-        [Display(Name = "ID справки")]
-        public ReferenceTS CarReferenceId { get; set; }
-
+        [Display(Name = "Статус")]
         public SaleStatus SaleStatus { get; set; }
     }
 
@@ -70,5 +68,25 @@ namespace AutoshopWebApp.Models
         ForBuy,
         ForSold,
         Sold
+    }
+
+    public static class SaleStatusHelpers
+    {
+        public static string GetName(this SaleStatus status)
+        {
+            switch (status)
+            {
+                case SaleStatus.Expertise:
+                    return "На экспертизе";
+                case SaleStatus.ForBuy:
+                    return "Покупается";
+                case SaleStatus.ForSold:
+                    return "Продаётся";
+                case SaleStatus.Sold:
+                    return "Продано";
+                default:
+                    throw new ArgumentException();
+            }
+        }
     }
 }

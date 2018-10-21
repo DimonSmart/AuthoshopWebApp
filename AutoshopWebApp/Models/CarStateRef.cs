@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace AutoshopWebApp.Models
 {
-    public class ReferenceTS
+    public class CarStateRef
     {
-        public int CarReferenceId { get; set; }
+        public int CarStateRefId { get; set; }
+
+        public int CarId { get; set; }
 
         [Display(Name = "Номер справки")]
         [MaxLength(100)]
@@ -24,7 +26,7 @@ namespace AutoshopWebApp.Models
         public string Expert { get; set; }
 
         [Display(Name = "Стоимость экспертизы")]
-        [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal ExpertisePrice { get; set; }
     }
 }

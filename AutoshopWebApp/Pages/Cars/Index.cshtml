@@ -1,102 +1,90 @@
 ﻿@page
+@using AutoshopWebApp.Models
 @model AutoshopWebApp.Pages.Cars.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Список автомобилей";
 }
 
-<h2>Index</h2>
+<h2>Список автомобилей</h2>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<form class="form-inline" method="get">
+    <div class="form-group">
+        Поиск: <input class="form-control" type="text" name="search" />
+        <button type="submit" class="btn btn-default">Найти</button>
+    </div>
+    <a class="btn btn-default" asp-page="Create">Добавить</a>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].MarkAndModelID)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].MarkAndModel.CarMark)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].Color)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].MarkAndModel.CarModel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].EngineNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.Color)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].RegNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.EngineNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].BodyNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.RegNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].ChassisNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.BodyNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].ReleaseDate)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.ReleaseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].Run)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.Run)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Car[0].ReleasePrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Car[0].SellingPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Car[0].BuyingPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Car[0].CarReferenceId)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.SaleStatus)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Car) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MarkAndModelID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EngineNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BodyNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ChassisNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleaseDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Run)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReleasePrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SellingPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BuyingPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CarReferenceId)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.CarId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.CarId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.CarId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.OutputCarModels)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MarkAndModel.CarMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MarkAndModel.CarModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.EngineNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.RegNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.BodyNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Car.Run)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusText)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Car.CarId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Car.CarId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Car.CarId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

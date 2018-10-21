@@ -48,7 +48,7 @@ namespace AutoshopWebApp.Data
                 join car in Cars on seller.CarId equals car.CarId
                 join street in Streets on seller.StreetId equals street.StreetId
                 join mark in MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
-                join carReference in CarReferences on car.CarId equals carReference.CarReferenceId
+                join carReference in CarStateRefId on car.CarId equals carReference.CarStateRefId
                 select new BuyingOrder
                 {
                     OrderNumber = seller.ClientSellerId,

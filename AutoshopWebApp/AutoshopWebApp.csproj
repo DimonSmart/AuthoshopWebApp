@@ -12,6 +12,8 @@
     <Compile Remove="Data\Migrations\20180928145333_DatabaseSchemeCreation.Designer.cs" />
     <Compile Remove="Data\Migrations\20180929145433_TryHangeSheme.cs" />
     <Compile Remove="Data\Migrations\20180929145433_TryHangeSheme.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181021051024_AutoGenerateMiddleTables.cs" />
+    <Compile Remove="Data\Migrations\20181021051024_AutoGenerateMiddleTables.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
