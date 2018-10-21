@@ -13,13 +13,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 {
-    public class AddAccountModel : PageModel, IWorkerPage
+    public class ChangeLoginModel : PageModel, IWorkerPage
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AddAccountModel(ApplicationDbContext context,
+       
+
+        public ChangeLoginModel(
+            AutoshopWebApp.Data.ApplicationDbContext context,
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
@@ -28,36 +31,26 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             _roleManager = roleManager;
         }
 
-        public class AccountInputModel
+        public class PageInputModel
         {
+            public int WorkerId { get; set; }
 
             [Required]
-            [DataType(DataType.EmailAddress)]
             [Display(Name = "Электронная почта")]
+            [DataType(DataType.EmailAddress)]
             public string Email { get; set; }
 
-            [Display(Name = "Пароль")]
-            [DataType(DataType.Password)]
-            [StringLength(100, ErrorMessage = "Пароль должен быть не длиннее 100 символов")]
-            [Required]
-            public string Password { get; set; }
-
-            [Display(Name = "Повторите пароль")]
-            [DataType(DataType.Password)]
-            [Compare("Password", ErrorMessage = "Пароли должны совпадать")]
-            public string Password2 { get; set; }
-
-            public string RoleId { get; set; }
-
-            public int WorkerId { get; set; }
+            [Display(Name = "Уровень доступа")]
+            public string Role { get; set; }
         }
-
-        [BindProperty]
-        public AccountInputModel Account { get; set; }
 
         public IWorkerCrossPageData WorkerCrossPageData { get; set; }
 
+        [BindProperty]
+        public PageInputModel InputModel { get; set; }
+
         public List<SelectListItem> RoleSelectList { get; set; }
+
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -67,72 +60,86 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             }
 
             WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
+            var user = await _context.FindUserByWorkerIdAsync(id.Value);
 
-            if(WorkerCrossPageData == null)
+            if (WorkerCrossPageData == null || user==null)
             {
                 return NotFound();
             }
 
-            Account = new AccountInputModel
+            var roles = await _userManager.GetRolesAsync(user);
+
+            InputModel = new PageInputModel
             {
-                WorkerId = WorkerCrossPageData.WorkerID
+                Email = user.Email,
+                WorkerId = id.Value,
+                Role = roles.Count == 0 ? string.Empty : roles[0],
             };
 
             RoleSelectList = await
                 (from role in _roleManager.Roles
                  select new SelectListItem
                  {
-                     Text = role.Name,
-                     Value = role.Id
+                     Value = role.Name,
+                     Text = role.Name
                  }).AsNoTracking().ToListAsync();
+
+            InputModel.WorkerId = WorkerCrossPageData.WorkerID;
 
             return Page();
         }
 
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid)
+            var user = await _context.FindUserByWorkerIdAsync(InputModel.WorkerId);
+
+            if(user==null)
+            {
+                return NotFound();
+            }
+
+            user.Email = InputModel.Email;
+            user.UserName = InputModel.Email;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if(!ErrorCheck(result))
             {
                 return Page();
             }
 
-            var role = await _roleManager.FindByIdAsync(Account.RoleId);
-
-            if(role==null)
+            if(!await _userManager.IsInRoleAsync(user, InputModel.Role))
             {
-                return Page();
+                var roles = await _userManager.GetRolesAsync(user);
+                result = await _userManager.RemoveFromRolesAsync(user, roles);
+                if (!ErrorCheck(result))
+                {
+                    return Page();
+                }
+
+                result = await _userManager.AddToRoleAsync(user, InputModel.Role);
+
+                if (!ErrorCheck(result))
+                {
+                    return Page();
+                }
             }
 
-            var user = new IdentityUser
-            {
-                UserName = Account.Email,
-                Email = Account.Email,
-            };
+            return RedirectToPage("EditAccount", new { id = InputModel.WorkerId });
+        }
 
-            var createUserStatus = await _userManager.CreateAsync(user, Account.Password);
-            if(!createUserStatus.Succeeded)
+        private bool ErrorCheck(IdentityResult result)
+        {
+            if (!result.Succeeded)
             {
-                foreach(var err in createUserStatus.Errors)
+                foreach (var err in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, err.Description);
                 }
-                return Page();
+                return false;
             }
-
-            var addToRoleStatus = await _userManager.AddToRoleAsync(user, role.Name);
-
-            if (!addToRoleStatus.Succeeded)
-            {
-                foreach (var err in addToRoleStatus.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, err.Description);
-                }
-                return Page();
-            }
-
-            await _context.AddUserToWorkerAsync(Account.WorkerId, user.Id);
-
-            return RedirectToPage("./EditAccount", new { id = Account.WorkerId });
+            return true;
         }
     }
 }

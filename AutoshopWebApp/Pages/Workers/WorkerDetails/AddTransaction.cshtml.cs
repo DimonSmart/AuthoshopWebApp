@@ -37,7 +37,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            WorkerCrossPage = await WorkerCrossPage.FindWorkerByIdAsync(_context, id.Value);
+            WorkerCrossPage = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
             Positions = await Position.GetSelectListItems(_context);
 
             return Page();

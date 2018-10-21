@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
+
             PageData = await
                 (from worker in _context.Workers
                  join workerUser in _context.WorkerUsers on worker.WorkerId equals workerUser.WorkerID
@@ -73,7 +75,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             if(PageData == null)
             {
-                WorkerCrossPageData = await WorkerCrossPage.FindWorkerByIdAsync(_context, id.Value);
+                WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
             }
             else
             {
@@ -107,7 +109,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            var user = await _userManager.FindByIdAsync(workerUser.UserID);
+            var user = await _context.FindUserByWorkerIdAsync(id.Value);
 
             if(user==null)
             {

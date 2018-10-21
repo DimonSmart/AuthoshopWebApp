@@ -1,5 +1,7 @@
 ﻿using AutoshopWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,15 @@ namespace AutoshopWebApp.Data
 
             WorkerUsers.Remove(workerUser);
             await SaveChangesAsync();
+        }
+
+        public async Task<IdentityUser> FindUserByWorkerIdAsync(int workerId)
+        {
+            return await
+                (from workerUser in WorkerUsers
+                 where workerUser.WorkerID == workerId
+                 join user in Users on workerUser.UserID equals user.Id
+                 select user).FirstOrDefaultAsync();
         }
 
 

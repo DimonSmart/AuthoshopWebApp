@@ -1,0 +1,102 @@
+﻿@page
+@model AutoshopWebApp.Pages.Cars.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].MarkAndModelID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].EngineNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].RegNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].BodyNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].ChassisNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].Run)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].ReleasePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].SellingPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].BuyingPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Car[0].CarReferenceId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Car) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MarkAndModelID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Color)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EngineNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BodyNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChassisNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Run)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SellingPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuyingPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarReferenceId)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CarId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.CarId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.CarId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -30,10 +30,16 @@ else
             @Html.DisplayFor(model => model.PageData.Role)
         </dd>
     </dl>
-    <a class="btn btn-default">Изменить имя и роль</a>
-    <a class="btn btn-default">Изменить пароль</a>
+
+    
 
     <form method="post">
-        <input class="btn btn-default" type="submit" value="Удалить аккаунт" asp-page-handler="RemoveAccount" />
+        <a class="btn btn-default" asp-page="ChangeLogin" asp-route-id=@Model.WorkerCrossPageData.WorkerID>
+            Изменить имя и роль
+        </a>
+        <a class="btn btn-default" asp-page="ChangePassword" asp-route-id=@Model.WorkerCrossPageData.WorkerID>
+            Изменить пароль
+        </a>
+        <button class="btn btn-default" type="submit" asp-page-handler="RemoveAccount">Удалить аккаунт</button>
     </form>
 }

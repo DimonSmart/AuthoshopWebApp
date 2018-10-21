@@ -22,7 +22,7 @@ namespace AutoshopWebApp.Models.ForShow
         public string Patronymic { get; set; }
         public int WorkerID { get; set; }
 
-        public static async Task<WorkerCrossPage> FindWorkerByIdAsync(ApplicationDbContext context, int id)
+        public static async Task<WorkerCrossPage> FindWorkerDataById(ApplicationDbContext context, int id)
         {
             return await
                 (from worker in context.Workers
@@ -34,6 +34,19 @@ namespace AutoshopWebApp.Models.ForShow
                     Patronymic = worker.Patronymic,
                     WorkerID = worker.WorkerId
                 }).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public static IQueryable<WorkerCrossPage> WorkerCrossPageData(ApplicationDbContext context)
+        {
+            return
+                from worker in context.Workers
+                select new WorkerCrossPage
+                {
+                    Firstname = worker.Firstname,
+                    Lastname = worker.Lastname,
+                    Patronymic = worker.Patronymic,
+                    WorkerID = worker.WorkerId
+                };
         }
     }
 

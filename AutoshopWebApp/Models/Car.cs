@@ -11,20 +11,20 @@ namespace AutoshopWebApp.Models
     {
         public int CarId { get; set; }
 
+        [Required]
         [Display(Name = "ID модели")]
         public int MarkAndModelID { get; set; }
 
+        [Required]
         [Display(Name = "Цвет")]
         public string Color { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         [Display(Name = "Номер двигателя")]
-        [MaxLength(100)]
         public string EngineNumber { get; set; }
-
-        [Display(Name = "Номер регистрации")]
-        [MaxLength(100)]
-        public string RegNumber { get; set; }
-
+        
+        [Required]
         [Display(Name = "Номер кузова")]
         [MaxLength(100)]
         public string BodyNumber { get; set; }
@@ -33,26 +33,42 @@ namespace AutoshopWebApp.Models
         [MaxLength(100)]
         public string ChassisNumber { get; set; }
 
+        [Required]
         [Display(Name = "Дата выпуска")]
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
+
+        [Display(Name = "Номер регистрации")]
+        [MaxLength(100)]
+        public string RegNumber { get; set; }
+
 
         [Display(Name = "Пробег")]
         public int Run { get; set; }
 
         [Display(Name = "Первоначальная стоимость")]
-        [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal? ReleasePrice { get; set; }
 
         [Display(Name = "Стоимость продажи")]
-        [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal? SellingPrice { get; set; }
 
         [Display(Name = "Стоимость покупки")]
-        [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal? BuyingPrice { get; set; }
 
         [Display(Name = "ID справки")]
-        public int? CarReferenceId { get; set; }
+        public ReferenceTS CarReferenceId { get; set; }
+
+        public SaleStatus SaleStatus { get; set; }
+    }
+
+    public enum SaleStatus
+    {
+        Expertise,
+        ForBuy,
+        ForSold,
+        Sold
     }
 }
