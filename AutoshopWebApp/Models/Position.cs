@@ -18,7 +18,7 @@ namespace AutoshopWebApp.Models
         [MaxLength(100)]
         public string PositionName { get; set; }
 
-        [Display(Name = "Оклад")]
+        [Display(Name = "Оклад, руб")]
         [DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 

@@ -83,7 +83,7 @@ namespace AutoshopWebApp.Pages.Cars
             _context.Cars.Add(CarData);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./CarDetails/Index", new { id = CarData.CarId });
         }
     }
 }

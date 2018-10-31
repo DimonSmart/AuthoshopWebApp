@@ -39,22 +39,22 @@ namespace AutoshopWebApp.Models
         public DateTime ReleaseDate { get; set; }
 
         [Display(Name = "Номер регистрации")]
-        [MaxLength(100)]
+        [MaxLength(10)]
         public string RegNumber { get; set; }
 
 
-        [Display(Name = "Пробег")]
+        [Display(Name = "Пробег, км")]
         public int Run { get; set; }
 
-        [Display(Name = "Первоначальная стоимость")]
+        [Display(Name = "Первоначальная стоимость, руб.")]
         [DataType(DataType.Currency)]
         public decimal? ReleasePrice { get; set; }
 
-        [Display(Name = "Стоимость продажи")]
+        [Display(Name = "Стоимость продажи, руб.")]
         [DataType(DataType.Currency)]
         public decimal? SellingPrice { get; set; }
 
-        [Display(Name = "Стоимость покупки")]
+        [Display(Name = "Стоимость покупки, руб.")]
         [DataType(DataType.Currency)]
         public decimal? BuyingPrice { get; set; }
 

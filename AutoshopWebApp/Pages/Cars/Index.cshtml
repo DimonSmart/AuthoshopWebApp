@@ -43,6 +43,9 @@
                 @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.Run)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.SellingPrice)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.SaleStatus)
             </th>
             <th></th>
@@ -77,12 +80,13 @@
                     @Html.DisplayFor(modelItem => item.Car.Run)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Car.SellingPrice)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.StatusText)
                 </td>
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@item.Car.CarId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Car.CarId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.Car.CarId">Delete</a>
+                    <a class="btn btn-default" asp-page="./CarDetails/Index" asp-route-id="@item.Car.CarId">Детали</a>
                 </td>
             </tr>
         }

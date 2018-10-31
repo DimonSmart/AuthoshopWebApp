@@ -1,0 +1,124 @@
+﻿@page
+@model AutoshopWebApp.Pages.Cars.CarDetails.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Автомобиль @Model.CarData.MarkAndModel.CarMark @Model.CarData.MarkAndModel.CarModel</h2>
+
+<div>
+    <p>
+        <a class="btn btn-default" asp-page="../Index">Справка для экспертизы</a>
+        <a class="btn btn-default" asp-page="../Index">Продажа клиенту</a>
+        <a class="btn btn-default" asp-page="../Index">Покупка у клиента</a>
+    </p>
+    <hr />
+    
+    <style>
+        @@media (min-width: 768px) {
+            .dl-horizontal dt {
+                float: left;
+                width: 260px;
+                overflow: hidden;
+                clear: left;
+                text-align: right;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .dl-horizontal dd {
+                margin-left: 280px;
+            }
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-lg-5">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.MarkAndModel.CarMark)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.MarkAndModel.CarMark)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.MarkAndModel.CarModel)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.MarkAndModel.CarModel)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.Color)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.Color)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.EngineNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.EngineNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.BodyNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.BodyNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.ChassisNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.ChassisNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.ReleaseDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.ReleaseDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.RegNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.RegNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.Run)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.Run)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.ReleasePrice)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.ReleasePrice)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.SellingPrice)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.SellingPrice)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.BuyingPrice)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.Car.BuyingPrice)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CarData.Car.SaleStatus)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CarData.StatusText)
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div>
+    <a class="btn btn-default" asp-page="../Index">Назад к списку</a>
+    <input class="btn btn-default" type="button" onclick="window.print()" value="Хуй" />
+</div>

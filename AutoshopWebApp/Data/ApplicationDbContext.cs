@@ -45,6 +45,8 @@ namespace AutoshopWebApp.Data
 
         public DbSet<WorkerUser> WorkerUsers { get; set; }
 
+        public DbSet<PoolExpertiseReference> PoolExpertiseReferences { get; set; }
+
         public IQueryable<BuyingOrder> BuyingOrders { get; private set; }
     }
 }

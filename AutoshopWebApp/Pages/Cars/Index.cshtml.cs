@@ -39,6 +39,7 @@ namespace AutoshopWebApp.Pages.Cars
                         BodyNumber = car.BodyNumber,
                         ReleaseDate = car.ReleaseDate,
                         Run = car.Run,
+                        SellingPrice = car.SellingPrice,
                         SaleStatus = car.SaleStatus,
                     },
                     MarkAndModel = new MarkAndModel

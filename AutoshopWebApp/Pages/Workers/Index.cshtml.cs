@@ -39,7 +39,7 @@ namespace AutoshopWebApp.Pages.Workers
 
         public IList<WorkerModel> Worker { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string search)
         {
             var workerQuery =
                 from worker in _context.Workers
@@ -52,6 +52,21 @@ namespace AutoshopWebApp.Pages.Workers
                     Patronymic = worker.Patronymic,
                     Position = position.PositionName,
                 };
+
+            if(!string.IsNullOrEmpty(search))
+            {
+                var splitted = search.Split(' ');
+                foreach (var item in splitted)
+                {
+                    workerQuery =
+                        from worker in workerQuery
+                        where worker.Firstname.Contains(item) ||
+                        worker.Lastname.Contains(item) ||
+                        worker.Patronymic.Contains(item) ||
+                        worker.Position.Contains(item)
+                        select worker;
+                }
+            }
 
             Worker = await workerQuery
                 .AsNoTracking()
