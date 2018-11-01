@@ -5,43 +5,63 @@
     ViewData["Title"] = "ExpertiseReference";
 }
 
-<style>
-    body{
-        width:210mm;
-        font-family:'Times New Roman';
-    }
-        body h2 {
-            text-align: center;
-        }
-        body p {
-            text-align:justify;
-            line-height: 7mm;
-            text-indent: 13mm;
-        }
-</style>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AutoshopWebApp</title>
 
-<h2>Справка о взятии автомобиля на экспертизу</h2>
-<p>
-    Выдана гражданину ФАМИЛИЯ ИМЯ ОТЧЕСТВО в связи с тем, что принадлежащее ему транспортное средство
-    будет временно находится в пользовании автосалона, с целью проведения технической экспертизы.
-    Автосалон обязуется вернуть автомобиль владельцу в течение трёх рабочих дней со дня выдачи данной справки.
-</p>
-<p>
-    Автомобиль МАРКА МОДЕЛЬ, цвет: ЦВЕТ, номер двигателя: НОМЕР_ДВИГАТЕЛЯ, номер кузова: НОМЕР_КУЗОВА,
-    номер кузова (если есть): НОМЕР_ШАССИ, дата выпуска: ДАТА_ВЫПУСКА, номер регистрации: НОМЕР_РЕГИСТРАЦИИ,
-    пробег: ПРОБЕГ.
-</p>
-<p>Дата выдачи справки: ДАТА_СПРАВКИ</p>
-<p>
-    Сотрудник: ФАМИЛИЯ И. О. 
-    <span style="float:right">
-        Подпись сотрудника:_______________
-    </span>
-</p>
-<p>
-    Продавец: ФАМИЛИЯ И. О.
-    <span style="float:right">
-        Подпись продавца:_______________
-    </span>
-</p>
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    </environment>
+
+    <link rel="stylesheet" href="~/css/printedDoc.css" />
+</head>
+
+
+<div class="printedDoc">
+    <h2>Справка о взятии автомобиля на экспертизу</h2>
+    <p>
+        Выдана гражданину @Model.PoolExpertise.ClientFirstname @Model.PoolExpertise.ClientLastname
+        @Model.PoolExpertise.ClientPatronymic в связи с тем,
+        что принадлежащее ему транспортное средство будет временно находится в пользовании автосалона,
+        с целью проведения технической экспертизы. Автосалон обязуется вернуть автомобиль владельцу в течение 
+        трёх рабочих дней со дня выдачи данной справки.
+    </p>
+    <p>
+        Автомобиль @Model.MarkAndModel.CarMark @Model.MarkAndModel.CarModel,
+        цвет: @Model.PoolExpertise.Car.Color, номер двигателя: @Model.PoolExpertise.Car.EngineNumber,
+        номер кузова: @Model.PoolExpertise.Car.BodyNumber, дата выпуска:
+        @Html.DisplayFor(model => model.PoolExpertise.Car.ReleaseDate), номер регистрации:
+        @Model.PoolExpertise.Car.RegNumber, пробег: @Model.PoolExpertise.Car.Run.
+    </p>
+    <p>
+        Дата выдачи справки: @Html.DisplayFor(model => model.PoolExpertise.IssueDate)
+        <span style="float:right">
+            Подпись клиента:_______________
+        </span>
+    </p>
+    <p>
+        Сотрудник:
+        @Model.PoolExpertise.Worker.Lastname
+        @Model.PoolExpertise.Worker.Firstname
+        @Model.PoolExpertise.Worker.Patronymic
+        <span style="float:right">
+            Подпись сотрудника:_______________
+        </span>
+    </p>
+
+    <div class="noPrint">
+        <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.PoolExpertise.Car.CarId">Назад</a>
+        <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
+        <input class="btn btn-default" type="button" onclick="window.print()" value="Редактровать" />
+    </div>
+</div>
+
+
+
 

@@ -33,22 +33,14 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            OutputModel = await OutputWorkerModel
-                .GetQuery(_context)
-                .FirstOrDefaultAsync(item => item.WorkerID == id);
-
-            if (OutputModel == null)
-            {
-                return NotFound();
-            }
-            return Page();
+            return await RedisplayPage(id.Value);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return await RedisplayPage(OutputModel.WorkerID);
             }
 
             var street = await _context.Streets
@@ -89,6 +81,20 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
         private bool WorkerExists(int id)
         {
             return _context.Workers.Any(e => e.WorkerId == id);
+        }
+
+        private async Task<IActionResult> RedisplayPage(int id)
+        {
+            OutputModel = await OutputWorkerModel
+                .GetQuery(_context)
+                .FirstOrDefaultAsync(item => item.WorkerID == id);
+
+            if (OutputModel == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
     }
 }

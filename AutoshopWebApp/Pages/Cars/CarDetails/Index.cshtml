@@ -9,7 +9,12 @@
 
 <div>
     <p>
-        <a class="btn btn-default" asp-page="../Index">Справка для экспертизы</a>
+        <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+            Справка для экспертизы
+        </a>
+        <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+            Добавить справку о тех. сотоянии
+        </a>
         <a class="btn btn-default" asp-page="../Index">Продажа клиенту</a>
         <a class="btn btn-default" asp-page="../Index">Покупка у клиента</a>
     </p>
@@ -120,5 +125,4 @@
 </div>
 <div>
     <a class="btn btn-default" asp-page="../Index">Назад к списку</a>
-    <input class="btn btn-default" type="button" onclick="window.print()" value="Хуй" />
 </div>

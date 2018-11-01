@@ -47,6 +47,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             [Compare("Password", ErrorMessage = "Пароли должны совпадать")]
             public string Password2 { get; set; }
 
+            [Required]
+            [Display(Name = "Роль")]
             public string RoleId { get; set; }
 
             public int WorkerId { get; set; }
@@ -66,9 +68,9 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
+            var pageResult = await LoadPageData(id.Value);
 
-            if(WorkerCrossPageData == null)
+            if (WorkerCrossPageData == null)
             {
                 return NotFound();
             }
@@ -78,29 +80,24 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 WorkerId = WorkerCrossPageData.WorkerID
             };
 
-            RoleSelectList = await
-                (from role in _roleManager.Roles
-                 select new SelectListItem
-                 {
-                     Text = role.Name,
-                     Value = role.Id
-                 }).AsNoTracking().ToListAsync();
-
-            return Page();
+            return pageResult;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if(!ModelState.IsValid)
+            WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, Account.WorkerId);
+
+            if (!ModelState.IsValid)
             {
-                return Page();
+                return await LoadPageData(Account.WorkerId);
             }
 
             var role = await _roleManager.FindByIdAsync(Account.RoleId);
 
             if(role==null)
             {
-                return Page();
+                
+                return await LoadPageData(Account.WorkerId);
             }
 
             var user = new IdentityUser
@@ -116,7 +113,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 {
                     ModelState.AddModelError(string.Empty, err.Description);
                 }
-                return Page();
+                
+                return await LoadPageData(Account.WorkerId);
             }
 
             var addToRoleStatus = await _userManager.AddToRoleAsync(user, role.Name);
@@ -127,12 +125,28 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 {
                     ModelState.AddModelError(string.Empty, err.Description);
                 }
-                return Page();
+
+                return await LoadPageData(Account.WorkerId);
             }
 
             await _context.AddUserToWorkerAsync(Account.WorkerId, user.Id);
 
             return RedirectToPage("./EditAccount", new { id = Account.WorkerId });
+        }
+
+        private async Task<PageResult> LoadPageData(int id)
+        {
+            WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id);
+
+            RoleSelectList = await
+                (from role in _roleManager.Roles
+                 select new SelectListItem
+                 {
+                     Text = role.Name,
+                     Value = role.Id
+                 }).AsNoTracking().ToListAsync();
+
+            return Page();
         }
     }
 }

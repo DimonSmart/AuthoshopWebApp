@@ -16,6 +16,8 @@
     <Compile Remove="Data\Migrations\20181021051024_AutoGenerateMiddleTables.Designer.cs" />
     <Compile Remove="Data\Migrations\20181031035952_PoolExpersiseChange.cs" />
     <Compile Remove="Data\Migrations\20181031035952_PoolExpersiseChange.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181101052457_ChangePoolRef.cs" />
+    <Compile Remove="Data\Migrations\20181101052457_ChangePoolRef.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

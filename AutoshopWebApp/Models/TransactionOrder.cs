@@ -23,6 +23,7 @@ namespace AutoshopWebApp.Models
 
         [Display(Name = "Номер приказа")]
         [MaxLength(50)]
+        [Required]
         public string OrderNumber { get; set; }
 
         [Display(Name = "Дата приказа")]

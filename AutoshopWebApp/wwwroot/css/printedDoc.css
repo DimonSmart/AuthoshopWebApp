@@ -1,0 +1,28 @@
+﻿@media print {
+    .noPrint {
+        display: none;
+    }
+
+    .hide-on-screen {
+        display: block;
+    }
+}
+
+.printedDoc {
+    font-family: 'Times New Roman';
+    margin-left: auto;
+    margin-right: auto;
+    width: 210mm;
+}
+
+    .printedDoc p {
+        text-align: justify;
+        line-height: 7mm;
+        text-indent: 13mm;
+        font-size: 16px;
+    }
+
+    .printedDoc h2 {
+        text-align: center;
+        font-size: 25px;
+    }

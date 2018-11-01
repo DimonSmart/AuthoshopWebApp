@@ -21,14 +21,6 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             _context = context;
         }
 
-        public class TransactionPageData
-        {
-            
-        }
-
-
-
-
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -37,10 +29,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            WorkerCrossPage = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
-            Positions = await Position.GetSelectListItems(_context);
-
-            return Page();
+            return await RedisplayPage(id.Value);
         }
 
         public WorkerCrossPage WorkerCrossPage { get; set; }
@@ -56,7 +45,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return await RedisplayPage(TransactionOrder.WorkerId);
             }
 
             var worker = _context.Workers
@@ -75,6 +64,25 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index", new { id = TransactionOrder.WorkerId});
+        }
+
+        private async Task<IActionResult> RedisplayPage(int id)
+        {
+            WorkerCrossPage = await WorkerCrossPage.FindWorkerDataById(_context, id);
+
+            if(WorkerCrossPage == null)
+            {
+                return NotFound();
+            }
+
+            Positions = await Position.GetSelectListItems(_context);
+
+            if(Positions == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
     }
 }

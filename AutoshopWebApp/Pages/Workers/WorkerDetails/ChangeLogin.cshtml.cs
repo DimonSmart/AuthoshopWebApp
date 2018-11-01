@@ -41,6 +41,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             public string Email { get; set; }
 
             [Display(Name = "Уровень доступа")]
+            [Required]
             public string Role { get; set; }
         }
 
@@ -59,7 +60,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
+            var pageResult = await RedisplayPage(id.Value);
+
             var user = await _context.FindUserByWorkerIdAsync(id.Value);
 
             if (WorkerCrossPageData == null || user==null)
@@ -76,17 +78,9 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 Role = roles.Count == 0 ? string.Empty : roles[0],
             };
 
-            RoleSelectList = await
-                (from role in _roleManager.Roles
-                 select new SelectListItem
-                 {
-                     Value = role.Name,
-                     Text = role.Name
-                 }).AsNoTracking().ToListAsync();
-
             InputModel.WorkerId = WorkerCrossPageData.WorkerID;
 
-            return Page();
+            return pageResult;
         }
 
 
@@ -106,7 +100,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             if(!ErrorCheck(result))
             {
-                return Page();
+                return await RedisplayPage(InputModel.WorkerId);
             }
 
             if(!await _userManager.IsInRoleAsync(user, InputModel.Role))
@@ -115,14 +109,14 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 result = await _userManager.RemoveFromRolesAsync(user, roles);
                 if (!ErrorCheck(result))
                 {
-                    return Page();
+                    return await RedisplayPage(InputModel.WorkerId);
                 }
 
                 result = await _userManager.AddToRoleAsync(user, InputModel.Role);
 
                 if (!ErrorCheck(result))
                 {
-                    return Page();
+                    return await RedisplayPage(InputModel.WorkerId);
                 }
             }
 
@@ -140,6 +134,21 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return false;
             }
             return true;
+        }
+
+        private async Task<PageResult> RedisplayPage(int id)
+        {
+            WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id);
+
+            RoleSelectList = await
+                (from role in _roleManager.Roles
+                 select new SelectListItem
+                 {
+                     Value = role.Name,
+                     Text = role.Name
+                 }).AsNoTracking().ToListAsync();
+
+            return Page();
         }
     }
 }

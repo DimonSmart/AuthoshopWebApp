@@ -52,16 +52,14 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            WorkerData = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
-
-            return Page();
+            return await RedisplayPage(id.Value);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if(!ModelState.IsValid)
             {
-                return Page();
+                return await RedisplayPage(WorkerData.WorkerID);
             }
 
             var user = await _context
@@ -84,10 +82,16 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 {
                     ModelState.AddModelError(string.Empty, err.Description);
                 }
-                return Page();
+                return await RedisplayPage(WorkerData.WorkerID);
             }
 
             return RedirectToPage("EditAccount", new { id = WorkerData.WorkerID });
+        }
+
+        private async Task<PageResult> RedisplayPage(int id)
+        {
+            WorkerData = await WorkerCrossPage.FindWorkerDataById(_context, id);
+            return Page();
         }
     }
 }
