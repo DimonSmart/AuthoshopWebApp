@@ -1,18 +1,19 @@
 ﻿@page
-@model AutoshopWebApp.Pages.Cars.CarDetails.AddPoolExpertiseRefModel
+@model AutoshopWebApp.Pages.Cars.CarDetails.EditExpertiseRefModel
 
 @{
-    ViewData["Title"] = "AddPoolExpertiseRef";
+    ViewData["Title"] = "EditExpertiseRef";
 }
 
-<h2>AddPoolExpertiseRef</h2>
+<h2>Редактировать справку</h2>
 
-<h4>PoolExpertiseReference</h4>
+<h4>Справка о взятии на экспертизу</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PoolExpertiseReference.Id" />
             <input type="hidden" asp-for="PoolExpertiseReference.CarId" />
             <input type="hidden" asp-for="PoolExpertiseReference.WorkerId" />
             <div class="form-group">
@@ -36,14 +37,14 @@
                 <span asp-validation-for="PoolExpertiseReference.IssueDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="./ExpertiseReference" asp-route-id="@Model.PoolExpertiseReference.CarId">Назад к справке</a>
 </div>
 
 @section Scripts {

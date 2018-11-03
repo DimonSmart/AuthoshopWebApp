@@ -9,12 +9,19 @@
 
 <div>
     <p>
-        <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
-            Справка для экспертизы
-        </a>
-        <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
-            Добавить справку о тех. сотоянии
-        </a>
+        @if (Model.ShowPoolExpertiseButton)
+        {
+            <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+                Справка для экспертизы
+            </a>
+        }
+        @if (Model.ShowAddExpertiseButton)
+        {
+            <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+                Добавить справку о тех. состоянии
+            </a>
+        }
+
         <a class="btn btn-default" asp-page="../Index">Продажа клиенту</a>
         <a class="btn btn-default" asp-page="../Index">Покупка у клиента</a>
     </p>

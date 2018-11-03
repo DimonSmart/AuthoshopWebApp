@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,15 +14,25 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     public class ExpertiseReferenceModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ExpertiseReferenceModel(ApplicationDbContext context)
+        public ExpertiseReferenceModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public PoolExpertiseReference PoolExpertise { get; set; }
+        public class OutputModel
+        {
+            public PoolExpertiseReference PoolExpertise { get; set; }
+            public Car Car { get; set; }
+            public MarkAndModel MarkAndModel { get; set; }
+            public Worker Worker { get; set; }
+        }
 
-        public MarkAndModel MarkAndModel { get; set; }
+        public OutputModel OutModel { get; set; }
+
+        public bool ShowEditButton { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,26 +41,35 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            PoolExpertise = await
+            OutModel = await
                 (from exp in _context.PoolExpertiseReferences
-                 where exp.Car.CarId == id
-                 select new PoolExpertiseReference
+                 where exp.CarId == id
+                 join car in _context.Cars on exp.CarId equals car.CarId
+                 join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
+                 join worker in _context.Workers on exp.WorkerId equals worker.WorkerId
+                 select new OutputModel
                  {
-                     Car = exp.Car,
-                     Worker = exp.Worker,
-                     ClientFirstname = exp.ClientFirstname,
-                     ClientLastname = exp.ClientLastname,
-                     ClientPatronymic = exp.ClientPatronymic,
-                     IssueDate = exp.IssueDate
+                     PoolExpertise = exp,
+                     Car = car,
+                     MarkAndModel = mark,
+                     Worker = worker
                  }).AsNoTracking().FirstOrDefaultAsync();
 
-            MarkAndModel = await _context.MarkAndModels
-                .FirstOrDefaultAsync(x => x.MarkAndModelId == PoolExpertise.Car.MarkAndModelID);
-
-            if(PoolExpertise==null)
+            if(OutModel==null)
             {
                 return NotFound();
             }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var isWorkerExist = await _context.WorkerUsers.AnyAsync(x => x.UserID == user.Id);
+
+            ShowEditButton = isWorkerExist && OutModel.Car.SaleStatus == SaleStatus.Expertise;
 
             return Page();
         }

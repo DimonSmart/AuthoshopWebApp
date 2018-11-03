@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoshopWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181101053508_ChangePoolRef")]
+    [Migration("20181103054317_ChangePoolRef")]
     partial class ChangePoolRef
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,7 +211,7 @@ namespace AutoshopWebApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId");
+                    b.Property<int>("CarId");
 
                     b.Property<string>("ClientFirstname")
                         .IsRequired();
@@ -224,13 +224,9 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.Property<DateTime>("IssueDate");
 
-                    b.Property<int?>("WorkerId");
+                    b.Property<int>("WorkerId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("WorkerId");
 
                     b.ToTable("PoolExpertiseReferences");
                 });
@@ -514,17 +510,6 @@ namespace AutoshopWebApp.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("AutoshopWebApp.Models.PoolExpertiseReference", b =>
-                {
-                    b.HasOne("AutoshopWebApp.Models.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId");
-
-                    b.HasOne("AutoshopWebApp.Models.Worker", "Worker")
-                        .WithMany()
-                        .HasForeignKey("WorkerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

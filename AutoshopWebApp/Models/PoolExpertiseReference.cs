@@ -22,9 +22,9 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Отчество клиента")]
         public string ClientPatronymic { get; set; }
 
-        public Car Car { get; set; }
+        public int CarId { get; set; }
 
-        public Worker Worker { get; set; }
+        public int WorkerId { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime IssueDate { get; set; }

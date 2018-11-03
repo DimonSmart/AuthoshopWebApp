@@ -8,19 +8,26 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class IndexModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public IndexModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public OutputCarModel CarData { get; set; }
+
+        public bool ShowPoolExpertiseButton { get; set; }
+
+        public bool ShowAddExpertiseButton { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,23 +36,32 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            var carQuery =
-                from car in _context.Cars
-                where id == car.CarId
-                join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
-                select new OutputCarModel
-                {
-                    Car = car,
-                    MarkAndModel = mark,
-                };
+            CarData = await
+                (from car in _context.Cars
+                 where id == car.CarId
+                 join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
+                 select new OutputCarModel
+                 {
+                     Car = car,
+                     MarkAndModel = mark,
+                 }).AsNoTracking().FirstOrDefaultAsync();
 
+            var user = await _userManager.GetUserAsync(User);
 
-            CarData = await carQuery.AsNoTracking().FirstOrDefaultAsync();
-
-            if (CarData == null)
+            if (CarData == null || user == null)
             {
                 return NotFound();
             }
+
+            var isWorkerExist = await _context.WorkerUsers.AnyAsync(x => user.Id == x.UserID);
+            var isPoolExpertiseExist = await _context.PoolExpertiseReferences.AnyAsync(x => x.CarId == id);
+
+            ShowPoolExpertiseButton = (isWorkerExist || isPoolExpertiseExist) 
+                && CarData.Car.SaleStatus == SaleStatus.Expertise;
+
+            ShowAddExpertiseButton = CarData.Car.SaleStatus == SaleStatus.Expertise 
+                && isPoolExpertiseExist;
+
 
             return Page();
         }
