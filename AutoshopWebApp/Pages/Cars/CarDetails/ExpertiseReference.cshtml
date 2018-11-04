@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model AutoshopWebApp.Pages.Cars.CarDetails.ExpertiseReferenceModel
 @{
     Layout = null;
@@ -32,11 +32,24 @@
         Автосалон обязуется вернуть автомобиль владельцу в течение трёх рабочих дней со дня выдачи данной справки.
     </p>
     <p>
-        Автомобиль @Model.OutModel.MarkAndModel.CarMark @Model.OutModel.MarkAndModel.CarModel,
-        цвет: @Model.OutModel.Car.Color, номер двигателя: @Model.OutModel.Car.EngineNumber,
-        номер кузова:  @Model.OutModel.Car.BodyNumber, дата выпуска:
-        @Html.DisplayFor(model => model.OutModel.Car.ReleaseDate), номер регистрации:
-        @Model.OutModel.Car.RegNumber, пробег: @Model.OutModel.Car.Run.
+        Автомобиль @Model.OutModel.MarkAndModel.CarMark @Model.OutModel.MarkAndModel.CarModel;
+        @Html.DisplayNameFor(m => m.OutModel.Car.Color).ToLower():
+        @Html.DisplayFor(m => m.OutModel.Car.Color);
+        @Html.DisplayNameFor(m => m.OutModel.Car.EngineNumber).ToLower():
+        @Html.DisplayFor(m => m.OutModel.Car.EngineNumber);
+        @Html.DisplayNameFor(m => m.OutModel.Car.BodyNumber).ToLower():
+        @Html.DisplayFor(m => m.OutModel.Car.BodyNumber);
+        @Html.DisplayNameFor(m => m.OutModel.Car.ReleaseDate).ToLower():
+        @Html.DisplayFor(m => m.OutModel.Car.ReleaseDate);
+        @if (!string.IsNullOrEmpty(Model.OutModel.Car.RegNumber))
+        {
+            <text>
+                @Html.DisplayNameFor(m => m.OutModel.Car.RegNumber).ToLower():
+                @Html.DisplayFor(m => m.OutModel.Car.RegNumber);
+            </text>
+        }
+        @Html.DisplayNameFor(m => m.OutModel.Car.Run).ToLower():
+        @Html.DisplayFor(m => m.OutModel.Car.Run);
     </p>
     <p>
         Дата выдачи справки: @Html.DisplayFor(model => model.OutModel.PoolExpertise.IssueDate)

@@ -30,6 +30,11 @@ namespace AutoshopWebApp.Models
         [MaxLength(50)]
         public string PasNumber { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Паспорт выдан")]
+        public string PasIssueBy { get; set; }
+
         [Display(Name = "ID улицы")]
         public int StreetId { get; set; }
 

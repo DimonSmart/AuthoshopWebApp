@@ -40,6 +40,24 @@ namespace AutoshopWebApp.Data
                  select user).FirstOrDefaultAsync();
         }
 
+        public async Task<Street> AddStreetAsync(string street)
+        {
+            var findedStreet = await Streets
+                .FirstOrDefaultAsync(m => m.StreetName.Equals(street, StringComparison.OrdinalIgnoreCase));
+
+            if (findedStreet==null)
+            {
+                findedStreet = new Street
+                {
+                    StreetName = street
+                };
+                await AddAsync(findedStreet);
+                await SaveChangesAsync();
+            }
+
+            return findedStreet;
+        }
+
 
         void InitQueries()
         {
@@ -72,7 +90,7 @@ namespace AutoshopWebApp.Data
                     DocName = seller.DocName,
                     DocNumber = seller.DocNumber,
                     IssueDate = seller.IssueDate,
-                    IssuedBy = seller.IssuedBy,
+                    IssuedBy = seller.OwnDocIssuedBy,
                     BodyNumber = car.BodyNumber,
                     EngineNumber = car.EngineNumber,
                     ChassisNumber = car.ChassisNumber,

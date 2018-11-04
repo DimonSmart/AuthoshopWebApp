@@ -20,6 +20,8 @@
     <Compile Remove="Data\Migrations\20181101052457_ChangePoolRef.Designer.cs" />
     <Compile Remove="Data\Migrations\20181101053508_ChangePoolRef.cs" />
     <Compile Remove="Data\Migrations\20181101053508_ChangePoolRef.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181104085316_ChangeSeller.cs" />
+    <Compile Remove="Data\Migrations\20181104085316_ChangeSeller.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

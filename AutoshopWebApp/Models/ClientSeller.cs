@@ -10,14 +10,17 @@ namespace AutoshopWebApp.Models
     {
         public int ClientSellerId { get; set; }
 
-        [Display(Name = "Имя")]
+        [Required]
         [MaxLength(100)]
+        [Display(Name = "Имя")]
         public string Firstname { get; set; }
 
+        [Required]
         [Display(Name = "Фамилия")]
         [MaxLength(100)]
         public string LastName { get; set; }
 
+        [Required]
         [Display(Name = "Отчество")]
         [MaxLength(100)]
         public string Patronymic { get; set; }
@@ -26,9 +29,15 @@ namespace AutoshopWebApp.Models
         [DataType(DataType.Date)]
         public DateTime BornDate { get; set; }
 
+        [Required]
         [Display(Name = "Номер паспорта")]
         [MaxLength(50)]
         public string PasNumber { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Паспорт выдан")]
+        public string PasIssueBy { get; set; }
 
         [Display(Name = "ID улицы")]
         public int StreetId { get; set; }
@@ -46,10 +55,12 @@ namespace AutoshopWebApp.Models
         [DataType(DataType.Date)]
         public DateTime SellingDate { get; set; }
 
+        [Required]
         [Display(Name = "Номер документа")]
         [MaxLength(50)]
         public string DocNumber { get; set; }
 
+        [Required]
         [Display (Name = "Название документа")]
         [MaxLength(100)]
         public string DocName { get; set; }
@@ -58,8 +69,9 @@ namespace AutoshopWebApp.Models
         [DataType(DataType.Date)]
         public DateTime IssueDate { get; set; }
 
+        [Required]
         [Display(Name = "Документ выдан")]
         [MaxLength(100)]
-        public string IssuedBy { get; set; }
+        public string OwnDocIssuedBy { get; set; }
     }
 }

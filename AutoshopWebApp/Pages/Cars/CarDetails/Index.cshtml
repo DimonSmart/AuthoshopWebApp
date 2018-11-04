@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:int?}"
 @model AutoshopWebApp.Pages.Cars.CarDetails.IndexModel
 
 @{
@@ -15,14 +15,16 @@
                 Справка для экспертизы
             </a>
         }
-        <a class="btn btn-default" asp-page="./AddExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+        <a class="btn btn-default" asp-page="./EditStateRef" asp-route-id="@Model.CarData.Car.CarId">
             Справка о тех. состоянии
         </a>
+        <a class="btn btn-default" asp-page="./AddClientSeller" asp-route-id="@Model.CarData.Car.CarId">
+            Покупка у клиента
+        </a>
         <a class="btn btn-default" asp-page="../Index">Продажа клиенту</a>
-        <a class="btn btn-default" asp-page="../Index">Покупка у клиента</a>
     </p>
     <hr />
-    
+
     <style>
         @@media (min-width: 768px) {
             .dl-horizontal dt {
@@ -37,7 +39,7 @@
 
             .dl-horizontal dd {
                 margin-left: 255px;
-                width:150px;
+                width: 150px;
             }
         }
     </style>
@@ -126,7 +128,7 @@
                 </dd>
             </dl>
         </div>
-       
+
         <div class="col-lg-5">
             <h3>Справка о тех. состоянии:</h3>
             @if (Model.CarStateRef == null)
