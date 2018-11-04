@@ -27,15 +27,31 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            CarStateRef = await _context.CarStateRefId.FirstOrDefaultAsync(x => x.CarId == id);
+            var queryData = await
+                (from car in _context.Cars
+                 where car.CarId == id
+                 join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
+                 select new
+                 {
+                     stateRef = new CarStateRef { CarId = car.CarId },
+                     mark
+                 }).FirstOrDefaultAsync();
 
+            if(queryData==null)
+            {
+                return NotFound();
+            }
 
+            CarStateRef = queryData.stateRef;
+            MarkAndModel = queryData.mark;
 
             return Page();
         }
 
         [BindProperty]
         public CarStateRef CarStateRef { get; set; }
+
+        public MarkAndModel MarkAndModel { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -47,7 +63,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             _context.CarStateRefId.Add(CarStateRef);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index", new { id = CarStateRef.CarId });
         }
     }
 }

@@ -25,6 +25,11 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             _userManager = userManager;
         }
 
+        [BindProperty]
+        public PoolExpertiseReference PoolExpertiseReference { get; set; }
+
+        public MarkAndModel MarkAndModel { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if(id==null)
@@ -40,12 +45,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return RedirectToPage("ExpertiseReference", new { id = id.Value });
             }
 
-            var carId = await
+            var carData = await
                 (from car in _context.Cars
                  where car.CarId == id && car.SaleStatus == SaleStatus.Expertise
-                 select new int?(car.CarId)).FirstOrDefaultAsync();
+                 join model in _context.MarkAndModels
+                 on car.MarkAndModelID equals model.MarkAndModelId
+                 select new { car.CarId, model }).FirstOrDefaultAsync();
 
-            if(carId==null)
+            if(carData==null)
             {
                 return NotFound();
             }
@@ -69,16 +76,15 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             PoolExpertiseReference = new PoolExpertiseReference
             {
-                CarId = carId.Value,
+                CarId = carData.CarId,
                 WorkerId = workerId.Value,
                 IssueDate = DateTime.Now,
             };
 
+            MarkAndModel = carData.model;
+
             return Page();
         }
-
-        [BindProperty]
-        public PoolExpertiseReference PoolExpertiseReference { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {

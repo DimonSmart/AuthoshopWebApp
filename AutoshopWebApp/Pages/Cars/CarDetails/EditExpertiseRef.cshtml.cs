@@ -27,7 +27,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
         [BindProperty]
         public PoolExpertiseReference PoolExpertiseReference { get; set; }
 
-        public bool ShowEditButton { get; set; }
+        public MarkAndModel MarkAndModel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -36,13 +36,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            PoolExpertiseReference = await
-                (from refer in _context.PoolExpertiseReferences
-                 join car in _context.Cars on refer.CarId equals car.CarId
-                 where refer.CarId == id && car.SaleStatus == SaleStatus.Expertise
-                 select refer).FirstOrDefaultAsync();
+            var loadedExpData = await
+                (from reference in _context.PoolExpertiseReferences
+                 join car in _context.Cars on reference.CarId equals car.CarId
+                 where reference.CarId == id && car.SaleStatus == SaleStatus.Expertise
+                 join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
+                 select new { reference, mark }).FirstOrDefaultAsync();
 
-            if (PoolExpertiseReference == null)
+            if (loadedExpData == null)
             {
                 return NotFound();
             }
@@ -64,6 +65,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            PoolExpertiseReference = loadedExpData.reference;
+            MarkAndModel = loadedExpData.mark;
             PoolExpertiseReference.WorkerId = workerId.Value;
 
             return Page();

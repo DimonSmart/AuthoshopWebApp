@@ -27,6 +27,7 @@ namespace AutoshopWebApp.Models
         public int WorkerId { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Дата выдачи")]
         public DateTime IssueDate { get; set; }
     }
 }

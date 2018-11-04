@@ -15,13 +15,9 @@
                 Справка для экспертизы
             </a>
         }
-        @if (Model.ShowAddExpertiseButton)
-        {
-            <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
-                Добавить справку о тех. состоянии
-            </a>
-        }
-
+        <a class="btn btn-default" asp-page="./AddExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+            Справка о тех. состоянии
+        </a>
         <a class="btn btn-default" asp-page="../Index">Продажа клиенту</a>
         <a class="btn btn-default" asp-page="../Index">Покупка у клиента</a>
     </p>
@@ -31,7 +27,7 @@
         @@media (min-width: 768px) {
             .dl-horizontal dt {
                 float: left;
-                width: 260px;
+                width: 235px;
                 overflow: hidden;
                 clear: left;
                 text-align: right;
@@ -40,13 +36,15 @@
             }
 
             .dl-horizontal dd {
-                margin-left: 280px;
+                margin-left: 255px;
+                width:150px;
             }
         }
     </style>
 
     <div class="row">
         <div class="col-lg-5">
+            <h3>Общая информация:</h3>
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.CarData.MarkAndModel.CarMark)
@@ -127,6 +125,77 @@
                     @Html.DisplayFor(model => model.CarData.StatusText)
                 </dd>
             </dl>
+        </div>
+       
+        <div class="col-lg-5">
+            <h3>Справка о тех. состоянии:</h3>
+            @if (Model.CarStateRef == null)
+            {
+                <h4>(Информация отсутствует)</h4>
+            }
+            else
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CarStateRef.ReferenceNumber)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CarStateRef.ReferenceNumber)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CarStateRef.ReferenceDate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CarStateRef.ReferenceDate)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CarStateRef.Expert)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.CarStateRef.Expert)
+                    </dd>
+                </dl>
+            }
+            <h3>Справка о взятии на экспертизу:</h3>
+            @if (Model.ExpertiseRefData == null)
+            {
+                <h4>(Информация отсутствует)</h4>
+            }
+            else
+            {
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ExpertiseRefData.PoolExpertiseReference.ClientLastname)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ExpertiseRefData.PoolExpertiseReference.ClientLastname)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ExpertiseRefData.PoolExpertiseReference.ClientFirstname)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ExpertiseRefData.PoolExpertiseReference.ClientFirstname)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ExpertiseRefData.PoolExpertiseReference.ClientPatronymic)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ExpertiseRefData.PoolExpertiseReference.ClientPatronymic)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ExpertiseRefData.PoolExpertiseReference.IssueDate)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ExpertiseRefData.PoolExpertiseReference.IssueDate)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ExpertiseRefData.WorkerName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.ExpertiseRefData.WorkerName)
+                    </dd>
+                </dl>
+            }
         </div>
     </div>
 </div>
