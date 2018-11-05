@@ -10,7 +10,7 @@ namespace AutoshopWebApp.Models
     {
         public int StreetId { get; set; }
 
-        [Display(Name = "Название улицы")]
+        [Display(Name = "Улица")]
         [MaxLength(100)]
         public string StreetName { get; set; }
     }

@@ -10,22 +10,27 @@ namespace AutoshopWebApp.Models
     {
         public int ClientBuyerId { get; set; }
 
-        [Display(Name = "Имя")]
+        [Required]
         [MaxLength(100)]
+        [Display(Name = "Имя")]
         public string Firstname { get; set; }
 
+        [Required]
         [Display(Name = "Фамилия")]
         [MaxLength(100)]
         public string LastName { get; set; }
 
+        [Required]
         [Display(Name = "Отчество")]
         [MaxLength(100)]
         public string Patronymic { get; set; }
 
+        [Required]
         [Display(Name = "Дата рождения")]
         [DataType(DataType.Date)]
         public DateTime BornDate { get; set; }
 
+        [Required]
         [Display(Name = "Номер паспорта")]
         [MaxLength(50)]
         public string PasNumber { get; set; }
@@ -34,6 +39,10 @@ namespace AutoshopWebApp.Models
         [MaxLength(100)]
         [Display(Name = "Паспорт выдан")]
         public string PasIssueBy { get; set; }
+
+        [Display(Name = "Дата выдачи пасп.")]
+        [DataType(DataType.Date)]
+        public DateTime PasIssueDate { get; set; }
 
         [Display(Name = "ID улицы")]
         public int StreetId { get; set; }
@@ -57,5 +66,7 @@ namespace AutoshopWebApp.Models
 
         [Display(Name = "ID типа оплаты")]
         public int PaymentTypeId { get; set; }
+
+        public int WorkerId { get; set; }
     }
 }

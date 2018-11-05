@@ -22,11 +22,15 @@
     <Compile Remove="Data\Migrations\20181101053508_ChangePoolRef.Designer.cs" />
     <Compile Remove="Data\Migrations\20181104085316_ChangeSeller.cs" />
     <Compile Remove="Data\Migrations\20181104085316_ChangeSeller.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181104115008_ChangeClients.cs" />
+    <Compile Remove="Data\Migrations\20181104115008_ChangeClients.Designer.cs" />
+    <Compile Remove="Data\Migrations\20181104151537_ChangeClients.cs" />
+    <Compile Remove="Data\Migrations\20181104151537_ChangeClients.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.4" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>

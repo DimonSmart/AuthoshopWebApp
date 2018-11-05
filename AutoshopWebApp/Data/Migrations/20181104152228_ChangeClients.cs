@@ -78,12 +78,60 @@ namespace AutoshopWebApp.Data.Migrations
                 nullable: false,
                 defaultValue: "");
 
+            migrationBuilder.AddColumn<int>(
+                name: "WorkerId",
+                table: "ClientSellers",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Patronymic",
+                table: "ClientBuyers",
+                maxLength: 100,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 100,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "PasNumber",
+                table: "ClientBuyers",
+                maxLength: 50,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 50,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "LastName",
+                table: "ClientBuyers",
+                maxLength: 100,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 100,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Firstname",
+                table: "ClientBuyers",
+                maxLength: 100,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldMaxLength: 100,
+                oldNullable: true);
+
             migrationBuilder.AddColumn<string>(
                 name: "PasIssueBy",
                 table: "ClientBuyers",
                 maxLength: 100,
                 nullable: false,
                 defaultValue: "");
+
+            migrationBuilder.AddColumn<int>(
+                name: "WorkerId",
+                table: "ClientBuyers",
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -97,7 +145,15 @@ namespace AutoshopWebApp.Data.Migrations
                 table: "ClientSellers");
 
             migrationBuilder.DropColumn(
+                name: "WorkerId",
+                table: "ClientSellers");
+
+            migrationBuilder.DropColumn(
                 name: "PasIssueBy",
+                table: "ClientBuyers");
+
+            migrationBuilder.DropColumn(
+                name: "WorkerId",
                 table: "ClientBuyers");
 
             migrationBuilder.AlterColumn<string>(
@@ -153,6 +209,38 @@ namespace AutoshopWebApp.Data.Migrations
                 table: "ClientSellers",
                 maxLength: 100,
                 nullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Patronymic",
+                table: "ClientBuyers",
+                maxLength: 100,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldMaxLength: 100);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "PasNumber",
+                table: "ClientBuyers",
+                maxLength: 50,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldMaxLength: 50);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "LastName",
+                table: "ClientBuyers",
+                maxLength: 100,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldMaxLength: 100);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Firstname",
+                table: "ClientBuyers",
+                maxLength: 100,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldMaxLength: 100);
         }
     }
 }

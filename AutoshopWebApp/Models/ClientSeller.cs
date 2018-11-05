@@ -34,6 +34,10 @@ namespace AutoshopWebApp.Models
         [MaxLength(50)]
         public string PasNumber { get; set; }
 
+        [Display(Name = "Дата выдачи пасп.")]
+        [DataType(DataType.Date)]
+        public DateTime PasIssueDate { get; set; }
+
         [Required]
         [MaxLength(100)]
         [Display(Name = "Паспорт выдан")]
@@ -73,5 +77,7 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Документ выдан")]
         [MaxLength(100)]
         public string OwnDocIssuedBy { get; set; }
+
+        public int WorkerId { get; set; }
     }
 }

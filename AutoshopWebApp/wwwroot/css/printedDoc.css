@@ -26,3 +26,11 @@
         text-align: center;
         font-size: 25px;
     }
+
+    .printedDoc h4 {
+        text-indent: 13mm;
+    }
+
+    .printedDoc .car-data-table th {
+        width: 270px;
+    }

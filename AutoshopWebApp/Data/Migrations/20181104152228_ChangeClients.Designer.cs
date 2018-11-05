@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoshopWebApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181104115008_ChangeClients")]
+    [Migration("20181104152228_ChangeClients")]
     partial class ChangeClients
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,11 +104,13 @@ namespace AutoshopWebApp.Data.Migrations
                     b.Property<int>("CarId");
 
                     b.Property<string>("Firstname")
+                        .IsRequired()
                         .HasMaxLength(100);
 
                     b.Property<int>("HouseNumber");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasMaxLength(100);
 
                     b.Property<string>("PasIssueBy")
@@ -116,14 +118,18 @@ namespace AutoshopWebApp.Data.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("PasNumber")
+                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<string>("Patronymic")
+                        .IsRequired()
                         .HasMaxLength(100);
 
                     b.Property<int>("PaymentTypeId");
 
                     b.Property<int>("StreetId");
+
+                    b.Property<int>("WorkerId");
 
                     b.HasKey("ClientBuyerId");
 
@@ -181,6 +187,8 @@ namespace AutoshopWebApp.Data.Migrations
                     b.Property<DateTime>("SellingDate");
 
                     b.Property<int>("StreetId");
+
+                    b.Property<int>("WorkerId");
 
                     b.HasKey("ClientSellerId");
 
