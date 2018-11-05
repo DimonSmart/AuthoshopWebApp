@@ -101,7 +101,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             _context.ClientSellers.Add(ClientSeller);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { id = ClientSeller.CarId });
+            return RedirectToPage("./PurchaseAgreement", new { id = ClientSeller.CarId });
         }
     }
 }

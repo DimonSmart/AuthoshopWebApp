@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -87,6 +88,33 @@ namespace AutoshopWebApp.Models
                 default:
                     throw new ArgumentException();
             }
+        }
+
+        public static List<SelectListItem> ToSelectList()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Value = SaleStatus.Expertise.ToString(),
+                    Text = SaleStatus.Expertise.GetName(),
+                },
+                new SelectListItem
+                {
+                    Value = SaleStatus.ForBuy.ToString(),
+                    Text = SaleStatus.ForBuy.GetName(),
+                },
+                new SelectListItem
+                {
+                    Value = SaleStatus.ForSold.ToString(),
+                    Text = SaleStatus.ForSold.GetName(),
+                },
+                new SelectListItem
+                {
+                    Value = SaleStatus.Sold.ToString(),
+                    Text = SaleStatus.Sold.GetName()
+                },
+            };
         }
     }
 }

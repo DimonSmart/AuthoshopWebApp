@@ -58,44 +58,25 @@ namespace AutoshopWebApp.Data
             return findedStreet;
         }
 
-
-        void InitQueries()
+        public async Task<MarkAndModel> AddMarkAndModelAsync(string mark, string model)
         {
-            BuyingOrders =
-                from seller in ClientSellers
-                join car in Cars on seller.CarId equals car.CarId
-                join street in Streets on seller.StreetId equals street.StreetId
-                join mark in MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
-                join carReference in CarStateRefId on car.CarId equals carReference.CarStateRefId
-                select new BuyingOrder
+            var findedMark = await MarkAndModels
+                .FirstOrDefaultAsync(x => x.CarMark.Equals(mark, StringComparison.OrdinalIgnoreCase)
+                || x.CarModel.Equals(model, StringComparison.OrdinalIgnoreCase));
+
+            if(findedMark == null)
+            {
+                findedMark = new MarkAndModel
                 {
-                    OrderNumber = seller.ClientSellerId,
-                    SellingDate = seller.SellingDate,
-                    LastName = seller.LastName,
-                    Firstname = seller.Firstname,
-                    Patronymic = seller.Patronymic,
-                    PasNumber = seller.PasNumber,
-                    StreetName = street.StreetName,
-                    HouseNumber = seller.HouseNumber,
-                    ApartmentNumber = seller.ApartmentNumber,
-                    CarMark = mark.CarMark,
-                    CarModel = mark.CarModel,
-                    Color = car.Color,
-                    ReleaseDate = car.ReleaseDate,
-                    ReferenceNumber = carReference.ReferenceNumber,
-                    ReferenceDate = carReference.ReferenceDate,
-                    Expert = carReference.Expert,
-                    ExpertisePrice = carReference.ExpertisePrice,
-                    SellingPrice = car.SellingPrice ?? default(decimal),
-                    DocName = seller.DocName,
-                    DocNumber = seller.DocNumber,
-                    IssueDate = seller.IssueDate,
-                    IssuedBy = seller.OwnDocIssuedBy,
-                    BodyNumber = car.BodyNumber,
-                    EngineNumber = car.EngineNumber,
-                    ChassisNumber = car.ChassisNumber,
-                    Run = car.Run
+                    CarMark = mark,
+                    CarModel = model
                 };
+                await AddAsync(findedMark);
+                await SaveChangesAsync();
+            }
+
+            return findedMark;
         }
+        
     }
 }

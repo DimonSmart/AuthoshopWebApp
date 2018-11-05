@@ -9,6 +9,9 @@
 
 <div>
     <p>
+        <a class="btn btn-default" asp-page="./EditCar" asp-route-id="@Model.CarData.Car.CarId">
+            Редактировать автомобиль
+        </a>
         @if (Model.ShowPoolExpertiseButton)
         {
             <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">

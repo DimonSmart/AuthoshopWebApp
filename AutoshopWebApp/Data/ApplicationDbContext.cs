@@ -18,7 +18,6 @@ namespace AutoshopWebApp.Data
 
         public ApplicationDbContext()
         {
-            InitQueries();
         }
 
         public DbSet<Car> Cars { get; set; }
