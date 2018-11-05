@@ -1,20 +1,21 @@
 ﻿@page
-@model AutoshopWebApp.Pages.Cars.CarDetails.AddClientSellerModel
+@model AutoshopWebApp.Pages.Cars.CarDetails.EditClientSellerModel
 
 @{
-    ViewData["Title"] = "AddClientSeller";
+    ViewData["Title"] = "EditClientSeller";
 }
 
-<h2>Добавление данных продавца</h2>
+<h2>EditClientSeller</h2>
 
-<h4>Автомобиль @Model.MarkAndModel.CarMark @Model.MarkAndModel.CarModel</h4>
+<h4>ClientSeller</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ClientSeller.CarId" value="@Model.CarId" />
-            <input type="hidden" asp-for="ClientSeller.WorkerId" value="@Model.WorkerId" />
+            <input type="hidden" asp-for="ClientSeller.ClientSellerId" />
+            <input type="hidden" asp-for="ClientSeller.WorkerId" />
+            <input type="hidden" asp-for="ClientSeller.CarId" />
             <div class="form-group">
                 <label asp-for="ClientSeller.Firstname" class="control-label"></label>
                 <input asp-for="ClientSeller.Firstname" class="form-control" />
@@ -41,14 +42,14 @@
                 <span asp-validation-for="ClientSeller.PasNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClientSeller.PasIssueBy" class="control-label"></label>
-                <input asp-for="ClientSeller.PasIssueBy" class="form-control" />
-                <span asp-validation-for="ClientSeller.PasIssueBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ClientSeller.PasIssueDate" class="control-label"></label>
                 <input asp-for="ClientSeller.PasIssueDate" class="form-control" />
                 <span asp-validation-for="ClientSeller.PasIssueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientSeller.PasIssueBy" class="control-label"></label>
+                <input asp-for="ClientSeller.PasIssueBy" class="form-control" />
+                <span asp-validation-for="ClientSeller.PasIssueBy" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Street.StreetName" class="control-label"></label>
@@ -91,14 +92,14 @@
                 <span asp-validation-for="ClientSeller.OwnDocIssuedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index" asp-route-id="@Model.CarId">Back to List</a>
+    <a asp-page="./PurchaseAgreement" asp-route-id="@Model.ClientSeller.CarId">Назад</a>
 </div>
 
 @section Scripts {

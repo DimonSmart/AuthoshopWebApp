@@ -10,5 +10,6 @@ namespace AutoshopWebApp.Pages.Admin
     {
         public static readonly string changeLogin = "ChangeLogin";
         public static readonly string changePassword = "ChangePassword";
+        public static readonly string paymentTypes = "PaymentTypeList";
     }
 }

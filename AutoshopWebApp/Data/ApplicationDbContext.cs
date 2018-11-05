@@ -46,6 +46,5 @@ namespace AutoshopWebApp.Data
 
         public DbSet<PoolExpertiseReference> PoolExpertiseReferences { get; set; }
 
-        public IQueryable<BuyingOrder> BuyingOrders { get; private set; }
     }
 }

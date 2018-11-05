@@ -1,0 +1,97 @@
+﻿@page
+@model AutoshopWebApp.Pages.Cars.CarDetails.AddClientBuyerModel
+
+@{
+    ViewData["Title"] = "AddClientBuyer";
+}
+
+<h2>Продажа автомобиля</h2>
+
+<h4>Автомобиль @Model.MarkAndModel.CarMark @Model.MarkAndModel.CarModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ClientBuyer.CarId" value="@Model.CarId" />
+            <div class="form-group">
+                <label asp-for="ClientBuyer.Firstname" class="control-label"></label>
+                <input asp-for="ClientBuyer.Firstname" class="form-control" />
+                <span asp-validation-for="ClientBuyer.Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.LastName" class="control-label"></label>
+                <input asp-for="ClientBuyer.LastName" class="form-control" />
+                <span asp-validation-for="ClientBuyer.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.Patronymic" class="control-label"></label>
+                <input asp-for="ClientBuyer.Patronymic" class="form-control" />
+                <span asp-validation-for="ClientBuyer.Patronymic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.BornDate" class="control-label"></label>
+                <input asp-for="ClientBuyer.BornDate" class="form-control" />
+                <span asp-validation-for="ClientBuyer.BornDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.PasNumber" class="control-label"></label>
+                <input asp-for="ClientBuyer.PasNumber" class="form-control" />
+                <span asp-validation-for="ClientBuyer.PasNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.PasIssueBy" class="control-label"></label>
+                <input asp-for="ClientBuyer.PasIssueBy" class="form-control" />
+                <span asp-validation-for="ClientBuyer.PasIssueBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.PasIssueDate" class="control-label"></label>
+                <input asp-for="ClientBuyer.PasIssueDate" class="form-control" />
+                <span asp-validation-for="ClientBuyer.PasIssueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Street.StreetName" class="control-label"></label>
+                <input asp-for="Street.StreetName" class="form-control" />
+                <span asp-validation-for="Street.StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.HouseNumber" class="control-label"></label>
+                <input asp-for="ClientBuyer.HouseNumber" class="form-control" />
+                <span asp-validation-for="ClientBuyer.HouseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.ApartmentNumber" class="control-label"></label>
+                <input asp-for="ClientBuyer.ApartmentNumber" class="form-control" />
+                <span asp-validation-for="ClientBuyer.ApartmentNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.BuyDate" class="control-label"></label>
+                <input asp-for="ClientBuyer.BuyDate" class="form-control" />
+                <span asp-validation-for="ClientBuyer.BuyDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.AccountNumber" class="control-label"></label>
+                <input asp-for="ClientBuyer.AccountNumber" class="form-control" />
+                <span asp-validation-for="ClientBuyer.AccountNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientBuyer.PaymentTypeId" class="control-label"></label>
+                <select asp-for="ClientBuyer.PaymentTypeId" asp-items=@Model.PaymentTypes class="form-control">
+                    <option value="">Выберите тип оплаты</option>
+                </select>
+                <span asp-validation-for="ClientBuyer.PaymentTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

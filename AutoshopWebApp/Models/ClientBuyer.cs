@@ -64,7 +64,7 @@ namespace AutoshopWebApp.Models
         [MaxLength(50)]
         public string AccountNumber { get; set; }
 
-        [Display(Name = "ID типа оплаты")]
+        [Display(Name = "Тип оплаты")]
         public int PaymentTypeId { get; set; }
 
         public int WorkerId { get; set; }

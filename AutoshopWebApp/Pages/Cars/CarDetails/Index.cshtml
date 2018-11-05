@@ -24,7 +24,9 @@
         <a class="btn btn-default" asp-page="./AddClientSeller" asp-route-id="@Model.CarData.Car.CarId">
             Покупка у клиента
         </a>
-        <a class="btn btn-default" asp-page="../Index">Продажа клиенту</a>
+        <a class="btn btn-default" asp-page="./AddClientBuyer" asp-route-id="@Model.CarData.Car.CarId">
+            Продажа клиенту
+        </a>
     </p>
     <hr />
 

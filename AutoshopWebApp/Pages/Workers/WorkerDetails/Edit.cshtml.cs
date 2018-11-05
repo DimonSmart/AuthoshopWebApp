@@ -43,16 +43,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return await RedisplayPage(OutputModel.WorkerID);
             }
 
-            var street = await _context.Streets
-                .FirstOrDefaultAsync(item =>
-                item.StreetName.Equals(OutputModel.Street.StreetName, StringComparison.OrdinalIgnoreCase));
-
-            if(street == null)
-            {
-                street = OutputModel.Street;
-                await _context.AddAsync(street);
-                await _context.SaveChangesAsync();
-            }
+            var street = await _context.AddStreetAsync(OutputModel.Street.StreetName);
 
             OutputModel.Worker.StreetId = street.StreetId;
 
