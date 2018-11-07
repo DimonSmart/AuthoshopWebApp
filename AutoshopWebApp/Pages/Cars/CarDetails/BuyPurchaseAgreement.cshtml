@@ -1,8 +1,8 @@
 ﻿@page
-@model AutoshopWebApp.Pages.Cars.CarDetails.PurchaseAgreementModel
+@model AutoshopWebApp.Pages.Cars.CarDetails.BuyPurchaseAgreementModel
 @{
     Layout = null;
-    ViewData["Title"] = "PurchaseAgreement";
+    ViewData["Title"] = "BuyPurchaseAgreement";
 }
 
 <head>
@@ -29,8 +29,8 @@
     </h2>
 
     <p>
-        <b>@Html.DisplayNameFor(x => x.ClientSeller.SellingDate):</b>
-        @Html.DisplayFor(x => x.ClientSeller.SellingDate)
+        <b>@Html.DisplayNameFor(x => x.ClientBuyer.BuyDate):</b>
+        @Html.DisplayFor(x => x.ClientBuyer.BuyDate)
     </p>
 
     <h4 style="font-weight:bold">
@@ -38,31 +38,32 @@
     </h4>
 
     <p>
-        Гражданин @Model.ClientSeller.LastName @Model.ClientSeller.Firstname @Model.ClientSeller.Patronymic
-        именуемый(ая) в дальнейшем «Продавец»,
-        @Html.DisplayNameFor(x => x.ClientSeller.BornDate).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.BornDate),
-        @Html.DisplayNameFor(x => x.ClientSeller.PasNumber).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.PasNumber),
-        @Html.DisplayNameFor(x => x.ClientSeller.PasIssueDate):
-        @Html.DisplayFor(x => x.ClientSeller.PasIssueDate),
-        @Html.DisplayNameFor(x => x.ClientSeller.PasIssueBy).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.PasIssueBy),
-        проживающий(ая) по адресу
-        @Html.DisplayNameFor(x => x.SellerStreet.StreetName).ToLower():
-        @Html.DisplayFor(x => x.SellerStreet.StreetName),
-        @Html.DisplayNameFor(x => x.ClientSeller.HouseNumber).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.HouseNumber),
-        @Html.DisplayNameFor(x => x.ClientSeller.ApartmentNumber).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.ApartmentNumber)
+        Автосалон, именуемый в дальнейшем в дальнейшем «Продавец». Интересы организации представляет сотрудник
+        @Model.Worker.Lastname @Model.Worker.Firstname @Model.Worker.Patronymic,
+        @Html.DisplayNameFor(x => x.Position.PositionName).ToLower():
+        @Html.DisplayFor(x => x.Position.PositionName)
     </p>
 
     <p>
-        Автосалон, именуемый в дальнейшем в дальнейшем «Покупатель». Интересы организации представляет сотрудник
-        @Model.Worker.Lastname @Model.Worker.Firstname @Model.Worker.Patronymic,
-        @Html.DisplayNameFor(x => x.WorkerPosition.PositionName).ToLower():
-        @Html.DisplayFor(x => x.WorkerPosition.PositionName)
+        Гражданин @Model.ClientBuyer.LastName @Model.ClientBuyer.Firstname @Model.ClientBuyer.Patronymic
+        именуемый(ая) в дальнейшем «Покупатель»,
+        @Html.DisplayNameFor(x => x.ClientBuyer.BornDate).ToLower():
+        @Html.DisplayFor(x => x.ClientBuyer.BornDate),
+        @Html.DisplayNameFor(x => x.ClientBuyer.PasNumber).ToLower():
+        @Html.DisplayFor(x => x.ClientBuyer.PasNumber),
+        @Html.DisplayNameFor(x => x.ClientBuyer.PasIssueDate):
+        @Html.DisplayFor(x => x.ClientBuyer.PasIssueDate),
+        @Html.DisplayNameFor(x => x.ClientBuyer.PasIssueBy).ToLower():
+        @Html.DisplayFor(x => x.ClientBuyer.PasIssueBy),
+        проживающий(ая) по адресу
+        @Html.DisplayNameFor(x => x.BuyerStreet.StreetName).ToLower():
+        @Html.DisplayFor(x => x.BuyerStreet.StreetName),
+        @Html.DisplayNameFor(x => x.ClientBuyer.HouseNumber).ToLower():
+        @Html.DisplayFor(x => x.ClientBuyer.HouseNumber),
+        @Html.DisplayNameFor(x => x.ClientBuyer.ApartmentNumber).ToLower():
+        @Html.DisplayFor(x => x.ClientBuyer.ApartmentNumber)
     </p>
+
 
     <h4 style="font-weight:bold">
         2. Предмет договора
@@ -126,38 +127,6 @@
         </tr>
         <tr>
             <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.DocName)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.DocName)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.DocNumber)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.DocNumber)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.OwnDocIssuedBy)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.OwnDocIssuedBy)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.IssueDate)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.IssueDate)
-            </td>
-        </tr>
-        <tr>
-            <th>
                 @Html.DisplayNameFor(x => x.Car.RegNumber)
             </th>
             <td>
@@ -179,12 +148,20 @@
 
     <p>
         3.1 Стоимость транспортного средства, за вычетом стоимости технической экспертизы, составляет:
-        @Html.DisplayFor(x => x.FinalPrice)
+        @Html.DisplayFor(x => x.Car.BuyingPrice)
     <p>
+
     <p>
         3.2 Покупатель оплачивает стоимость автомобиля установленную пунктом 3.1 настоящего
-        договора путем перечисления денежных средств на банковский счет Продавца либо наличными
-        денежными средствами.
+        договора, оговоренным способом оплаты. Указанный тип оплаты:
+        @Html.DisplayFor(x => x.PaymentType.PaymentTypeName).
+        @if (!string.IsNullOrEmpty(Model.ClientBuyer.AccountNumber))
+        {
+            <text>
+                @Html.DisplayNameFor(x => x.ClientBuyer.AccountNumber):
+                @Html.DisplayFor(x => x.ClientBuyer.AccountNumber)
+            </text>
+        }
     </p>
     <p>
         3.3 Договор вступает в силу с момента его подписания сторонами и действует до полного
@@ -225,8 +202,13 @@
             Назад
         </a>
         <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
-        <a class="btn btn-default" asp-page="./EditClientSeller" asp-route-id="@Model.Car.CarId">
+        <a class="btn btn-default" asp-page="./EditClientBuyer" asp-route-id="@Model.Car.CarId">
             Редактровать
         </a>
     </div>
 </div>
+
+
+
+
+

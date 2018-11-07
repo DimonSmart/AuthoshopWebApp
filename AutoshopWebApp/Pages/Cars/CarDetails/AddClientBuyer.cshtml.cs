@@ -35,7 +35,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             if (isClientExist)
             {
-                //TODO: Add redirect
+                return RedirectToPage("./BuyPurchaseAgreement", new { id });
             }
 
             var query = await
@@ -50,13 +50,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            PaymentTypes = await
-                (from val in _context.PaymentTypes
-                 select new SelectListItem
-                 {
-                     Value = val.PaymentTypeId.ToString(),
-                     Text = val.PaymentTypeName
-                 }).ToListAsync();
+            PaymentTypes = await PaymentType.GetSelectList(_context);
 
             MarkAndModel = query.mark;
             CarId = query.CarId;

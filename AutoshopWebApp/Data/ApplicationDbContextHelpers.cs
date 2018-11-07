@@ -40,6 +40,15 @@ namespace AutoshopWebApp.Data
                  select user).FirstOrDefaultAsync();
         }
 
+        public async Task<int?> FindWorkerIdByUserIdAsync(string userId)
+        {
+            return await
+                (from workerUser in WorkerUsers
+                 where workerUser.UserID == userId
+                 select new int?(workerUser.WorkerID))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Street> AddStreetAsync(string street)
         {
             var findedStreet = await Streets

@@ -1,11 +1,11 @@
 ﻿@page
-@model AutoshopWebApp.Pages.Cars.CarDetails.AddClientBuyerModel
+@model AutoshopWebApp.Pages.Cars.CarDetails.EditClientBuyerModel
 
 @{
-    ViewData["Title"] = "AddClientBuyer";
+    ViewData["Title"] = "EditClientBuyer";
 }
 
-<h2>Продажа автомобиля</h2>
+<h2>EditClientBuyer</h2>
 
 <h4>Автомобиль @Model.MarkAndModel.CarMark @Model.MarkAndModel.CarModel</h4>
 <hr />
@@ -13,7 +13,8 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ClientBuyer.CarId" value="@Model.CarId" />
+            <input type="hidden" asp-for="ClientBuyer.ClientBuyerId" />
+            <input type="hidden" asp-for="ClientBuyer.CarId" />
             <div class="form-group">
                 <label asp-for="ClientBuyer.Firstname" class="control-label"></label>
                 <input asp-for="ClientBuyer.Firstname" class="form-control" />
@@ -82,14 +83,14 @@
                 <span asp-validation-for="ClientBuyer.PaymentTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Создать" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index" asp-route="@Model.CarId">Back to List</a>
+    <a asp-page="./Index" asp-route-id="@Model.ClientBuyer.CarId">Back to List</a>
 </div>
 
 @section Scripts {
