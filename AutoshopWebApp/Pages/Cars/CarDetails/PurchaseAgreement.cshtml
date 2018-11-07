@@ -1,232 +1,222 @@
 ﻿@page
 @model AutoshopWebApp.Pages.Cars.CarDetails.PurchaseAgreementModel
 @{
-    Layout = null;
-    ViewData["Title"] = "PurchaseAgreement";
+    Layout = "_PrintedDocLayout";
+    ViewData["Title"] = "Договор купли-продажи";
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AutoshopWebApp</title>
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    </environment>
+<h2 style="font-weight:bold">
+    Договор <br />
+    купли-продажи транспортного средства
+</h2>
 
-    <link rel="stylesheet" href="~/css/printedDoc.css" />
-</head>
+<p>
+    <b>@Html.DisplayNameFor(x => x.ClientSeller.SellingDate):</b>
+    @Html.DisplayFor(x => x.ClientSeller.SellingDate)
+</p>
 
-<div class="printedDoc">
-    <h2 style="font-weight:bold">
-        Договор <br />
-        купли-продажи транспортного средства
-    </h2>
+<h4 style="font-weight:bold">
+    1. Стороны договора
+</h4>
 
-    <p>
-        <b>@Html.DisplayNameFor(x => x.ClientSeller.SellingDate):</b>
-        @Html.DisplayFor(x => x.ClientSeller.SellingDate)
-    </p>
+<p>
+    Гражданин @Model.ClientSeller.LastName @Model.ClientSeller.Firstname @Model.ClientSeller.Patronymic
+    именуемый(ая) в дальнейшем «Продавец»,
+    @Html.DisplayNameFor(x => x.ClientSeller.BornDate).ToLower():
+    @Html.DisplayFor(x => x.ClientSeller.BornDate),
+    @Html.DisplayNameFor(x => x.ClientSeller.PasNumber).ToLower():
+    @Html.DisplayFor(x => x.ClientSeller.PasNumber),
+    @Html.DisplayNameFor(x => x.ClientSeller.PasIssueDate):
+    @Html.DisplayFor(x => x.ClientSeller.PasIssueDate),
+    @Html.DisplayNameFor(x => x.ClientSeller.PasIssueBy).ToLower():
+    @Html.DisplayFor(x => x.ClientSeller.PasIssueBy),
+    проживающий(ая) по адресу
+    @Html.DisplayNameFor(x => x.SellerStreet.StreetName).ToLower():
+    @Html.DisplayFor(x => x.SellerStreet.StreetName),
+    @Html.DisplayNameFor(x => x.ClientSeller.HouseNumber).ToLower():
+    @Html.DisplayFor(x => x.ClientSeller.HouseNumber),
+    @Html.DisplayNameFor(x => x.ClientSeller.ApartmentNumber).ToLower():
+    @Html.DisplayFor(x => x.ClientSeller.ApartmentNumber)
+</p>
 
-    <h4 style="font-weight:bold">
-        1. Стороны договора
-    </h4>
+<p>
+    Автосалон, именуемый в дальнейшем в дальнейшем «Покупатель». Интересы организации представляет сотрудник
+    @Model.Worker.Lastname @Model.Worker.Firstname @Model.Worker.Patronymic,
+    @Html.DisplayNameFor(x => x.WorkerPosition.PositionName).ToLower():
+    @Html.DisplayFor(x => x.WorkerPosition.PositionName)
+</p>
 
-    <p>
-        Гражданин @Model.ClientSeller.LastName @Model.ClientSeller.Firstname @Model.ClientSeller.Patronymic
-        именуемый(ая) в дальнейшем «Продавец»,
-        @Html.DisplayNameFor(x => x.ClientSeller.BornDate).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.BornDate),
-        @Html.DisplayNameFor(x => x.ClientSeller.PasNumber).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.PasNumber),
-        @Html.DisplayNameFor(x => x.ClientSeller.PasIssueDate):
-        @Html.DisplayFor(x => x.ClientSeller.PasIssueDate),
-        @Html.DisplayNameFor(x => x.ClientSeller.PasIssueBy).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.PasIssueBy),
-        проживающий(ая) по адресу
-        @Html.DisplayNameFor(x => x.SellerStreet.StreetName).ToLower():
-        @Html.DisplayFor(x => x.SellerStreet.StreetName),
-        @Html.DisplayNameFor(x => x.ClientSeller.HouseNumber).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.HouseNumber),
-        @Html.DisplayNameFor(x => x.ClientSeller.ApartmentNumber).ToLower():
-        @Html.DisplayFor(x => x.ClientSeller.ApartmentNumber)
-    </p>
+<h4 style="font-weight:bold">
+    2. Предмет договора
+</h4>
 
-    <p>
-        Автосалон, именуемый в дальнейшем в дальнейшем «Покупатель». Интересы организации представляет сотрудник
-        @Model.Worker.Lastname @Model.Worker.Firstname @Model.Worker.Patronymic,
-        @Html.DisplayNameFor(x => x.WorkerPosition.PositionName).ToLower():
-        @Html.DisplayFor(x => x.WorkerPosition.PositionName)
-    </p>
+<p>
+    2.1. Продавец обязуется передать в собственность покупателя, а покупатель обязуется принять и
+    оплатить следующее транспортное средство (далее ТС).
+</p>
 
-    <h4 style="font-weight:bold">
-        2. Предмет договора
-    </h4>
+<table class="table table-bordered car-data-table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.MarkAndModel.CarMark),
+            @Html.DisplayNameFor(x => x.MarkAndModel.CarModel).ToLower()
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.MarkAndModel.CarMark),
+            @Html.DisplayFor(x => x.MarkAndModel.CarModel)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Тип транспортного средства
+        </th>
+        <td>
+            Легковой автомобиль
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.ReleaseDate)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.ReleaseDate)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Идентификационный № (VIN)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.BodyNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.BodyNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.BodyNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.ChassisNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.ChassisNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.EngineNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.EngineNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.ClientSeller.DocName)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.ClientSeller.DocName)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.ClientSeller.DocNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.ClientSeller.DocNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.ClientSeller.OwnDocIssuedBy)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.ClientSeller.OwnDocIssuedBy)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.ClientSeller.IssueDate)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.ClientSeller.IssueDate)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.RegNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.RegNumber)
+        </td>
+    </tr>
+</table>
 
-    <p>
-        2.1. Продавец обязуется передать в собственность покупателя, а покупатель обязуется принять и
-        оплатить следующее транспортное средство (далее ТС).
-    </p>
+<p>
+    2.2. Продавец гарантирует, что указанное в п 2.1. настоящего договора ТС не заложено, не
+    находится в споре, под арестом, не обременено правами третьих лиц, не является предметом
+    каких-либо иных сделок, ограничивающих право покупателя на распоряжение  им, а также то,
+    что данное ТС полностью и надлежащим образом оформлено для реализации на территории РФ.
+</p>
 
-    <table class="table table-bordered car-data-table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.MarkAndModel.CarMark),
-                @Html.DisplayNameFor(x => x.MarkAndModel.CarModel).ToLower()
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.MarkAndModel.CarMark),
-                @Html.DisplayFor(x => x.MarkAndModel.CarModel)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Тип транспортного средства
-            </th>
-            <td>
-                Легковой автомобиль
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Идентификационный № (VIN)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.Car.BodyNumber)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.Car.BodyNumber)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.Car.BodyNumber)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.Car.ChassisNumber)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.Car.ChassisNumber)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.Car.EngineNumber)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.Car.EngineNumber)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.DocName)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.DocName)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.DocNumber)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.DocNumber)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.OwnDocIssuedBy)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.OwnDocIssuedBy)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.ClientSeller.IssueDate)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.ClientSeller.IssueDate)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(x => x.Car.RegNumber)
-            </th>
-            <td>
-                @Html.DisplayFor(x => x.Car.RegNumber)
-            </td>
-        </tr>
-    </table>
+<h4 style="font-weight:bold">
+    3. Предмет договора
+</h4>
 
-    <p>
-        2.2. Продавец гарантирует, что указанное в п 2.1. настоящего договора ТС не заложено, не
-        находится в споре, под арестом, не обременено правами третьих лиц, не является предметом
-        каких-либо иных сделок, ограничивающих право покупателя на распоряжение  им, а также то,
-        что данное ТС полностью и надлежащим образом оформлено для реализации на территории РФ.
-    </p>
+<p>
+    3.1 Стоимость транспортного средства, за вычетом стоимости технической экспертизы, составляет:
+    @Html.DisplayFor(x => x.FinalPrice)
+<p>
+<p>
+    3.2 Покупатель оплачивает стоимость автомобиля установленную пунктом 3.1 настоящего
+    договора путем перечисления денежных средств на банковский счет Продавца либо наличными
+    денежными средствами.
+</p>
+<p>
+    3.3 Договор вступает в силу с момента его подписания сторонами и действует до полного
+    выполнения сторонами принятых обязательств.
+</p>
 
-    <h4 style="font-weight:bold">
-        3. Предмет договора
-    </h4>
+<h4 style="font-weight:bold">
+    4. Прочие условия
+</h4>
 
-    <p>
-        3.1 Стоимость транспортного средства, за вычетом стоимости технической экспертизы, составляет:
-        @Html.DisplayFor(x => x.FinalPrice)
-    <p>
-    <p>
-        3.2 Покупатель оплачивает стоимость автомобиля установленную пунктом 3.1 настоящего
-        договора путем перечисления денежных средств на банковский счет Продавца либо наличными
-        денежными средствами.
-    </p>
-    <p>
-        3.3 Договор вступает в силу с момента его подписания сторонами и действует до полного
-        выполнения сторонами принятых обязательств.
-    </p>
+<p>
+    4.1. Настоящий договор может быть изменен или расторгнут в соответствии с действующим
+    законодательством РФ.
+</p>
+<p>
+    4.2. Настоящий договор составлен в трех экземплярах, по одному экземпляру для каждой из сторон,
+    и один экземпляр для представления в ГИБДД, все экземпляры имеют одинаковую юридическую силу.
+</p>
+<p>
+    4.3.Споры и разногласия , которые могут возникнуть из настоящего договора решаются путем
+    переговоров между сторонами. В случае, если стороны не придут к согласию во внесудебном порядке,
+    то дело подлежит рассмотрению судом в соответствии с действующим законодательством РФ.
+</p>
 
-    <h4 style="font-weight:bold">
-        4. Прочие условия
-    </h4>
+<h4 style="font-weight:bold">
+    5. Подписи сторон
+</h4>
 
-    <p>
-        4.1. Настоящий договор может быть изменен или расторгнут в соответствии с действующим
-        законодательством РФ.
-    </p>
-    <p>
-        4.2. Настоящий договор составлен в трех экземплярах, по одному экземпляру для каждой из сторон,
-        и один экземпляр для представления в ГИБДД, все экземпляры имеют одинаковую юридическую силу.
-    </p>
-    <p>
-        4.3.Споры и разногласия , которые могут возникнуть из настоящего договора решаются путем
-        переговоров между сторонами. В случае, если стороны не придут к согласию во внесудебном порядке,
-        то дело подлежит рассмотрению судом в соответствии с действующим законодательством РФ.
-    </p>
+<p>
+    Продавец: ___________________________________________________________________________
+</p>
+<p>
+    Покупатель:__________________________________________________________________________
+</p>
 
-    <h4 style="font-weight:bold">
-        5. Подписи сторон
-    </h4>
-
-    <p>
-        Продавец: ___________________________________________________________________________
-    </p>
-    <p>
-        Покупатель:__________________________________________________________________________
-    </p>
-
-    <div class="noPrint">
-        <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.Car.CarId">
-            Назад
-        </a>
-        <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
-        <a class="btn btn-default" asp-page="./EditClientSeller" asp-route-id="@Model.Car.CarId">
-            Редактровать
-        </a>
-    </div>
-</div>
+@section Buttons{
+    <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.Car.CarId">
+        Назад
+    </a>
+    <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
+    <a class="btn btn-default" asp-page="./EditClientSeller" asp-route-id="@Model.Car.CarId">
+        Редактровать
+    </a>
+}

@@ -1,0 +1,124 @@
+﻿@page
+@model AutoshopWebApp.Pages.Cars.CarDetails.CustomerBillModel
+@{
+    Layout = "_PrintedDocLayout";
+    ViewData["Title"] = "CustomerBill";
+}
+
+<h2>Счёт за автомобиль</h2>
+
+<p>
+    @Html.DisplayNameFor(x => x.ClientBuyer.BuyDate):
+    @Html.DisplayFor(x => x.ClientBuyer.BuyDate)
+</p>
+
+<p>
+    <b>Покупатель:</b> @Model.ClientBuyer.Firstname, @Model.ClientBuyer.LastName, @Model.ClientBuyer.Patronymic
+</p>
+<p>
+    <b>@Html.DisplayNameFor(x => x.PaymentType.PaymentTypeName)</b>
+    @Html.DisplayFor(x => x.PaymentType.PaymentTypeName)
+</p>
+
+@if (!string.IsNullOrEmpty(Model.ClientBuyer.AccountNumber))
+{
+    <p>
+        <b>@Html.DisplayNameFor(x => x.ClientBuyer.AccountNumber):</b>
+        @Html.DisplayFor(x => x.ClientBuyer.AccountNumber)
+    </p>
+}
+
+<table class="table table-bordered car-data-table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.MarkAndModel.CarMark),
+            @Html.DisplayNameFor(x => x.MarkAndModel.CarModel).ToLower()
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.MarkAndModel.CarMark),
+            @Html.DisplayFor(x => x.MarkAndModel.CarModel)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Тип транспортного средства
+        </th>
+        <td>
+            Легковой автомобиль
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.ReleaseDate)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.ReleaseDate)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Идентификационный № (VIN)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.BodyNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.BodyNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.BodyNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.ChassisNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.ChassisNumber)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.EngineNumber)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.EngineNumber)
+        </td>
+    </tr>
+</table>
+
+<table class="table table-bordered car-data-table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Car.SellingPrice)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.Car.SellingPrice)
+        </td>
+    </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.DueDate)
+        </th>
+        <td>
+            @Html.DisplayFor(x => x.DueDate)
+        </td>
+    </tr>
+</table>
+
+
+<p>
+    Подпись продавца: ___________________________________________________________________________
+</p>
+<p>
+    Подпись покупателя:__________________________________________________________________________
+</p>
+
+@section Buttons{
+    <a class="btn btn-default" asp-page="./Index" asp-route-id="2">
+        Назад
+    </a>
+    <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
+}

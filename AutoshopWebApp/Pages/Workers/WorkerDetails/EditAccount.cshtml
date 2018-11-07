@@ -8,10 +8,17 @@
 
 @if (Model.PageData == null)
 {
+
+<form method="post">
     <h4>У этого сотрудника нет учётной записи</h4>
     <a class="btn btn-default" asp-page="AddAccount" asp-route-id=@Model.WorkerCrossPageData.WorkerID>
         Создать учётную запись
     </a>
+    <button class="btn btn-default" type="submit" asp-page-handler="BindAccount">
+        Привязать текущий
+    </button>
+</form>
+    
 }
 else
 {
@@ -31,7 +38,7 @@ else
         </dd>
     </dl>
 
-    
+
 
     <form method="post">
         <a class="btn btn-default" asp-page="ChangeLogin" asp-route-id=@Model.WorkerCrossPageData.WorkerID>

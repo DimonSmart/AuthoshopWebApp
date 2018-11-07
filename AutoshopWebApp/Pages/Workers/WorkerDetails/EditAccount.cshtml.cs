@@ -124,5 +124,39 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             return RedirectToPage("EditAccount", new { id });
         }
+
+        public async Task<IActionResult> OnPostBindAccountAsync(int? id)
+        {
+            if(id==null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user==null)
+            {
+                return NotFound();
+            }
+
+            var workerUser = await _context.WorkerUsers
+                .FirstOrDefaultAsync(x => x.UserID == user.Id);
+
+            if(workerUser!=null)
+            {
+                _context.Remove(workerUser);
+            }
+
+            workerUser = new WorkerUser
+            {
+                UserID = user.Id,
+                WorkerID = id.Value,
+            };
+
+            await _context.WorkerUsers.AddAsync(workerUser);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
     }
 }

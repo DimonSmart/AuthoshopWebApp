@@ -1,72 +1,54 @@
 ﻿@page "{id:int?}"
 @model AutoshopWebApp.Pages.Cars.CarDetails.ExpertiseReferenceModel
 @{
-    Layout = null;
+    Layout = "_PrintedDocLayout"; ;
     ViewData["Title"] = "ExpertiseReference";
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AutoshopWebApp</title>
+<h2>Справка о взятии автомобиля на экспертизу</h2>
+<p>
+    Выдана гражданину @Model.OutModel.PoolExpertise.ClientLastname @Model.OutModel.PoolExpertise.ClientFirstname
+    @Model.OutModel.PoolExpertise.ClientPatronymic в связи с тем, что принадлежащее ему транспортное
+    средство будет временно находится в пользовании автосалона, с целью проведения технической экспертизы.
+    Автосалон обязуется вернуть автомобиль владельцу в течение трёх рабочих дней со дня выдачи данной справки.
+</p>
+<p>
+    Автомобиль @Model.OutModel.MarkAndModel.CarMark @Model.OutModel.MarkAndModel.CarModel;
+    @Html.DisplayNameFor(m => m.OutModel.Car.Color).ToLower():
+    @Html.DisplayFor(m => m.OutModel.Car.Color);
+    @Html.DisplayNameFor(m => m.OutModel.Car.EngineNumber).ToLower():
+    @Html.DisplayFor(m => m.OutModel.Car.EngineNumber);
+    @Html.DisplayNameFor(m => m.OutModel.Car.BodyNumber).ToLower():
+    @Html.DisplayFor(m => m.OutModel.Car.BodyNumber);
+    @Html.DisplayNameFor(m => m.OutModel.Car.ReleaseDate).ToLower():
+    @Html.DisplayFor(m => m.OutModel.Car.ReleaseDate);
+    @if (!string.IsNullOrEmpty(Model.OutModel.Car.RegNumber))
+    {
+        <text>
+            @Html.DisplayNameFor(m => m.OutModel.Car.RegNumber).ToLower():
+            @Html.DisplayFor(m => m.OutModel.Car.RegNumber);
+        </text>
+    }
+    @Html.DisplayNameFor(m => m.OutModel.Car.Run).ToLower():
+    @Html.DisplayFor(m => m.OutModel.Car.Run);
+</p>
+<p>
+    Дата выдачи справки: @Html.DisplayFor(model => model.OutModel.PoolExpertise.IssueDate)
+    <span style="float:right">
+        Подпись клиента:_______________
+    </span>
+</p>
+<p>
+    Сотрудник:
+    @Model.OutModel.Worker.Lastname
+    @Model.OutModel.Worker.Firstname
+    @Model.OutModel.Worker.Patronymic
+    <span style="float:right">
+        Подпись сотрудника:_______________
+    </span>
+</p>
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-    </environment>
-
-    <link rel="stylesheet" href="~/css/printedDoc.css" />
-</head>
-
-
-<div class="printedDoc">
-    <h2>Справка о взятии автомобиля на экспертизу</h2>
-    <p>
-        Выдана гражданину @Model.OutModel.PoolExpertise.ClientLastname @Model.OutModel.PoolExpertise.ClientFirstname
-        @Model.OutModel.PoolExpertise.ClientPatronymic в связи с тем, что принадлежащее ему транспортное
-        средство будет временно находится в пользовании автосалона, с целью проведения технической экспертизы.
-        Автосалон обязуется вернуть автомобиль владельцу в течение трёх рабочих дней со дня выдачи данной справки.
-    </p>
-    <p>
-        Автомобиль @Model.OutModel.MarkAndModel.CarMark @Model.OutModel.MarkAndModel.CarModel;
-        @Html.DisplayNameFor(m => m.OutModel.Car.Color).ToLower():
-        @Html.DisplayFor(m => m.OutModel.Car.Color);
-        @Html.DisplayNameFor(m => m.OutModel.Car.EngineNumber).ToLower():
-        @Html.DisplayFor(m => m.OutModel.Car.EngineNumber);
-        @Html.DisplayNameFor(m => m.OutModel.Car.BodyNumber).ToLower():
-        @Html.DisplayFor(m => m.OutModel.Car.BodyNumber);
-        @Html.DisplayNameFor(m => m.OutModel.Car.ReleaseDate).ToLower():
-        @Html.DisplayFor(m => m.OutModel.Car.ReleaseDate);
-        @if (!string.IsNullOrEmpty(Model.OutModel.Car.RegNumber))
-        {
-            <text>
-                @Html.DisplayNameFor(m => m.OutModel.Car.RegNumber).ToLower():
-                @Html.DisplayFor(m => m.OutModel.Car.RegNumber);
-            </text>
-        }
-        @Html.DisplayNameFor(m => m.OutModel.Car.Run).ToLower():
-        @Html.DisplayFor(m => m.OutModel.Car.Run);
-    </p>
-    <p>
-        Дата выдачи справки: @Html.DisplayFor(model => model.OutModel.PoolExpertise.IssueDate)
-        <span style="float:right">
-            Подпись клиента:_______________
-        </span>
-    </p>
-    <p>
-        Сотрудник:
-        @Model.OutModel.Worker.Lastname
-        @Model.OutModel.Worker.Firstname
-        @Model.OutModel.Worker.Patronymic
-        <span style="float:right">
-            Подпись сотрудника:_______________
-        </span>
-    </p>
-
+@section Buttons{
     <div class="noPrint">
         <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.OutModel.Car.CarId">
             Назад
@@ -79,7 +61,9 @@
             </a>
         }
     </div>
-</div>
+}
+
+
 
 
 
