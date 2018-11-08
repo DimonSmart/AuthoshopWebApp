@@ -13,7 +13,7 @@
 </p>
 
 <p>
-    <b>Покупатель:</b> @Model.ClientBuyer.Firstname, @Model.ClientBuyer.LastName, @Model.ClientBuyer.Patronymic
+    <b>Покупатель:</b> @Model.ClientBuyer.LastName @Model.ClientBuyer.Firstname @Model.ClientBuyer.Patronymic
 </p>
 <p>
     <b>@Html.DisplayNameFor(x => x.PaymentType.PaymentTypeName)</b>
@@ -117,8 +117,11 @@
 </p>
 
 @section Buttons{
-    <a class="btn btn-default" asp-page="./Index" asp-route-id="2">
-        Назад
+    <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.Car.CarId">
+        На страницу автомобиля
     </a>
     <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
+    <a class="btn btn-default" asp-page="./BuyPurchaseAgreement" asp-route-id="@Model.Car.CarId">
+        Просмотреть договор
+    </a>
 }

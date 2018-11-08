@@ -192,9 +192,12 @@
     {
     <div class="noPrint">
         <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.Car.CarId">
-            Назад
+            На страницу автомобиля
         </a>
         <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
+        <a class="btn btn-default" asp-page="./CustomerBill" asp-route-id="@Model.Car.CarId">
+            Просмотр счёта
+        </a>
         <a class="btn btn-default" asp-page="./EditClientBuyer" asp-route-id="@Model.Car.CarId">
             Редактровать
         </a>
