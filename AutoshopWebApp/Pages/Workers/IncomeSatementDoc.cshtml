@@ -1,0 +1,50 @@
+﻿@page
+@model AutoshopWebApp.Pages.Workers.IncomeSatementDocModel
+@{
+    ViewData["Title"] = "IncomeSatementDoc";
+    Layout = "~/Pages/Shared/_PrintedDocLayout.cshtml";
+}
+
+<h2>Информация о доходах</h2>
+
+<p>
+    <b>@Html.DisplayNameFor(model => model.IncomeStatement.Date):</b>
+    @Html.DisplayFor(model => model.IncomeStatement.Date)
+</p>
+
+<table class="table table-bordered car-data-table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement.Loss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement.Profit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement.Sum)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.IncomeStatement.Loss)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.IncomeStatement.Profit)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.IncomeStatement.Sum)
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    Подпись руководителя: _______________________________________________________________
+</p>
+
+@section Buttons{
+    <a class="btn btn-default" asp-page="./IncomeStatement">Назад</a>
+}

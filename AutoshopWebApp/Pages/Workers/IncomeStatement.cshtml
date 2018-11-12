@@ -4,5 +4,59 @@
     ViewData["Title"] = "IncomeStatement";
 }
 
-<h2>IncomeStatement</h2>
+<h2>Информация о доходах</h2>
 
+<form class="form-inline" method="post">
+    <div class="form-group">
+        <label asp-for="DateFrom" class="control-label"></label>
+        <input asp-for="DateFrom" class="form-control" />
+        <span asp-validation-for="DateFrom" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateTo" class="control-label"></label>
+        <input asp-for="DateTo" class="form-control" />
+        <span asp-validation-for="DateTo" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-default">Показать</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement[0].Loss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement[0].Profit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeStatement[0].Sum)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.IncomeStatement)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Loss)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Profit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sum)
+                </td>
+                <td>
+                    <a class="btn btn-default" asp-page="./IncomeSatementDoc"
+                        asp-route-month="@item.Date.Month" asp-route-year="@item.Date.Year">Детали</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,4 +1,5 @@
 ﻿using AutoshopWebApp.Models;
+using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,60 @@ namespace AutoshopWebApp.Data
                  where workerUser.UserID == userId
                  select new int?(workerUser.WorkerID))
                 .FirstOrDefaultAsync();
+        }
+
+        public IQueryable<IncomeStatement> GetIncomeStatements()
+        {
+            var querySelling =
+               from seller in ClientSellers
+               join sellingCar in Cars
+               on seller.CarId equals sellingCar.CarId
+               where sellingCar.BuyingPrice != null
+               group sellingCar.BuyingPrice.Value
+               by new { seller.SellingDate.Month, seller.SellingDate.Year }
+               into sellingByMonth
+               select new { sellingByMonth.Key, loss = sellingByMonth.Sum() };
+
+            var queryBuying =
+                from buyer in ClientBuyers
+                join buyingCar in Cars
+                on buyer.CarId equals buyingCar.CarId
+                where buyingCar.SellingPrice != null
+                group buyingCar.SellingPrice.Value
+                by new { buyer.BuyDate.Month, buyer.BuyDate.Year }
+                into buyingByMonth
+                select new { buyingByMonth.Key, profit = buyingByMonth.Sum() };
+
+            var queryLeftJoin =
+                from sellData in querySelling
+                join buyData in queryBuying
+                on sellData.Key equals buyData.Key
+                into buyQueryData
+                from buyData in buyQueryData.DefaultIfEmpty()
+                select new { sellData, buyData };
+
+            var queryRightJoin =
+                from buyData in queryBuying
+                join sellData in querySelling
+                on buyData.Key equals sellData.Key
+                into sellQueryData
+                from sellData in sellQueryData.DefaultIfEmpty()
+                select new { sellData, buyData };
+
+            var mainQuery =
+                from data in queryLeftJoin.Union(queryRightJoin)
+                let profit = data.buyData == null ? 0 : data.buyData.profit
+                let loss = data.sellData == null ? 0 : data.sellData.loss
+                let date = data.buyData == null ? data.sellData.Key : data.buyData.Key
+                select new IncomeStatement
+                {
+                    Date = new DateTime(date.Year, date.Month, 1),
+                    Profit = profit,
+                    Loss = loss,
+                    Sum = profit - loss,
+                };
+
+            return mainQuery;
         }
 
         public async Task<Street> AddStreetAsync(string street)

@@ -43,7 +43,7 @@ namespace AutoshopWebApp.Pages.Admin
         [TempData]
         public string StatusMessage { get; set; } 
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync()
         {
             var isAuthorized = User.IsInRole(Constants.AdministratorRole);
             if (!isAuthorized)
@@ -53,18 +53,13 @@ namespace AutoshopWebApp.Pages.Admin
 
             IdentityUser user;
 
-            if(string.IsNullOrEmpty(id))
-            {
-                user = await UserManager.GetUserAsync(User);
-            }
-            else
-            {
-                user = await UserManager.FindByIdAsync(id);
-            }
+
+            user = await UserManager.GetUserAsync(User);
+
             
             if(user == null)
             {
-                return NotFound($"This user not found");
+                return NotFound();
             }
 
             LoginModel = new InputLoginModel { Email = user.Email, UserID = user.Id };

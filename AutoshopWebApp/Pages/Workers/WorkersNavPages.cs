@@ -10,5 +10,7 @@ namespace AutoshopWebApp.Pages.Workers
         public static readonly string WorkersMain = "Index";
 
         public static readonly string PositionsMain = "PositionsMain";
+
+        public static readonly string IncomeStatements = "IncomeStatement";
     }
 }
