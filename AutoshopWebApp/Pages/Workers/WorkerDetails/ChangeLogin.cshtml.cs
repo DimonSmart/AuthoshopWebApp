@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Identity;
@@ -18,8 +19,6 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
-       
 
         public ChangeLoginModel(
             AutoshopWebApp.Data.ApplicationDbContext context,
@@ -60,6 +59,13 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
+            var isAuthorize = User.IsInRole(Constants.AdministratorRole);
+
+            if(!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             var pageResult = await RedisplayPage(id.Value);
 
             var user = await _context.FindUserByWorkerIdAsync(id.Value);
@@ -86,6 +92,13 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var isAuthorize = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             var user = await _context.FindUserByWorkerIdAsync(InputModel.WorkerId);
 
             if(user==null)

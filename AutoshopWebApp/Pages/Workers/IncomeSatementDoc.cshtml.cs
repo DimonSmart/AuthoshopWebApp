@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,15 @@ namespace AutoshopWebApp.Pages.Workers
             if(month==null || year==null)
             {
                 return NotFound();
+            }
+
+            var isAuthorize =
+                User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
+
+            if(!isAuthorize)
+            {
+                return new ChallengeResult();
             }
 
             IncomeStatement = await _context

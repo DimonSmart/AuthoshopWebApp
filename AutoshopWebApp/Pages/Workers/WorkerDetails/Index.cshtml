@@ -5,10 +5,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Детали</h2>
 
 <div>
-    <h4>Worker</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -68,6 +67,16 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.OutputModel.WorkerID">Edit</a> |
-    <a asp-page="../Index">Back to List</a>
+    <form method="post">
+        <input type="hidden" asp-for="WorkerId" value="@Model.OutputModel.WorkerID" />
+        <a class="btn btn-default" asp-page="../Index">Назад к списку</a>
+        <a class="btn btn-default" asp-page="./Edit" asp-route-id="@Model.OutputModel.WorkerID">Редактировать</a>
+        @if (Model.IsAuthDelete)
+        {
+            <button class="btn btn-danger" type="submit" asp-page-handler="delete">
+                Удалить
+            </button>
+        }
+    </form>
+   
 </div>

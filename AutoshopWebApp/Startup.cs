@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using AutoshopWebApp.Authorization.Handlers;
 
 namespace AutoshopWebApp
 {
@@ -48,7 +49,6 @@ namespace AutoshopWebApp
                 .AddDefaultTokenProviders()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
 
             services.AddMvc(config =>
             {
@@ -58,6 +58,10 @@ namespace AutoshopWebApp
                 config.Filters.Add(new AuthorizeFilter(policy));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<IAuthorizationHandler, WorkerAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, TransactionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, PositionAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

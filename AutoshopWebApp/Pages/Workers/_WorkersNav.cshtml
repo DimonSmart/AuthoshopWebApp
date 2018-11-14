@@ -5,10 +5,14 @@
     <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.WorkersMain)>
         <a asp-page="./Index">Список сотрудников</a>
     </li>
-    <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.PositionsMain)>
-        <a asp-page="./PositionsMain">Перечень должностей</a>
-    </li>
-    <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.IncomeStatements)>
-        <a asp-page="./IncomeStatement">Информация о доходах</a>
-    </li>
+    @if (User.IsInRole(AutoshopWebApp.Authorization.Constants.AdministratorRole) ||
+       User.IsInRole(AutoshopWebApp.Authorization.Constants.ManagerRole))
+    {
+        <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.PositionsMain)>
+            <a asp-page="./PositionsMain">Перечень должностей</a>
+        </li>
+        <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkersNavPages.IncomeStatements)>
+            <a asp-page="./IncomeStatement">Информация о доходах</a>
+        </li>
+    }
 </ul>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Identity;
@@ -68,6 +69,13 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
+            var isAuthorize = User.IsInRole(Constants.AdministratorRole);
+
+            if(!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             var pageResult = await LoadPageData(id.Value);
 
             if (WorkerCrossPageData == null)
@@ -85,6 +93,13 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var isAuthorize = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, Account.WorkerId);
 
             if (!ModelState.IsValid)

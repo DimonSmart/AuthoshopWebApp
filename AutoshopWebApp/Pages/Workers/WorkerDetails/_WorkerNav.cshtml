@@ -16,7 +16,10 @@
     <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkerDetailsNavPages.addTransaction)>
         <a asp-page="./AddTransaction" asp-route-id=@Model.WorkerCrossPageData.WorkerID>Оформление перевода</a>
     </li>
-    <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkerDetailsNavPages.editAccount)>
-        <a asp-page="./EditAccount" asp-route-id=@Model.WorkerCrossPageData.WorkerID>Данные учётной записи</a>
-    </li>
+    @if (User.IsInRole(AutoshopWebApp.Authorization.Constants.AdministratorRole))
+    {
+        <li class=@PageNavUtilities.PageNavClass(ViewContext, WorkerDetailsNavPages.editAccount)>
+            <a asp-page="./EditAccount" asp-route-id=@Model.WorkerCrossPageData.WorkerID>Данные учётной записи</a>
+        </li>
+    }
 </ul>

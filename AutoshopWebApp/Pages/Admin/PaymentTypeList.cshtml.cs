@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using AutoshopWebApp.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoshopWebApp.Pages.Admin
 {
     public class PaymentTypeListModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PaymentTypeListModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public PaymentTypeListModel(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -24,10 +26,20 @@ namespace AutoshopWebApp.Pages.Admin
 
         public IList<PaymentType> PaymentTypes { get;set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorized)
+            {
+                return new ChallengeResult();
+            }
+
+
             PaymentTypes = await _context.PaymentTypes
                 .AsNoTracking().ToListAsync();
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAddAsync()
@@ -35,6 +47,13 @@ namespace AutoshopWebApp.Pages.Admin
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorized)
+            {
+                return new ChallengeResult();
             }
 
             await _context.PaymentTypes.AddAsync(PaymentType);
@@ -45,6 +64,13 @@ namespace AutoshopWebApp.Pages.Admin
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorized)
+            {
+                return new ChallengeResult();
+            }
+
             var paymentType = await _context.PaymentTypes
                 .FirstOrDefaultAsync(x => x.PaymentTypeId == id);
 

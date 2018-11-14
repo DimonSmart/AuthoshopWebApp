@@ -9,16 +9,21 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 {
     public class AddTransactionModel : PageModel, IWorkerPage
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AddTransactionModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public AddTransactionModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
 
@@ -27,6 +32,15 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             if(id==null)
             {
                 return NotFound();
+            }
+
+            var isAuthorize =
+                User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
+
+            if (!isAuthorize)
+            {
+                return new ChallengeResult();
             }
 
             return await RedisplayPage(id.Value);
@@ -46,6 +60,15 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             if (!ModelState.IsValid)
             {
                 return await RedisplayPage(TransactionOrder.WorkerId);
+            }
+
+
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, TransactionOrder, Operations.Create);
+
+            if(!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var worker = _context.Workers

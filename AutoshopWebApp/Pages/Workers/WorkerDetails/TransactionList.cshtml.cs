@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 {
     public class TransactionListModel : PageModel, IWorkerPage
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public TransactionListModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public TransactionListModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
 
@@ -27,9 +32,25 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             public TransactionOrder TransactionOrder { get; set; }
         }
 
-        public IList<TransactionData> TransactionOrder { get;set; }
+        public class Output:IWorkerCrossPageData
+        {
+            public string Firstname => Worker.Firstname;
 
-        public IWorkerCrossPageData WorkerCrossPageData { get; set; }
+            public string Lastname => Worker.Lastname;
+
+            public string Patronymic => Worker.Patronymic;
+
+            public int WorkerID => Worker.WorkerId;
+
+            public Worker Worker { get; set; }
+
+            public IList<TransactionData> TransactionOrders { get; set; }
+        }
+
+        public Output OutputData { get; set; }
+
+        public IWorkerCrossPageData WorkerCrossPageData
+            => OutputData;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -38,27 +59,50 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            WorkerCrossPageData = await WorkerCrossPage.FindWorkerDataById(_context, id.Value);
+            var isAuthorize = User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
 
-            if(WorkerCrossPageData==null)
+            if(!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
+            var ordersQuery =
+                from order in _context.TransactionOrders
+                join position in _context.Positions
+                on order.PositionId equals position.PositionId
+                group new TransactionData
+                {
+                    TransactionOrder = order,
+                    Position = position
+                } by order.WorkerId;
+
+            var queryData =
+                from worker in _context.Workers
+                where worker.WorkerId == id
+                join orders in ordersQuery
+                on worker.WorkerId equals orders.Key
+                let ordersList = orders.ToList()
+                select new Output
+                {
+                    Worker = new Worker
+                    {
+                        WorkerId = worker.WorkerId,
+                        Firstname = worker.Firstname,
+                        Lastname = worker.Lastname,
+                        Patronymic = worker.Patronymic
+                    },
+                    TransactionOrders = ordersList
+                };
+
+            OutputData = await queryData
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+
+            if (OutputData == null)
             {
                 return NotFound();
             }
-
-            TransactionOrder = await
-                (from order in _context.TransactionOrders
-                 join position in _context.Positions on order.PositionId equals position.PositionId
-                 where order.WorkerId == id
-                 select new TransactionData
-                 {
-                     Position = new Position { PositionName = position.PositionName },
-                     TransactionOrder = new TransactionOrder
-                     {
-                         OrderDate = order.OrderDate,
-                         OrderNumber = order.OrderNumber,
-                         Reason = order.Reason,
-                     }
-                 }).AsNoTracking().ToListAsync();
 
             return Page();
         }

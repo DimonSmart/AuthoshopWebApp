@@ -1,5 +1,6 @@
 ﻿@page
 @model AutoshopWebApp.Pages.Workers.IndexModel
+@using AutoshopWebApp.Authorization
 
 @{
     ViewData["Title"] = "Index";
@@ -12,7 +13,10 @@
         Поиск: <input class="form-control" type="text" name="search" />
         <button type="submit" class="btn btn-default">Найти</button>
     </div>
-    <a class="btn btn-default" asp-page="AddWorker">Добавить сотрудника</a>
+    @if (Model.IsShowAddButton)
+    {
+        <a class="btn btn-default" asp-page="AddWorker">Добавить сотрудника</a>
+    }
 </form>
 
 <br />
@@ -21,16 +25,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].Firstname)
+                @Html.DisplayNameFor(model => model.Worker[0].Worker.Firstname)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].Lastname)
+                @Html.DisplayNameFor(model => model.Worker[0].Worker.Lastname)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].Patronymic)
+                @Html.DisplayNameFor(model => model.Worker[0].Worker.Patronymic)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Worker[0].Position)
+                @Html.DisplayNameFor(model => model.Worker[0].Position.PositionName)
             </th>
             <th></th>
         </tr>
@@ -40,19 +44,24 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Firstname)
+                    @Html.DisplayFor(modelItem => item.Worker.Firstname)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Lastname)
+                    @Html.DisplayFor(modelItem => item.Worker.Lastname)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Patronymic)
+                    @Html.DisplayFor(modelItem => item.Worker.Patronymic)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Position)
+                    @Html.DisplayFor(modelItem => item.Position.PositionName)
                 </td>
                 <td>
-                    <a class="btn btn-default" asp-page="./WorkerDetails/Index" asp-route-id=@item.WorkerId>Детали</a>
+                    @if (Model.IsShowDetails)
+                    {
+                        <a class="btn btn-default" asp-page="./WorkerDetails/Index" asp-route-id=@item.WorkerId>
+                            Детали
+                        </a>
+                    }
                 </td>
             </tr>
         }

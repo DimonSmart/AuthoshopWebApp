@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,15 @@ namespace AutoshopWebApp.Pages.Workers
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var isAuthorize =
+                User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
+
+            if(!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             DateTo = DateTime.Today;
             DateFrom = DateTo.AddYears(-1);
 
@@ -34,6 +44,15 @@ namespace AutoshopWebApp.Pages.Workers
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var isAuthorize =
+                User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
+
+            if (!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             IncomeStatement = await GetIncomeStatementsListAsync();
             return Page();
         }

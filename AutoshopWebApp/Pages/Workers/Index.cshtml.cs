@@ -8,38 +8,39 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Workers
 {
     public class IndexModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        public readonly IAuthorizationService AuthorizationService;
 
-        public IndexModel(ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            AuthorizationService = authorizationService;
         }
 
         public class WorkerModel
         {
             public int WorkerId { get; set; }
 
-            [Display(Name = "Имя")]
-            public string Firstname { get; set; }
+            public Worker Worker { get; set; }
 
-            [Display(Name = "Фамилия")]
-            public string Lastname { get; set; }
-
-            [Display(Name = "Отчество")]
-            public string Patronymic { get; set; }
-
-            [Display(Name = "Должность")]
-            public string Position { get; set; }
+            public Position Position { get; set; }
         }
 
         public IList<WorkerModel> Worker { get;set; }
 
-        public async Task OnGetAsync(string search)
+        public bool IsShowDetails { get; set; }
+
+        public bool IsShowAddButton { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(string search)
         {
             var workerQuery =
                 from worker in _context.Workers
@@ -47,10 +48,13 @@ namespace AutoshopWebApp.Pages.Workers
                 select new WorkerModel
                 {
                     WorkerId = worker.WorkerId,
-                    Firstname = worker.Firstname,
-                    Lastname = worker.Lastname,
-                    Patronymic = worker.Patronymic,
-                    Position = position.PositionName,
+                    Worker = new Worker
+                    {
+                        Firstname = worker.Firstname,
+                        Lastname = worker.Lastname,
+                        Patronymic = worker.Patronymic,
+                    },
+                    Position = position
                 };
 
             if(!string.IsNullOrEmpty(search))
@@ -60,10 +64,10 @@ namespace AutoshopWebApp.Pages.Workers
                 {
                     workerQuery =
                         from worker in workerQuery
-                        where worker.Firstname.Contains(item) ||
-                        worker.Lastname.Contains(item) ||
-                        worker.Patronymic.Contains(item) ||
-                        worker.Position.Contains(item)
+                        where worker.Worker.Firstname.Contains(item) ||
+                        worker.Worker.Lastname.Contains(item) ||
+                        worker.Worker.Patronymic.Contains(item) ||
+                        worker.Position.PositionName.Contains(item)
                         select worker;
                 }
             }
@@ -71,6 +75,12 @@ namespace AutoshopWebApp.Pages.Workers
             Worker = await workerQuery
                 .AsNoTracking()
                 .ToListAsync();
+
+            IsShowAddButton = IsShowDetails =
+                User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
+
+            return Page();
         }
     }
 }

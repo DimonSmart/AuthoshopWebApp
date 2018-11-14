@@ -7,16 +7,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using AutoshopWebApp.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoshopWebApp.Pages.Workers
 {
     public class PositionDeleteModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        public readonly IAuthorizationService _authorizationService;
 
-        public PositionDeleteModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public PositionDeleteModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -30,6 +35,14 @@ namespace AutoshopWebApp.Pages.Workers
             }
 
             Position = await _context.Positions.FirstOrDefaultAsync(m => m.PositionId == id);
+
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, Position, Operations.Delete);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
+            }
 
             if (Position == null)
             {
@@ -46,6 +59,14 @@ namespace AutoshopWebApp.Pages.Workers
             }
 
             Position = await _context.Positions.FindAsync(id);
+
+            var isAuthorize = await _authorizationService
+              .AuthorizeAsync(User, Position, Operations.Delete);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
+            }
 
             if (Position != null)
             {

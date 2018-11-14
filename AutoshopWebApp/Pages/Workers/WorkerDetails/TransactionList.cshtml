@@ -14,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TransactionOrder[0].TransactionOrder.OrderNumber)
+                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].TransactionOrder.OrderNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TransactionOrder[0].Position.PositionName)
+                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].Position.PositionName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TransactionOrder[0].TransactionOrder.OrderDate)
+                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].TransactionOrder.OrderDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TransactionOrder[0].TransactionOrder.Reason)
+                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].TransactionOrder.Reason)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.TransactionOrder)
+        @foreach (var item in Model.OutputData.TransactionOrders)
         {
             <tr>
                 <td>

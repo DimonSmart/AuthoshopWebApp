@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.AspNetCore.Identity;
@@ -59,6 +60,12 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if(!isAuthorized)
+            {
+                return new ChallengeResult();
+            }
 
             PageData = await
                 (from worker in _context.Workers
@@ -101,6 +108,13 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorized)
+            {
+                return new ChallengeResult();
+            }
+
             var workerUser = await _context.WorkerUsers
                 .FirstOrDefaultAsync(item => item.WorkerID == id);
 
@@ -130,6 +144,13 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             if(id==null)
             {
                 return NotFound();
+            }
+
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorized)
+            {
+                return new ChallengeResult();
             }
 
             var user = await _userManager.GetUserAsync(User);

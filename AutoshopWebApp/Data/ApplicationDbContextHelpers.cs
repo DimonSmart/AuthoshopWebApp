@@ -141,6 +141,5 @@ namespace AutoshopWebApp.Data
 
             return findedMark;
         }
-        
     }
 }

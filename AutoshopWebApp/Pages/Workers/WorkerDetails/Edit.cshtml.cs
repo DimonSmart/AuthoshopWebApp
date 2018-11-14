@@ -9,16 +9,21 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 {
     public class EditModel : PageModel, IWorkerPage
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public EditModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context, 
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
         
         [BindProperty]
@@ -41,6 +46,14 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             if (!ModelState.IsValid)
             {
                 return await RedisplayPage(OutputModel.WorkerID);
+            }
+
+            var isAuthorize = await _authorizationService
+               .AuthorizeAsync(User, OutputModel.Worker, Operations.Update);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var street = await _context.AddStreetAsync(OutputModel.Street.StreetName);
@@ -79,6 +92,14 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             OutputModel = await OutputWorkerModel
                 .GetQuery(_context)
                 .FirstOrDefaultAsync(item => item.WorkerID == id);
+
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, OutputModel.Worker, Operations.Update);
+
+            if(!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
+            }
 
             if (OutputModel == null)
             {

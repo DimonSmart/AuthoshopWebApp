@@ -9,16 +9,21 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using AutoshopWebApp.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoshopWebApp.Pages.Workers
 {
     public class AddWorkerModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        public readonly IAuthorizationService _authorizationService;
 
-        public AddWorkerModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public AddWorkerModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -31,6 +36,15 @@ namespace AutoshopWebApp.Pages.Workers
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var isAuthorize =
+                User.IsInRole(Constants.AdministratorRole) ||
+                User.IsInRole(Constants.ManagerRole);
+
+            if(!isAuthorize)
+            {
+                return new ChallengeResult();
+            }
+
             Positions = await Position.GetSelectListItems(_context);
 
             return Page();
@@ -41,6 +55,14 @@ namespace AutoshopWebApp.Pages.Workers
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, Worker, Operations.Create);
+
+            if(!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var street = await _context.Streets

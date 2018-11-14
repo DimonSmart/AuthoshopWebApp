@@ -28,10 +28,6 @@ namespace AutoshopWebApp.Pages.Admin
 
         public class InputPasswordModel
         {
-            public string UserID { get; set; }
-
-            public string UserName { get; set; }
-
             [Display(Name = "Старый пароль")]
             [DataType(DataType.Password)]
             [Required]
@@ -49,37 +45,31 @@ namespace AutoshopWebApp.Pages.Admin
             public string NewPassword2 { get; set; }
         }
 
+        public string UserName { get; set; }
+
         [BindProperty]
         public InputPasswordModel PasswordModel { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync()
         {
             var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
             if (!isAuthorized)
             {
                 return new ChallengeResult();
             }
 
-            IdentityUser user;
-
-            if (string.IsNullOrEmpty(id))
-            {
-                user = await UserManager.GetUserAsync(User);
-            }
-            else
-            {
-                user = await UserManager.FindByIdAsync(id);
-            }
+            var user = await UserManager.GetUserAsync(User);
 
             if (user == null)
             {
                 return NotFound($"This user not found");
             }
 
-            PasswordModel = new InputPasswordModel { UserID = user.Id, UserName = user.UserName };
+            UserName = user.UserName;
 
             return Page();
         }
@@ -91,18 +81,20 @@ namespace AutoshopWebApp.Pages.Admin
                 return Page();
             }
 
-            var user = await UserManager.FindByIdAsync(PasswordModel.UserID);
+            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
+            if (!isAuthorized)
+            {
+                return new ChallengeResult();
+            }
+
+            var user = await UserManager.GetUserAsync(User);
 
             if (user == null)
             {
                 return NotFound($"This user not found");
             }
 
-            var isAuthorized = User.IsInRole(Constants.AdministratorRole);
-            if (!isAuthorized)
-            {
-                return new ChallengeResult();
-            }
 
             var changePassResult = await UserManager
                 .ChangePasswordAsync(user, PasswordModel.OldPassword, PasswordModel.NewPassword);

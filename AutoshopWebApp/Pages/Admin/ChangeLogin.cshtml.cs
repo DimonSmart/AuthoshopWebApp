@@ -27,18 +27,11 @@ namespace AutoshopWebApp.Pages.Admin
             _signInManager = signInManager;
         }
 
-        public class InputLoginModel
-        {
-            public string UserID { get; set; }
-
-            [Display(Name = "Электронная почта")]
-            [DataType(DataType.EmailAddress)]
-            [Required]
-            public string Email { get; set; }
-        }
-
+        [Required]
         [BindProperty]
-        public InputLoginModel LoginModel { get; set; }
+        [Display(Name = "Электронная почта")]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; } 
@@ -51,18 +44,14 @@ namespace AutoshopWebApp.Pages.Admin
                 return new ChallengeResult();
             }
 
-            IdentityUser user;
+            var user = await UserManager.GetUserAsync(User);
 
-
-            user = await UserManager.GetUserAsync(User);
-
-            
             if(user == null)
             {
                 return NotFound();
             }
 
-            LoginModel = new InputLoginModel { Email = user.Email, UserID = user.Id };
+            Email = user.Email;
 
             return Page();
         }
@@ -74,21 +63,22 @@ namespace AutoshopWebApp.Pages.Admin
                 return Page();
             }
 
-            var user = await UserManager.FindByIdAsync(LoginModel.UserID);
-
-            if (user == null)
-            {
-                return NotFound($"This user not found");
-            }
-
             var isAuthorized = User.IsInRole(Constants.AdministratorRole);
+
             if (!isAuthorized)
             {
                 return new ChallengeResult();
             }
 
-            user.UserName = LoginModel.Email;
-            user.Email = LoginModel.Email;
+            var user = await UserManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.UserName = Email;
+            user.Email = Email;
 
             var changeLogin = await UserManager.UpdateAsync(user);
 
