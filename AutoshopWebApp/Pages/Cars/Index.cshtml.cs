@@ -22,7 +22,7 @@ namespace AutoshopWebApp.Pages.Cars
 
         public IList<OutputCarModel> OutputCarModels { get;set; }
 
-        public async Task<IActionResult> OnGetAsync(string search, SaleStatus? saleStatus)
+        public async Task<IActionResult> OnGetAsync(string search)
         {
             var query =
                 from car in _context.Cars
@@ -40,7 +40,6 @@ namespace AutoshopWebApp.Pages.Cars
                         ReleaseDate = car.ReleaseDate,
                         Run = car.Run,
                         SellingPrice = car.SellingPrice,
-                        SaleStatus = car.SaleStatus,
                     },
                     MarkAndModel = new MarkAndModel
                     {

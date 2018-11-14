@@ -27,6 +27,7 @@ namespace AutoshopWebApp.Models
 
         [Display(Name = "Стоимость экспертизы")]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(16,2)")]
         public decimal ExpertisePrice { get; set; }
     }
 }

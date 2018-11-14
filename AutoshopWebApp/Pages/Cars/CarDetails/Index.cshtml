@@ -8,29 +8,50 @@
 <h2>Автомобиль @Model.CarData.MarkAndModel.CarMark @Model.CarData.MarkAndModel.CarModel</h2>
 
 <div>
-    <p>
-        <a class="btn btn-default" asp-page="./EditCar" asp-route-id="@Model.CarData.Car.CarId">
-            Редактировать автомобиль
-        </a>
-        @if (Model.ShowPoolExpertiseButton)
-        {
-            <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
-                Справка для экспертизы
+    <form method="post">
+        <p>
+            <a class="btn btn-default" asp-page="./EditCar" asp-route-id="@Model.CarData.Car.CarId">
+                Редактировать автомобиль
             </a>
-        }
-        <a class="btn btn-default" asp-page="./EditStateRef" asp-route-id="@Model.CarData.Car.CarId">
-            Справка о тех. состоянии
-        </a>
-        <a class="btn btn-default" asp-page="./AddClientSeller" asp-route-id="@Model.CarData.Car.CarId">
-            Покупка у клиента
-        </a>
-        <a class="btn btn-default" asp-page="./AddClientBuyer" asp-route-id="@Model.CarData.Car.CarId">
-            Продажа клиенту
-        </a>
-        <a class="btn btn-default" asp-page="./CustomerBill" asp-route-id="@Model.CarData.Car.CarId">
-            Счёт клиенту
-        </a>
-    </p>
+            @if (Model.ShowExpertiseButton)
+            {
+                <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+                    Справка для экспертизы
+                </a>
+            }
+            @if (Model.ShowReferenceButton)
+            {
+                <a class="btn btn-default" asp-page="./EditStateRef" asp-route-id="@Model.CarData.Car.CarId">
+                    Справка о тех. состоянии
+                </a>
+            }
+            @if (Model.ShowBuyButton)
+            {
+                <a class="btn btn-default" asp-page="./AddClientSeller" asp-route-id="@Model.CarData.Car.CarId">
+                    Покупка у клиента
+                </a>
+            }
+            @if (Model.ShowSellButton)
+            {
+                <a class="btn btn-default" asp-page="./AddClientBuyer" asp-route-id="@Model.CarData.Car.CarId">
+                    Продажа клиенту
+                </a>
+            }
+            @if (Model.ShowBillButton)
+            {
+                <a class="btn btn-default" asp-page="./CustomerBill" asp-route-id="@Model.CarData.Car.CarId">
+                    Счёт клиенту
+                </a>
+            }
+            @if (Model.ShowDeleteButton)
+            {
+                <button type="submit" class="btn btn-danger" asp-page-handler="delete" 
+                        asp-route-id="@Model.CarData.Car.CarId">
+                    Удалить данные
+                </button>
+            }
+        </p>
+    </form>
     <hr />
 
     <style>
@@ -127,12 +148,6 @@
                 </dt>
                 <dd>
                     @Html.DisplayFor(model => model.CarData.Car.BuyingPrice)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.SaleStatus)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.CarData.StatusText)
                 </dd>
             </dl>
         </div>

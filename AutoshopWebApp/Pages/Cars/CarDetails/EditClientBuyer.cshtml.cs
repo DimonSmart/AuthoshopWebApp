@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
@@ -16,11 +18,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _manager;
+        private readonly IAuthorizationService _authorizationService;
 
-        public EditClientBuyerModel(ApplicationDbContext context, UserManager<IdentityUser> manager)
+        public EditClientBuyerModel(ApplicationDbContext context, UserManager<IdentityUser> manager,
+            IAuthorizationService authorizationService)
         {
             _context = context;
             _manager = manager;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -57,6 +62,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, queryData.buyer, Operations.Update);
+
+            if(!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             PaymentTypes = await PaymentType.GetSelectList(_context);
 
             ClientBuyer = queryData.buyer;
@@ -71,6 +84,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, ClientBuyer, Operations.Update);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var user = await _manager.GetUserAsync(User);

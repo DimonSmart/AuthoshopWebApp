@@ -47,7 +47,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var carData = await
                 (from car in _context.Cars
-                 where car.CarId == id && car.SaleStatus == SaleStatus.Expertise
+                 where car.CarId == id
                  join model in _context.MarkAndModels
                  on car.MarkAndModelID equals model.MarkAndModelId
                  select new { car.CarId, model }).FirstOrDefaultAsync();

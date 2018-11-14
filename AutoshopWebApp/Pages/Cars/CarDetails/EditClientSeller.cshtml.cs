@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
@@ -16,11 +18,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAuthorizationService _authorizationService;
 
-        public EditClientSellerModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public EditClientSellerModel(ApplicationDbContext context, UserManager<IdentityUser> userManager,
+            IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -64,6 +69,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, queryData.seller, Operations.Update);
+
+            if(!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             ClientSeller = queryData.seller;
             ClientSeller.WorkerId = workerUser.WorkerID;
 
@@ -77,6 +90,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, ClientSeller, Operations.Update);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var street = await _context.AddStreetAsync(Street.StreetName);

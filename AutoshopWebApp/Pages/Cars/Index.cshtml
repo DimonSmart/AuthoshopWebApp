@@ -45,9 +45,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.SellingPrice)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.SaleStatus)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -81,9 +78,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Car.SellingPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StatusText)
                 </td>
                 <td>
                     <a class="btn btn-default" asp-page="./CarDetails/Index" asp-route-id="@item.Car.CarId">Детали</a>

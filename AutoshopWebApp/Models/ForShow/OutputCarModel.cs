@@ -9,6 +9,5 @@ namespace AutoshopWebApp.Models.ForShow
     {
         public Car Car { get; set; }
         public MarkAndModel MarkAndModel { get; set; }
-        public string StatusText => Car.SaleStatus.GetName();
     }
 }

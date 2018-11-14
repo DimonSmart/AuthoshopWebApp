@@ -198,9 +198,12 @@
         <a class="btn btn-default" asp-page="./CustomerBill" asp-route-id="@Model.Car.CarId">
             Просмотр счёта
         </a>
-        <a class="btn btn-default" asp-page="./EditClientBuyer" asp-route-id="@Model.Car.CarId">
-            Редактровать
-        </a>
+        @if(Model.ShowEditButton)
+        {
+            <a class="btn btn-default" asp-page="./EditClientBuyer" asp-route-id="@Model.Car.CarId">
+                Редактровать
+            </a>
+        }
     </div>
 }
 

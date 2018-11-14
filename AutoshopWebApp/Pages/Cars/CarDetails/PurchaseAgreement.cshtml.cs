@@ -8,16 +8,21 @@ using AutoshopWebApp.Models;
 using AutoshopWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class PurchaseAgreementModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public PurchaseAgreementModel(ApplicationDbContext context)
+        public PurchaseAgreementModel(ApplicationDbContext context,
+             IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -63,6 +68,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, queryData.seller, Operations.Details);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             Worker = queryData.worker;
             Car = queryData.car;
             ClientSeller = queryData.seller;
@@ -70,6 +83,11 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             MarkAndModel = queryData.markAndModel;
             FinalPrice = queryData.finalPrice;
             WorkerPosition = queryData.position;
+
+            isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, queryData.seller, Operations.Update);
+
+            ShowEditButton = isAuthorized.Succeeded;
 
             return Page();
         }
@@ -85,6 +103,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
         public MarkAndModel MarkAndModel { get; set; }
 
         public Position WorkerPosition { get; set; }
+
+        public bool ShowEditButton { get; set; }
 
         [DataType(DataType.Currency)]
         public decimal FinalPrice { get; set; }

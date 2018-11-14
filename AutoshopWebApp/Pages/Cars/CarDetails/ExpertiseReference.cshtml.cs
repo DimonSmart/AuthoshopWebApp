@@ -69,7 +69,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var isWorkerExist = await _context.WorkerUsers.AnyAsync(x => x.UserID == user.Id);
 
-            ShowEditButton = isWorkerExist && OutModel.Car.SaleStatus == SaleStatus.Expertise;
+            ShowEditButton = isWorkerExist;
 
             return Page();
         }

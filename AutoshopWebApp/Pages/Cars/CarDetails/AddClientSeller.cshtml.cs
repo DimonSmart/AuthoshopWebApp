@@ -9,6 +9,8 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
@@ -16,11 +18,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AddClientSellerModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AddClientSellerModel(ApplicationDbContext context, UserManager<IdentityUser> userManager,
+             IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
+            _authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -93,6 +98,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, ClientSeller, Operations.Create);
+
+            if(!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             Street = await _context.AddStreetAsync(Street.StreetName);

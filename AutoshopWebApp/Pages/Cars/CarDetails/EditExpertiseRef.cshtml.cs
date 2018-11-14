@@ -39,7 +39,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var loadedExpData = await
                 (from reference in _context.PoolExpertiseReferences
                  join car in _context.Cars on reference.CarId equals car.CarId
-                 where reference.CarId == id && car.SaleStatus == SaleStatus.Expertise
+                 where reference.CarId == id
                  join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
                  select new { reference, mark }).FirstOrDefaultAsync();
 

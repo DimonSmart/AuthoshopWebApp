@@ -8,16 +8,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class EditCarModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public EditCarModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public EditCarModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -25,8 +30,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
         [BindProperty]
         public MarkAndModel MarkAndModel { get; set; }
-
-        public List<SelectListItem> SaleStatusList { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -47,9 +50,16 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            var isAuthorize = await _authorizationService
+               .AuthorizeAsync(User, query.car, Operations.Update);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             Car = query.car;
             MarkAndModel = query.mark;
-            SaleStatusList = SaleStatusHelpers.ToSelectList();
 
             return Page();
         }
@@ -59,6 +69,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorize = await _authorizationService
+               .AuthorizeAsync(User, Car, Operations.Update);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var mark = await _context

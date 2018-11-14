@@ -9,43 +9,24 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Models.ForShow;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars
 {
     public class CreateModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public CreateModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public CreateModel(ApplicationDbContext context, IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         public IActionResult OnGet()
         {
-            CarStatusSelectList = new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Value = SaleStatus.Expertise.ToString(),
-                    Text = SaleStatus.Expertise.GetName(),
-                },
-                new SelectListItem
-                {
-                    Value = SaleStatus.ForBuy.ToString(),
-                    Text = SaleStatus.ForBuy.GetName(),
-                },
-                new SelectListItem
-                {
-                    Value = SaleStatus.ForSold.ToString(),
-                    Text = SaleStatus.ForSold.GetName(),
-                },
-                new SelectListItem
-                {
-                    Value = SaleStatus.Sold.ToString(),
-                    Text = SaleStatus.Sold.GetName()
-                },
-            };
             return Page();
         }
 
@@ -63,6 +44,14 @@ namespace AutoshopWebApp.Pages.Cars
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, CarData, Operations.Create);
+
+            if(!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var carModel = await

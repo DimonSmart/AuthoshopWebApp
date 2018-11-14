@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     public class BuyPurchaseAgreementModel : PageModel
     {
         public readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public BuyPurchaseAgreementModel(ApplicationDbContext context)
+        public BuyPurchaseAgreementModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -59,6 +64,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            var isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, buyData.buyer, Operations.Details);
+
+            if(!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             ClientBuyer = buyData.buyer;
             Car = buyData.car;
             MarkAndModel = buyData.markAndModel;
@@ -66,6 +79,11 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             BuyerStreet = buyData.buyerStreet;
             Position = buyData.workerPos;
             Worker = buyData.worker;
+
+            isAuthorize = await _authorizationService
+                .AuthorizeAsync(User, buyData.buyer, Operations.Update);
+
+            ShowEditButton = isAuthorize.Succeeded;
 
             return Page();
         }
@@ -83,5 +101,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
         public Position Position { get; set; }
 
         public Worker Worker { get; set; }
+
+        public bool ShowEditButton { get; set; }
     }
 }

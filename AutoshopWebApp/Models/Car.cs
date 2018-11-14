@@ -49,72 +49,17 @@ namespace AutoshopWebApp.Models
 
         [Display(Name = "Первоначальная стоимость, руб.")]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(16,2)")]
         public decimal? ReleasePrice { get; set; }
 
         [Display(Name = "Стоимость продажи, руб.")]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(16,2)")]
         public decimal? SellingPrice { get; set; }
 
         [Display(Name = "Стоимость покупки, руб.")]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(16,2)")]
         public decimal? BuyingPrice { get; set; }
-
-        [Display(Name = "Статус")]
-        public SaleStatus SaleStatus { get; set; }
-    }
-
-    public enum SaleStatus
-    {
-        Expertise,
-        ForBuy,
-        ForSold,
-        Sold
-    }
-
-    public static class SaleStatusHelpers
-    {
-        public static string GetName(this SaleStatus status)
-        {
-            switch (status)
-            {
-                case SaleStatus.Expertise:
-                    return "На экспертизе";
-                case SaleStatus.ForBuy:
-                    return "Покупается";
-                case SaleStatus.ForSold:
-                    return "Продаётся";
-                case SaleStatus.Sold:
-                    return "Продано";
-                default:
-                    throw new ArgumentException();
-            }
-        }
-
-        public static List<SelectListItem> ToSelectList()
-        {
-            return new List<SelectListItem>
-            {
-                new SelectListItem
-                {
-                    Value = SaleStatus.Expertise.ToString(),
-                    Text = SaleStatus.Expertise.GetName(),
-                },
-                new SelectListItem
-                {
-                    Value = SaleStatus.ForBuy.ToString(),
-                    Text = SaleStatus.ForBuy.GetName(),
-                },
-                new SelectListItem
-                {
-                    Value = SaleStatus.ForSold.ToString(),
-                    Text = SaleStatus.ForSold.GetName(),
-                },
-                new SelectListItem
-                {
-                    Value = SaleStatus.Sold.ToString(),
-                    Text = SaleStatus.Sold.GetName()
-                },
-            };
-        }
     }
 }
