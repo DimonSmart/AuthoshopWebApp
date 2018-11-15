@@ -1,0 +1,71 @@
+﻿@page
+@model AutoshopWebApp.Pages.SpareParts.IndexModel
+
+@{
+    ViewData["Title"] = "Запчасти";
+}
+
+<h2>Запчасти</h2>
+
+
+<form class="form-inline" method="get">
+    <div class="form-group" style="font-size:20px">
+        Поиск: <input class="form-control" type="text" name="search" />
+        <button type="submit" class="btn btn-default">Найти</button>
+    </div>
+    <a class="btn btn-default" asp-page="Create">Добавить</a>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SparePart[0].SparePart.PartName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SparePart[0].MarkAndModel.CarMark)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SparePart[0].MarkAndModel.CarModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SparePart[0].SparePart.PartPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SparePart[0].SparePart.PartCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.SparePart) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.SparePart[0].SparePart.PartName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.SparePart[0].MarkAndModel.CarMark)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.SparePart[0].MarkAndModel.CarModel)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.SparePart[0].SparePart.PartPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.SparePart[0].SparePart.PartCount)
+            </td>
+            <td>
+                <a class="btn btn-default" asp-page="./Edit" asp-route-id="@item.SparePart.SparePartId">Изменить</a>
+                @if (Model.ShowDeleteButton)
+                {
+                    <a class="btn btn-default" asp-page="./Delete" asp-route-id="@item.SparePart.SparePartId">
+                        Удалить
+                    </a>
+                }
+
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

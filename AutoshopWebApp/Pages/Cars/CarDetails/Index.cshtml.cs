@@ -102,17 +102,17 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var queryData = await query.AsNoTracking().FirstOrDefaultAsync();
 
-            var isAuthorize = await _authorizationService
-                .AuthorizeAsync(User, queryData.carModel.Car, Operations.Details);
-
-            if(!isAuthorize.Succeeded)
-            {
-                return new ChallengeResult();
-            }
-
             if(queryData==null)
             {
                 return NotFound();
+            }
+
+            var isAuthorize = await _authorizationService
+               .AuthorizeAsync(User, queryData.carModel.Car, Operations.Details);
+
+            if (!isAuthorize.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             CarStateRef = queryData.stateRef;
@@ -164,10 +164,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 on car.CarId equals expertiseRef.CarId into seletedExpRef
                 from expertiseRef in seletedExpRef.DefaultIfEmpty()
 
-                join worker in _context.Workers
-                on expertiseRef.WorkerId equals worker.WorkerId into selectedWorker
-                from worker in selectedWorker.DefaultIfEmpty()
-
                 join buyer in _context.ClientBuyers
                 on car.CarId equals buyer.CarId into buyerData
                 from buyer in buyerData.DefaultIfEmpty()
@@ -176,7 +172,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 on car.CarId equals seller.CarId into sellerData
                 from seller in sellerData.DefaultIfEmpty()
 
-                select new { car, stateRef, expertiseRef, worker, buyer, seller };
+                select new { car, stateRef, expertiseRef, buyer, seller };
 
             var data = await query.FirstOrDefaultAsync();
 
@@ -196,7 +192,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             _context.Remove(data.car);
             if (data.stateRef != null) _context.Remove(data.stateRef);
             if (data.expertiseRef != null) _context.Remove(data.expertiseRef);
-            if (data.worker != null) _context.Remove(data.worker);
             if (data.buyer != null) _context.Remove(data.buyer);
             if (data.seller != null) _context.Remove(data.seller);
 

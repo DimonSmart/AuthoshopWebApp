@@ -34,6 +34,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
         [BindProperty]
         public Street Street { get; set; }
 
+        public MarkAndModel MarkAndModel { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -59,9 +61,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var queryData = await
                 (from seller in _context.ClientSellers
                  where seller.CarId == id
+                 join car in _context.Cars
+                 on seller.CarId equals car.CarId
+                 join model in _context.MarkAndModels
+                 on car.MarkAndModelID equals model.MarkAndModelId
                  join street in _context.Streets
                  on seller.StreetId equals street.StreetId
-                 select new { seller, street })
+                 select new { seller, street, model })
                  .AsNoTracking().FirstOrDefaultAsync();
 
             if(queryData == null)
@@ -80,6 +86,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             ClientSeller = queryData.seller;
             ClientSeller.WorkerId = workerUser.WorkerID;
 
+            MarkAndModel = queryData.model;
             Street = queryData.street;
 
             return Page();

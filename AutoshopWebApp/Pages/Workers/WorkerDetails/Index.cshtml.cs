@@ -77,6 +77,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
         {
             var ordersQuery =
                from order in _context.TransactionOrders
+               where order.WorkerId == WorkerId
                join position in _context.Positions
                on order.PositionId equals position.PositionId
                group new { order, position } 

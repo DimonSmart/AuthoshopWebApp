@@ -2,12 +2,11 @@
 @model AutoshopWebApp.Pages.Workers.WorkerDetails.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить данные сотрудника";
 }
 
-<h2>Edit</h2>
+<h2>Изменить данные сотрудника</h2>
 
-<h4>Worker</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -54,14 +53,14 @@
                 <p class="form-control" readonly="readonly">@Model.OutputModel.Position.PositionName</p>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Назад</a>
 </div>
 
 

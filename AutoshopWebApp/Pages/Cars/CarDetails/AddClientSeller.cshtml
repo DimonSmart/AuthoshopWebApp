@@ -2,10 +2,10 @@
 @model AutoshopWebApp.Pages.Cars.CarDetails.AddClientSellerModel
 
 @{
-    ViewData["Title"] = "AddClientSeller";
+    ViewData["Title"] = "Покупка автомобиля";
 }
 
-<h2>Добавление данных продавца</h2>
+<h2>Покупка автомобиля</h2>
 
 <h4>Автомобиль @Model.MarkAndModel.CarMark @Model.MarkAndModel.CarModel</h4>
 <hr />
@@ -91,14 +91,14 @@
                 <span asp-validation-for="ClientSeller.OwnDocIssuedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Добавить" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index" asp-route-id="@Model.CarId">Back to List</a>
+    <a asp-page="Index" asp-route-id="@Model.CarId">Назад</a>
 </div>
 
 @section Scripts {

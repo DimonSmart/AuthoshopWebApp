@@ -11,16 +11,17 @@ namespace AutoshopWebApp.Models
     {
         public int SparePartId { get; set; }
 
-        [Display(Name = "ID модели")]
         public int MarkAndModelId { get; set; }
 
         [Display(Name = "Стоимость запчасти")]
         [Column(TypeName = "decimal(18,2)")]
+        [DataType(DataType.Currency)]
         public decimal PartPrice { get; set; }
 
         [Display(Name = "Количество на складе")]
         public int PartCount { get; set; }
 
+        [Required]
         [Display(Name = "Название запчасти")]
         [MaxLength(100)]
         public string PartName { get; set; }
