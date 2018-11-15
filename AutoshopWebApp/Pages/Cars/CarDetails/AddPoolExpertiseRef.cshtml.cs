@@ -9,20 +9,25 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class AddPoolExpertiseRefModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAuthorizationService _authorizationService;
 
         public AddPoolExpertiseRefModel(
             ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -93,6 +98,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return Page();
             }
 
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, PoolExpertiseReference, Operations.Create);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
+            }
 
             await _context.PoolExpertiseReferences.AddAsync(PoolExpertiseReference);
             await _context.SaveChangesAsync();

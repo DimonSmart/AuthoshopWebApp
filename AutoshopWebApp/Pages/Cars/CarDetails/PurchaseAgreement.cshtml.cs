@@ -10,24 +10,34 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using AutoshopWebApp.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class PurchaseAgreementModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IAuthorizationService _authorizationService;
 
         public PurchaseAgreementModel(ApplicationDbContext context,
-             IAuthorizationService authorizationService)
+             UserManager<IdentityUser> userManager, IAuthorizationService authorizationService)
         {
             _context = context;
             _authorizationService = authorizationService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user==null)
             {
                 return NotFound();
             }
@@ -87,7 +97,10 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             isAuthorized = await _authorizationService
                 .AuthorizeAsync(User, queryData.seller, Operations.Update);
 
-            ShowEditButton = isAuthorized.Succeeded;
+            var isWorkerExist = await _context.WorkerUsers
+                .AnyAsync(x => x.UserID == user.Id);
+
+            ShowEditButton = isWorkerExist && isAuthorized.Succeeded;
 
             return Page();
         }

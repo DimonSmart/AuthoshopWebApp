@@ -8,16 +8,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class EditStateRefModel : PageModel
     {
-        private readonly AutoshopWebApp.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public EditStateRefModel(AutoshopWebApp.Data.ApplicationDbContext context)
+        public EditStateRefModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -46,6 +51,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return RedirectToPage("./AddExpertiseRef", new { id = id.Value });
             }
 
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, queryData.stateRef, Operations.Update);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             CarStateRef = queryData.stateRef;
             MarkAndModel = queryData.markAndModel;
 
@@ -57,6 +70,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = await _authorizationService
+               .AuthorizeAsync(User, CarStateRef, Operations.Update);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             _context.Attach(CarStateRef).State = EntityState.Modified;

@@ -6,6 +6,7 @@ using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,28 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     public class BuyPurchaseAgreementModel : PageModel
     {
         public readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IAuthorizationService _authorizationService;
 
         public BuyPurchaseAgreementModel(ApplicationDbContext context,
-            IAuthorizationService authorizationService)
+             UserManager<IdentityUser> userManager, IAuthorizationService authorizationService)
         {
             _context = context;
             _authorizationService = authorizationService;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if(id==null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager
+                .GetUserAsync(User);
+
+            if(user==null)
             {
                 return NotFound();
             }
@@ -57,7 +68,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 };
 
             var buyData = await buyQuery
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(x => x.car.CarId == id);
 
             if(buyData == null)
             {
@@ -80,10 +91,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             Position = buyData.workerPos;
             Worker = buyData.worker;
 
+            var isWorkerExist = await _context.WorkerUsers
+                .AnyAsync(x => x.UserID == user.Id);
+
             isAuthorize = await _authorizationService
                 .AuthorizeAsync(User, buyData.buyer, Operations.Update);
 
-            ShowEditButton = isAuthorize.Succeeded;
+            ShowEditButton = isWorkerExist && isAuthorize.Succeeded;
 
             return Page();
         }

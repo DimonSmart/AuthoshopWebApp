@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoshopWebApp.Authorization;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,11 +17,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAuthorizationService _authorizationService;
 
-        public ExpertiseReferenceModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ExpertiseReferenceModel(ApplicationDbContext context,
+            UserManager<IdentityUser> userManager, IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
+            _authorizationService = authorizationService;
         }
 
         public class OutputModel
@@ -60,6 +65,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, OutModel.PoolExpertise, Operations.Details);
+
+            if(!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
+            }
+
             var user = await _userManager.GetUserAsync(User);
 
             if (user == null)
@@ -69,7 +82,10 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var isWorkerExist = await _context.WorkerUsers.AnyAsync(x => x.UserID == user.Id);
 
-            ShowEditButton = isWorkerExist;
+            isAuthorized = await _authorizationService
+                 .AuthorizeAsync(User, OutModel.PoolExpertise, Operations.Update);
+
+            ShowEditButton = isWorkerExist && isAuthorized.Succeeded;
 
             return Page();
         }

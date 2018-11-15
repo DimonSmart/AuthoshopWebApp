@@ -126,7 +126,7 @@ namespace AutoshopWebApp.Data
         {
             var findedMark = await MarkAndModels
                 .FirstOrDefaultAsync(x => x.CarMark.Equals(mark, StringComparison.OrdinalIgnoreCase)
-                || x.CarModel.Equals(model, StringComparison.OrdinalIgnoreCase));
+                && x.CarModel.Equals(model, StringComparison.OrdinalIgnoreCase));
 
             if(findedMark == null)
             {

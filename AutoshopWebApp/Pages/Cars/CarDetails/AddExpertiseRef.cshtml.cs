@@ -8,16 +8,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class AddExpertiseRefModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AddExpertiseRefModel(ApplicationDbContext context)
+        public AddExpertiseRefModel(ApplicationDbContext context,
+            IAuthorizationService authorizationService)
         {
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -33,8 +38,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                  join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
                  select new
                  {
-                     stateRef = new CarStateRef { CarId = car.CarId },
-                     mark
+                     car.CarId, mark
                  }).FirstOrDefaultAsync();
 
             if(queryData==null)
@@ -42,11 +46,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            CarStateRef = queryData.stateRef;
+            CarId = queryData.CarId;
             MarkAndModel = queryData.mark;
 
             return Page();
         }
+
+        public int CarId { get; set; }
 
         [BindProperty]
         public CarStateRef CarStateRef { get; set; }
@@ -58,6 +64,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, CarStateRef, Operations.Create);
+
+            if(!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             _context.CarStateRefId.Add(CarStateRef);

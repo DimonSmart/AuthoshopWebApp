@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using AutoshopWebApp.Authorization;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
@@ -16,12 +18,15 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAuthorizationService _authorizationService;
 
         public EditExpertiseRefModel(ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            IAuthorizationService authorizationService)
         {
             _context = context;
             _userManager = userManager;
+            _authorizationService = authorizationService;
         }
 
         [BindProperty]
@@ -46,6 +51,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (loadedExpData == null)
             {
                 return NotFound();
+            }
+
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, loadedExpData.reference, Operations.Update);
+
+            if(!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             var user = await _userManager.GetUserAsync(User);
@@ -77,6 +90,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             if (!ModelState.IsValid)
             {
                 return Page();
+            }
+
+            var isAuthorized = await _authorizationService
+                .AuthorizeAsync(User, PoolExpertiseReference, Operations.Update);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return new ChallengeResult();
             }
 
             _context.Attach(PoolExpertiseReference).State = EntityState.Modified;

@@ -65,6 +65,8 @@ namespace AutoshopWebApp
             services.AddSingleton<IAuthorizationHandler, CarAuthorizationHandler>();
             services.AddSingleton<IAuthorizationHandler, BuyerAuthorizationHandler>();
             services.AddSingleton<IAuthorizationHandler, SellerAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, StateAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, ExpertiseAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

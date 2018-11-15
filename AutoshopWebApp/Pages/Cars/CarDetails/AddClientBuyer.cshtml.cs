@@ -83,7 +83,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var isAuthorize = await _authorizationService
-               .AuthorizeAsync(User, ClientBuyer, Operations.Update);
+               .AuthorizeAsync(User, ClientBuyer, Operations.Create);
 
             if (!isAuthorize.Succeeded)
             {
@@ -112,7 +112,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             _context.ClientBuyers.Add(ClientBuyer);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index", new { id = ClientBuyer.CarId });
+            return RedirectToPage("./BuyPurchaseAgreement", new { id = ClientBuyer.CarId });
         }
     }
 }

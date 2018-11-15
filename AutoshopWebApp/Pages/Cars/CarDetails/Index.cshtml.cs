@@ -42,6 +42,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
         public ExpertiseRefOutput ExpertiseRefData { get; set; }
 
+        public bool ShowCarEditButton { get; set; }
+
         public bool ShowExpertiseButton { get; set; }
 
         public bool ShowReferenceButton { get; set; }
@@ -126,8 +128,15 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var isWokerExist = await _context.WorkerUsers.AnyAsync(x => user.Id == x.UserID);
 
+            var authorizeEditRef = await _authorizationService
+                .AuthorizeAsync(User, queryData.stateRef, Operations.Update);
+
+            var authorizeEditCar = await _authorizationService
+                .AuthorizeAsync(User, queryData.carModel.Car, Operations.Update);
+
+            ShowCarEditButton = authorizeEditCar.Succeeded;
             ShowExpertiseButton = isWokerExist || (queryData.expertiseRefData != null);
-            ShowReferenceButton = isWokerExist || (queryData.stateRef != null);
+            ShowReferenceButton = ((queryData.stateRef == null) && isWokerExist) || authorizeEditRef.Succeeded;
             ShowSellButton = (isWokerExist || queryData.isBuyerExist) && (queryData.carModel.Car.SellingPrice != null);
             ShowBillButton = queryData.isBuyerExist && (queryData.carModel.Car.SellingPrice != null);
 
