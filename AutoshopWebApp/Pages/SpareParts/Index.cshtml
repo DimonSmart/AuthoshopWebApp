@@ -41,19 +41,19 @@
 @foreach (var item in Model.SparePart) {
         <tr>
             <td>
-                @Html.DisplayFor(model => model.SparePart[0].SparePart.PartName)
+                @Html.DisplayFor(model => item.SparePart.PartName)
             </td>
             <td>
-                @Html.DisplayFor(model => model.SparePart[0].MarkAndModel.CarMark)
+                @Html.DisplayFor(model => item.MarkAndModel.CarMark)
             </td>
             <td>
-                @Html.DisplayFor(model => model.SparePart[0].MarkAndModel.CarModel)
+                @Html.DisplayFor(model => item.MarkAndModel.CarModel)
             </td>
             <td>
-                @Html.DisplayFor(model => model.SparePart[0].SparePart.PartPrice)
+                @Html.DisplayFor(model => item.SparePart.PartPrice)
             </td>
             <td>
-                @Html.DisplayFor(model => model.SparePart[0].SparePart.PartCount)
+                @Html.DisplayFor(model => item.SparePart.PartCount)
             </td>
             <td>
                 <a class="btn btn-default" asp-page="./Edit" asp-route-id="@item.SparePart.SparePartId">Изменить</a>

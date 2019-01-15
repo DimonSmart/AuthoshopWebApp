@@ -82,7 +82,9 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 where worker.WorkerId == id
                 join orders in ordersQuery
                 on worker.WorkerId equals orders.Key
-                let ordersList = orders.ToList()
+                into ordersQueryData
+                from orders in ordersQueryData.DefaultIfEmpty()
+                let ordersList = orders==null ? new List<TransactionData>(): orders.ToList()
                 select new Output
                 {
                     Worker = new Worker
