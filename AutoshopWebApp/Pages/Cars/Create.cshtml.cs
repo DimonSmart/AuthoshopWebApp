@@ -33,9 +33,6 @@ namespace AutoshopWebApp.Pages.Cars
         [BindProperty]
         public Car CarData { get; set; }
 
-        [BindProperty]
-        public MarkAndModel MarkAndModelData { get; set; }
-
         public List<SelectListItem> CarStatusSelectList { get; set; }
 
 
@@ -54,22 +51,13 @@ namespace AutoshopWebApp.Pages.Cars
                 return new ChallengeResult();
             }
 
-            var carModel = await
-                (from model in _context.MarkAndModels
-                 where (model.CarMark.Equals(MarkAndModelData.CarMark, StringComparison.OrdinalIgnoreCase))
-                 && (model.CarModel.Equals(MarkAndModelData.CarModel, StringComparison.OrdinalIgnoreCase))
-                 select model).FirstOrDefaultAsync();
+            var carModel = await _context
+                .AddMarkAndModelAsync(CarData.MarkAndModel.CarMark, CarData.MarkAndModel.CarModel);
 
-            if(carModel == null)
-            {
-                carModel = MarkAndModelData;
-                await _context.AddAsync(carModel);
-                await _context.SaveChangesAsync();
-            }
+            CarData.MarkAndModel = carModel;
 
-            CarData.MarkAndModelID = carModel.MarkAndModelId;
-                
             _context.Cars.Add(CarData);
+
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./CarDetails/Index", new { id = CarData.CarId });

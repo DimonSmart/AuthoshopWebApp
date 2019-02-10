@@ -12,44 +12,44 @@
         <p>
             @if (Model.ShowCarEditButton)
             {
-                <a class="btn btn-default" asp-page="./EditCar" asp-route-id="@Model.CarData.Car.CarId">
+                <a class="btn btn-default" asp-page="./EditCar" asp-route-id="@Model.CarData.CarId">
                     Редактировать автомобиль
                 </a>
             }
             @if (Model.ShowExpertiseButton)
             {
-                <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.Car.CarId">
+                <a class="btn btn-default" asp-page="./AddPoolExpertiseRef" asp-route-id="@Model.CarData.CarId">
                     Справка для экспертизы
                 </a>
             }
             @if (Model.ShowReferenceButton)
             {
-                <a class="btn btn-default" asp-page="./EditStateRef" asp-route-id="@Model.CarData.Car.CarId">
+                <a class="btn btn-default" asp-page="./EditStateRef" asp-route-id="@Model.CarData.CarId">
                     Справка о тех. состоянии
                 </a>
             }
             @if (Model.ShowBuyButton)
             {
-                <a class="btn btn-default" asp-page="./AddClientSeller" asp-route-id="@Model.CarData.Car.CarId">
+                <a class="btn btn-default" asp-page="./AddClientSeller" asp-route-id="@Model.CarData.CarId">
                     Покупка у клиента
                 </a>
             }
             @if (Model.ShowSellButton)
             {
-                <a class="btn btn-default" asp-page="./AddClientBuyer" asp-route-id="@Model.CarData.Car.CarId">
+                <a class="btn btn-default" asp-page="./AddClientBuyer" asp-route-id="@Model.CarData.CarId">
                     Продажа клиенту
                 </a>
             }
             @if (Model.ShowBillButton)
             {
-                <a class="btn btn-default" asp-page="./CustomerBill" asp-route-id="@Model.CarData.Car.CarId">
+                <a class="btn btn-default" asp-page="./CustomerBill" asp-route-id="@Model.CarData.CarId">
                     Счёт клиенту
                 </a>
             }
             @if (Model.ShowDeleteButton)
             {
                 <button type="submit" class="btn btn-danger" asp-page-handler="delete"
-                        asp-route-id="@Model.CarData.Car.CarId">
+                        asp-route-id="@Model.CarData.CarId">
                     Удалить данные
                 </button>
             }
@@ -93,64 +93,64 @@
                     @Html.DisplayFor(model => model.CarData.MarkAndModel.CarModel)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.Color)
+                    @Html.DisplayNameFor(model => model.CarData.Color)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.Color)
+                    @Html.DisplayFor(model => model.CarData.Color)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.EngineNumber)
+                    @Html.DisplayNameFor(model => model.CarData.EngineNumber)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.EngineNumber)
+                    @Html.DisplayFor(model => model.CarData.EngineNumber)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.BodyNumber)
+                    @Html.DisplayNameFor(model => model.CarData.BodyNumber)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.BodyNumber)
+                    @Html.DisplayFor(model => model.CarData.BodyNumber)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.ChassisNumber)
+                    @Html.DisplayNameFor(model => model.CarData.ChassisNumber)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.ChassisNumber)
+                    @Html.DisplayFor(model => model.CarData.ChassisNumber)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.ReleaseDate)
+                    @Html.DisplayNameFor(model => model.CarData.ReleaseDate)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.ReleaseDate)
+                    @Html.DisplayFor(model => model.CarData.ReleaseDate)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.RegNumber)
+                    @Html.DisplayNameFor(model => model.CarData.RegNumber)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.RegNumber)
+                    @Html.DisplayFor(model => model.CarData.RegNumber)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.Run)
+                    @Html.DisplayNameFor(model => model.CarData.Run)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.Run)
+                    @Html.DisplayFor(model => model.CarData.Run)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.ReleasePrice)
+                    @Html.DisplayNameFor(model => model.CarData.ReleasePrice)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.ReleasePrice)
+                    @Html.DisplayFor(model => model.CarData.ReleasePrice)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.SellingPrice)
+                    @Html.DisplayNameFor(model => model.CarData.SellingPrice)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.SellingPrice)
+                    @Html.DisplayFor(model => model.CarData.SellingPrice)
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => model.CarData.Car.BuyingPrice)
+                    @Html.DisplayNameFor(model => model.CarData.BuyingPrice)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.CarData.Car.BuyingPrice)
+                    @Html.DisplayFor(model => model.CarData.BuyingPrice)
                 </dd>
             </dl>
         </div>

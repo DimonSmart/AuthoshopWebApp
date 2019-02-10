@@ -34,11 +34,10 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var queryData = await
                 (from car in _context.Cars
-                 where car.CarId == id
-                 join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
                  select new
                  {
-                     car.CarId, mark
+                     car.CarId,
+                     car.MarkAndModel
                  }).FirstOrDefaultAsync();
 
             if(queryData==null)
@@ -47,7 +46,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             CarId = queryData.CarId;
-            MarkAndModel = queryData.mark;
+            MarkAndModel = queryData.MarkAndModel;
 
             return Page();
         }

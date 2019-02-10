@@ -46,8 +46,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var carQuery =
                 from car in _context.Cars
                 where car.BuyingPrice != null
-                join markAndModel in _context.MarkAndModels
-                on car.MarkAndModelID equals markAndModel.MarkAndModelId
                 join seller in _context.ClientSellers
                 on car.CarId equals seller.CarId
                 join sellerStreet in _context.Streets
@@ -61,7 +59,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 let finalPrice = car.BuyingPrice.Value - stateRef.ExpertisePrice
                 select new
                 {
-                    car, markAndModel, seller, sellerStreet, finalPrice, position,
+                    car, car.MarkAndModel, seller, sellerStreet, finalPrice, position,
                     worker = new Worker
                     {
                         Firstname = worker.Firstname,
@@ -90,7 +88,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             Car = queryData.car;
             ClientSeller = queryData.seller;
             SellerStreet = queryData.sellerStreet;
-            MarkAndModel = queryData.markAndModel;
+            MarkAndModel = queryData.MarkAndModel;
             FinalPrice = queryData.finalPrice;
             WorkerPosition = queryData.position;
 

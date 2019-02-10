@@ -124,9 +124,12 @@ namespace AutoshopWebApp.Data
 
         public async Task<MarkAndModel> AddMarkAndModelAsync(string mark, string model)
         {
-            var findedMark = await MarkAndModels
-                .FirstOrDefaultAsync(x => x.CarMark.Equals(mark, StringComparison.OrdinalIgnoreCase)
-                && x.CarModel.Equals(model, StringComparison.OrdinalIgnoreCase));
+            var findedMark = await
+                (from markData in MarkAndModels
+                 where markData.CarMark.Equals(mark, StringComparison.OrdinalIgnoreCase)
+                 && markData.CarModel.Equals(model, StringComparison.OrdinalIgnoreCase)
+                 select markData
+                ).FirstOrDefaultAsync();
 
             if(findedMark == null)
             {
@@ -135,7 +138,7 @@ namespace AutoshopWebApp.Data
                     CarMark = mark,
                     CarModel = model
                 };
-                await AddAsync(findedMark);
+                await MarkAndModels.AddAsync(findedMark);
                 await SaveChangesAsync();
             }
 

@@ -20,7 +20,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SparePart[0].SparePart.PartName)
+                @Html.DisplayNameFor(model => model.SparePart[0].PartName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SparePart[0].MarkAndModel.CarMark)
@@ -29,10 +29,10 @@
                 @Html.DisplayNameFor(model => model.SparePart[0].MarkAndModel.CarModel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SparePart[0].SparePart.PartPrice)
+                @Html.DisplayNameFor(model => model.SparePart[0].PartPrice)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SparePart[0].SparePart.PartCount)
+                @Html.DisplayNameFor(model => model.SparePart[0].PartCount)
             </th>
             <th></th>
         </tr>
@@ -41,7 +41,7 @@
 @foreach (var item in Model.SparePart) {
         <tr>
             <td>
-                @Html.DisplayFor(model => item.SparePart.PartName)
+                @Html.DisplayFor(model => item.PartName)
             </td>
             <td>
                 @Html.DisplayFor(model => item.MarkAndModel.CarMark)
@@ -50,16 +50,16 @@
                 @Html.DisplayFor(model => item.MarkAndModel.CarModel)
             </td>
             <td>
-                @Html.DisplayFor(model => item.SparePart.PartPrice)
+                @Html.DisplayFor(model => item.PartPrice)
             </td>
             <td>
-                @Html.DisplayFor(model => item.SparePart.PartCount)
+                @Html.DisplayFor(model => item.PartCount)
             </td>
             <td>
-                <a class="btn btn-default" asp-page="./Edit" asp-route-id="@item.SparePart.SparePartId">Изменить</a>
+                <a class="btn btn-default" asp-page="./Edit" asp-route-id="@item.SparePartId">Изменить</a>
                 @if (Model.ShowDeleteButton)
                 {
-                    <a class="btn btn-default" asp-page="./Delete" asp-route-id="@item.SparePart.SparePartId">
+                    <a class="btn btn-default" asp-page="./Delete" asp-route-id="@item.SparePartId">
                         Удалить
                     </a>
                 }

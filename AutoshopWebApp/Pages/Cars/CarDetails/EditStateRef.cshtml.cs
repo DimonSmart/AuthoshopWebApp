@@ -42,9 +42,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 where stateRef.CarId == id
                 join car in _context.Cars
                 on stateRef.CarId equals car.CarId
-                join markAndModel in _context.MarkAndModels
-                on car.MarkAndModelID equals markAndModel.MarkAndModelId
-                select new { stateRef, markAndModel }).FirstOrDefaultAsync();
+                select new { stateRef, car.MarkAndModel }
+                ).FirstOrDefaultAsync();
 
             if (queryData == null)
             {
@@ -60,7 +59,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             CarStateRef = queryData.stateRef;
-            MarkAndModel = queryData.markAndModel;
+            MarkAndModel = queryData.MarkAndModel;
 
             return Page();
         }

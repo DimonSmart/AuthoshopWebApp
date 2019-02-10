@@ -28,9 +28,6 @@ namespace AutoshopWebApp.Pages.SpareParts
         [BindProperty]
         public SparePart SparePart { get; set; }
 
-        [BindProperty]
-        public MarkAndModel MarkAndModel { get; set; }
-
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -38,13 +35,9 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return NotFound();
             }
 
-            var query =
-                from part in _context.SpareParts
-                join mark in _context.MarkAndModels
-                on part.MarkAndModelId equals mark.MarkAndModelId
-                select new { part, mark };
-
-            var queryData = await query.FirstOrDefaultAsync(m => m.part.SparePartId == id);
+            var queryData = await _context.SpareParts
+                .Include(x => x.MarkAndModel)
+                .FirstOrDefaultAsync(m => m.SparePartId == id);
 
             if (queryData == null)
             {
@@ -52,15 +45,14 @@ namespace AutoshopWebApp.Pages.SpareParts
             }
 
             var isAuthorized = await _authorizationService
-                .AuthorizeAsync(User, queryData.part, Operations.Update);
+                .AuthorizeAsync(User, queryData, Operations.Update);
 
             if(!isAuthorized.Succeeded)
             {
                 return new ChallengeResult();
             }
 
-            SparePart = queryData.part;
-            MarkAndModel = queryData.mark;
+            SparePart = queryData;
 
             return Page();
         }
@@ -80,9 +72,10 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return new ChallengeResult();
             }
 
-            MarkAndModel = await _context.AddMarkAndModelAsync(MarkAndModel.CarMark, MarkAndModel.CarModel);
+            SparePart.MarkAndModel = await _context
+                .AddMarkAndModelAsync(SparePart.MarkAndModel.CarMark, SparePart.MarkAndModel.CarModel);
 
-            SparePart.MarkAndModelId = MarkAndModel.MarkAndModelId;
+            //SparePart.MarkAndModelId = MarkAndModel.MarkAndModelId;
 
             _context.Attach(SparePart).State = EntityState.Modified;
 

@@ -46,9 +46,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var query = await
                 (from car in _context.Cars
                  where car.CarId == id
-                 join mark in _context.MarkAndModels
-                 on car.MarkAndModelID equals mark.MarkAndModelId
-                 select new { mark, car.CarId }).FirstOrDefaultAsync();
+                 select new { car.MarkAndModel, car.CarId }).FirstOrDefaultAsync();
 
             if(query==null)
             {
@@ -57,7 +55,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             PaymentTypes = await PaymentType.GetSelectList(_context);
 
-            MarkAndModel = query.mark;
+            MarkAndModel = query.MarkAndModel;
             CarId = query.CarId;
 
             return Page();

@@ -36,13 +36,9 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return NotFound();
             }
 
-            var query =
-                from part in _context.SpareParts
-                join mark in _context.MarkAndModels
-                on part.MarkAndModelId equals mark.MarkAndModelId
-                select new { part, mark };
-
-            var queryData = await query.FirstOrDefaultAsync(m => m.part.SparePartId == id);
+            var queryData = await _context.SpareParts
+                .Include(x => x.MarkAndModel)
+                .FirstOrDefaultAsync(m => m.SparePartId == id);
 
             if (queryData == null)
             {
@@ -50,15 +46,14 @@ namespace AutoshopWebApp.Pages.SpareParts
             }
 
             var isAuthorized = await _authorizationService
-                .AuthorizeAsync(User, queryData.part, Operations.Delete);
+                .AuthorizeAsync(User, queryData, Operations.Delete);
 
             if (!isAuthorized.Succeeded)
             {
                 return new ChallengeResult();
             }
 
-            SparePart = queryData.part;
-            MarkAndModel = queryData.mark;
+            SparePart = queryData;
 
             return Page();
         }

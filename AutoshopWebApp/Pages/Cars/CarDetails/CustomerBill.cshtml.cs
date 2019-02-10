@@ -32,8 +32,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var billQuery =
                 from car in _context.Cars
                 where car.CarId == id
-                join markAndModel in _context.MarkAndModels
-                on car.MarkAndModelID equals markAndModel.MarkAndModelId
                 join clientBuyer in _context.ClientBuyers
                 on car.CarId equals clientBuyer.CarId
                 join paymentType in _context.PaymentTypes
@@ -41,7 +39,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 let dueDate = clientBuyer.BuyDate.AddDays(5)
                 select new
                 {
-                    car, markAndModel, paymentType, dueDate,
+                    car, car.MarkAndModel, paymentType, dueDate,
                     clientBuyer = new ClientBuyer
                     {
                         Firstname = clientBuyer.Firstname,
@@ -61,7 +59,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             Car = billData.car;
-            MarkAndModel = billData.markAndModel;
+            MarkAndModel = billData.MarkAndModel;
             ClientBuyer = billData.clientBuyer;
             DueDate = billData.dueDate;
             PaymentType = billData.paymentType;

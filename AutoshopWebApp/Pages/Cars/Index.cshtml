@@ -25,25 +25,25 @@
                 @Html.DisplayNameFor(model => model.OutputCarModels[0].MarkAndModel.CarModel)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.Color)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Color)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.EngineNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].EngineNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.RegNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].RegNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.BodyNumber)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].BodyNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.ReleaseDate)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].ReleaseDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.Run)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].Run)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputCarModels[0].Car.SellingPrice)
+                @Html.DisplayNameFor(model => model.OutputCarModels[0].SellingPrice)
             </th>
             <th></th>
         </tr>
@@ -59,28 +59,28 @@
                     @Html.DisplayFor(modelItem => item.MarkAndModel.CarModel)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.Color)
+                    @Html.DisplayFor(modelItem => item.Color)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.EngineNumber)
+                    @Html.DisplayFor(modelItem => item.EngineNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.RegNumber)
+                    @Html.DisplayFor(modelItem => item.RegNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.BodyNumber)
+                    @Html.DisplayFor(modelItem => item.BodyNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.ReleaseDate)
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.Run)
+                    @Html.DisplayFor(modelItem => item.Run)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Car.SellingPrice)
+                    @Html.DisplayFor(modelItem => item.SellingPrice)
                 </td>
                 <td>
-                    <a class="btn btn-default" asp-page="./CarDetails/Index" asp-route-id="@item.Car.CarId">Детали</a>
+                    <a class="btn btn-default" asp-page="./CarDetails/Index" asp-route-id="@item.CarId">Детали</a>
                 </td>
             </tr>
         }

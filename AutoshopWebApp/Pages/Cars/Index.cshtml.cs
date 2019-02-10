@@ -20,48 +20,13 @@ namespace AutoshopWebApp.Pages.Cars
             _context = context;
         }
 
-        public IList<OutputCarModel> OutputCarModels { get;set; }
+        public IList<Car> OutputCarModels { get;set; }
 
         public async Task<IActionResult> OnGetAsync(string search)
         {
             var query =
-                from car in _context.Cars
-                join mark in _context.MarkAndModels
-                on car.MarkAndModelID equals mark.MarkAndModelId
-                select new OutputCarModel
-                {
-                    Car = new Car
-                    {
-                        CarId = car.CarId,
-                        Color = car.Color,
-                        EngineNumber = car.EngineNumber,
-                        RegNumber = car.RegNumber,
-                        BodyNumber = car.BodyNumber,
-                        ReleaseDate = car.ReleaseDate,
-                        Run = car.Run,
-                        SellingPrice = car.SellingPrice,
-                    },
-                    MarkAndModel = new MarkAndModel
-                    {
-                        CarMark = mark.CarMark,
-                        CarModel = mark.CarModel
-                    }
-                };
-
-            if(!String.IsNullOrEmpty(search))
-            {
-                var substrings = search.Split(' ');
-
-                foreach (var str in substrings)
-                {
-                    query =
-                        from carData in query
-                        where carData.MarkAndModel.CarMark.Contains(str, StringComparison.OrdinalIgnoreCase) ||
-                        carData.MarkAndModel.CarModel.Contains(str, StringComparison.OrdinalIgnoreCase) ||
-                        carData.Car.Color.Contains(str, StringComparison.OrdinalIgnoreCase)
-                        select carData;
-                }
-            }
+                from car in _context.Cars.Include(x => x.MarkAndModel)
+                select car;
 
             OutputCarModels = await query.AsNoTracking().ToListAsync();
 

@@ -19,5 +19,12 @@ namespace AutoshopWebApp.Models
         [MaxLength(100)]
         [Required]
         public string CarModel { get; set; }
+
+        public List<Car> Cars { get; set; }
+
+        public MarkAndModel()
+        {
+            Cars = new List<Car>();
+        }
     }
 }

@@ -53,9 +53,9 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var carData = await
                 (from car in _context.Cars
                  where car.CarId == id
-                 join model in _context.MarkAndModels
-                 on car.MarkAndModelID equals model.MarkAndModelId
-                 select new { car.CarId, model }).FirstOrDefaultAsync();
+                 select 
+                 new { car.CarId, car.MarkAndModel }
+                 ).FirstOrDefaultAsync();
 
             if(carData==null)
             {
@@ -86,7 +86,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 IssueDate = DateTime.Now,
             };
 
-            MarkAndModel = carData.model;
+            MarkAndModel = carData.MarkAndModel;
 
             return Page();
         }

@@ -11,6 +11,7 @@ namespace AutoshopWebApp.Models
     {
         public int CarStateRefId { get; set; }
 
+        public Car Car { get; set; }
         public int CarId { get; set; }
 
         [Display(Name = "Номер справки")]

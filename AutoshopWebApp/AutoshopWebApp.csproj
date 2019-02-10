@@ -28,6 +28,8 @@
     <Compile Remove="Data\Migrations\20181104151537_ChangeClients.Designer.cs" />
     <Compile Remove="Data\Migrations\20181114120713_RemoveCarSaleStatus.cs" />
     <Compile Remove="Data\Migrations\20181114120713_RemoveCarSaleStatus.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190210121157_ChangeMarkAndModelStructure.cs" />
+    <Compile Remove="Data\Migrations\20190210121157_ChangeMarkAndModelStructure.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

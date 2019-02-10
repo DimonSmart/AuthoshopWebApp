@@ -36,7 +36,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             public string WorkerName { get; set; }
         }
 
-        public OutputCarModel CarData { get; set; }
+        public Car CarData { get; set; }
 
         public CarStateRef CarStateRef { get; set; }
 
@@ -64,10 +64,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var query =
-                from car in _context.Cars
+                from car in _context.Cars.Include(x => x.MarkAndModel)
                 where id == car.CarId
-                join mark in _context.MarkAndModels
-                on car.MarkAndModelID equals mark.MarkAndModelId
 
                 join stateRef in _context.CarStateRefId
                 on car.CarId equals stateRef.CarId into selectedStateRef
@@ -86,12 +84,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
                 select new
                 {
-                    carModel = new OutputCarModel
-                    {
-                        Car = car,
-                        MarkAndModel = mark,
-                    },
-                    stateRef,
+                    car, stateRef,
                     expertiseRefData = expertiseRef==null ? null : new ExpertiseRefOutput
                     {
                         PoolExpertiseReference = expertiseRef,
@@ -108,7 +101,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var isAuthorize = await _authorizationService
-               .AuthorizeAsync(User, queryData.carModel.Car, Operations.Details);
+               .AuthorizeAsync(User, queryData.car, Operations.Details);
 
             if (!isAuthorize.Succeeded)
             {
@@ -116,7 +109,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             CarStateRef = queryData.stateRef;
-            CarData = queryData.carModel;
+            CarData = queryData.car;
             ExpertiseRefData = queryData.expertiseRefData;
 
             var user = await _userManager.GetUserAsync(User);
@@ -132,18 +125,18 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 .AuthorizeAsync(User, queryData.stateRef, Operations.Update);
 
             var authorizeEditCar = await _authorizationService
-                .AuthorizeAsync(User, queryData.carModel.Car, Operations.Update);
+                .AuthorizeAsync(User, queryData.car, Operations.Update);
 
             ShowCarEditButton = authorizeEditCar.Succeeded;
             ShowExpertiseButton = isWokerExist || (queryData.expertiseRefData != null);
             ShowReferenceButton = ((queryData.stateRef == null) && isWokerExist) || authorizeEditRef.Succeeded;
-            ShowSellButton = (isWokerExist || queryData.isBuyerExist) && (queryData.carModel.Car.SellingPrice != null);
-            ShowBillButton = queryData.isBuyerExist && (queryData.carModel.Car.SellingPrice != null);
+            ShowSellButton = (isWokerExist || queryData.isBuyerExist) && (queryData.car.SellingPrice != null);
+            ShowBillButton = queryData.isBuyerExist && (queryData.car.SellingPrice != null);
 
             ShowBuyButton =
                 (isWokerExist || queryData.isSellerExist) &&
                 (queryData.stateRef != null) &&
-                (queryData.carModel.Car.BuyingPrice != null);
+                (queryData.car.BuyingPrice != null);
 
             ShowDeleteButton = User.IsInRole(Constants.AdministratorRole);
 

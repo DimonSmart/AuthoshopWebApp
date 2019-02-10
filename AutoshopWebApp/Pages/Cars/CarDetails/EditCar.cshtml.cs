@@ -28,9 +28,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
         [BindProperty]
         public Car Car { get; set; }
 
-        [BindProperty]
-        public MarkAndModel MarkAndModel { get; set; }
-
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -39,11 +36,10 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var query = await
-                (from car in _context.Cars
+                (from car in _context.Cars.Include(x => x.MarkAndModel)
                  where car.CarId == id
-                 join mark in _context.MarkAndModels
-                 on car.MarkAndModelID equals mark.MarkAndModelId
-                 select new { car, mark }).FirstOrDefaultAsync();
+                 select new { car, car.MarkAndModel }
+                 ).FirstOrDefaultAsync();
 
             if(query==null)
             {
@@ -59,7 +55,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             Car = query.car;
-            MarkAndModel = query.mark;
 
             return Page();
         }
@@ -80,9 +75,9 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var mark = await _context
-                .AddMarkAndModelAsync(MarkAndModel.CarMark, MarkAndModel.CarModel);
+                .AddMarkAndModelAsync(Car.MarkAndModel.CarMark, Car.MarkAndModel.CarModel);
 
-            Car.MarkAndModelID = mark.MarkAndModelId;
+            Car.MarkAndModel = mark;
 
             _context.Attach(Car).State = EntityState.Modified;
 

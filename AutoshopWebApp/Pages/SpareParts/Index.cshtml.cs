@@ -21,27 +21,13 @@ namespace AutoshopWebApp.Pages.SpareParts
             _context = context;
         }
 
-        public class OutputPartModel
-        {
-            public SparePart SparePart { get; set; }
-            public MarkAndModel MarkAndModel { get; set; }
-        }
-
-        public IList<OutputPartModel> SparePart { get;set; }
+        public IList<SparePart> SparePart { get;set; }
 
         public bool ShowDeleteButton { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string search)
         {
-            var query =
-                from part in _context.SpareParts
-                join mark in _context.MarkAndModels
-                on part.MarkAndModelId equals mark.MarkAndModelId
-                select new OutputPartModel
-                {
-                    SparePart = part,
-                    MarkAndModel = mark
-                };
+            var query = _context.SpareParts.Select(sp => sp);
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -55,7 +41,7 @@ namespace AutoshopWebApp.Pages.SpareParts
                             from partData in query
                             where partData.MarkAndModel.CarMark.Contains(str, StringComparison.OrdinalIgnoreCase) ||
                             partData.MarkAndModel.CarModel.Contains(str, StringComparison.OrdinalIgnoreCase) ||
-                            partData.SparePart.PartName.Contains(str, StringComparison.OrdinalIgnoreCase)
+                            partData.PartName.Contains(str, StringComparison.OrdinalIgnoreCase)
                             select partData;
                     }
                 }

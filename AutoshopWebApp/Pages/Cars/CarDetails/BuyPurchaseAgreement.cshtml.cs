@@ -44,10 +44,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var buyQuery =
                 from buyer in _context.ClientBuyers
-                join car in _context.Cars
+                join car in _context.Cars.Include(x => x.MarkAndModel)
                 on buyer.CarId equals car.CarId
-                join markAndModel in _context.MarkAndModels
-                on car.MarkAndModelID equals markAndModel.MarkAndModelId
                 join paymentType in _context.PaymentTypes
                 on buyer.PaymentTypeId equals paymentType.PaymentTypeId
                 join buyerStreet in _context.Streets
@@ -58,7 +56,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 on worker.PositionId equals workerPos.PositionId
                 select new
                 {
-                    buyer, car, markAndModel, paymentType, buyerStreet, workerPos,
+                    buyer, car, paymentType, buyerStreet, workerPos,
                     worker = new Worker
                     {
                         Firstname = worker.Firstname,
@@ -85,7 +83,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             ClientBuyer = buyData.buyer;
             Car = buyData.car;
-            MarkAndModel = buyData.markAndModel;
+            MarkAndModel = buyData.car.MarkAndModel;
             PaymentType = buyData.paymentType;
             BuyerStreet = buyData.buyerStreet;
             Position = buyData.workerPos;

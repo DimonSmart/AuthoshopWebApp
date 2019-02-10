@@ -63,11 +63,9 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                  where seller.CarId == id
                  join car in _context.Cars
                  on seller.CarId equals car.CarId
-                 join model in _context.MarkAndModels
-                 on car.MarkAndModelID equals model.MarkAndModelId
                  join street in _context.Streets
                  on seller.StreetId equals street.StreetId
-                 select new { seller, street, model })
+                 select new { seller, street, car.MarkAndModel })
                  .AsNoTracking().FirstOrDefaultAsync();
 
             if(queryData == null)
@@ -86,7 +84,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             ClientSeller = queryData.seller;
             ClientSeller.WorkerId = workerUser.WorkerID;
 
-            MarkAndModel = queryData.model;
+            MarkAndModel = queryData.MarkAndModel;
             Street = queryData.street;
 
             return Page();

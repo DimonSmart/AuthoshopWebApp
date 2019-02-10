@@ -50,13 +50,12 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 (from exp in _context.PoolExpertiseReferences
                  where exp.CarId == id
                  join car in _context.Cars on exp.CarId equals car.CarId
-                 join mark in _context.MarkAndModels on car.MarkAndModelID equals mark.MarkAndModelId
                  join worker in _context.Workers on exp.WorkerId equals worker.WorkerId
                  select new OutputModel
                  {
                      PoolExpertise = exp,
                      Car = car,
-                     MarkAndModel = mark,
+                     MarkAndModel = car.MarkAndModel,
                      Worker = worker
                  }).AsNoTracking().FirstOrDefaultAsync();
 

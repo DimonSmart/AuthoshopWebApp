@@ -11,6 +11,9 @@ namespace AutoshopWebApp.Models
     {
         public int SparePartId { get; set; }
 
+        [Required]
+        [Display(Name = "Марка и модель")]
+        public MarkAndModel MarkAndModel { get; set; }
         public int MarkAndModelId { get; set; }
 
         [Display(Name = "Стоимость запчасти")]

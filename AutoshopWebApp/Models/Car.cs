@@ -12,9 +12,11 @@ namespace AutoshopWebApp.Models
     {
         public int CarId { get; set; }
 
+       
         [Required]
-        [Display(Name = "ID модели")]
-        public int MarkAndModelID { get; set; }
+        [Display(Name = "Марка и модель")]
+        public MarkAndModel MarkAndModel { get; set; }
+        public int MarkAndModelId { get; set; }
 
         [Required]
         [Display(Name = "Цвет")]
