@@ -39,11 +39,11 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var queryData = await
                 (from stateRef in _context.CarStateRefId
-                where stateRef.CarId == id
-                join car in _context.Cars
-                on stateRef.CarId equals car.CarId
-                select new { stateRef, car.MarkAndModel }
+                 where stateRef.CarId == id
+                 select new { stateRef, stateRef.Car.MarkAndModel }
                 ).FirstOrDefaultAsync();
+                
+
 
             if (queryData == null)
             {

@@ -10,10 +10,10 @@ namespace AutoshopWebApp.Models
     {
         public int TransactionOrderId { get; set; }
 
-        [Display(Name = "ID работника")]
+        public Worker Worker { get; set; }
         public int WorkerId { get; set; }
 
-        [Display(Name = "ID должности")]
+        public Position Position { get; set; }
         public int PositionId { get; set; }
 
         [Display(Name = "Причина перевода")]

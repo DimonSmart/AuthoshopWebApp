@@ -44,7 +44,7 @@ namespace AutoshopWebApp.Models
         [DataType(DataType.Date)]
         public DateTime PasIssueDate { get; set; }
 
-        [Display(Name = "ID улицы")]
+        public Street Street { get; set; }
         public int StreetId { get; set; }
 
         [Display(Name = "Номер дома")]
@@ -53,7 +53,7 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Номер квартиры")]
         public int ApartmentNumber { get; set; }
 
-        [Display(Name = "ID автомобиля")]
+        public Car Car { get; set; }
         public int CarId { get; set; }
 
         [Display(Name = "Дата покупки")]
@@ -64,9 +64,10 @@ namespace AutoshopWebApp.Models
         [MaxLength(50)]
         public string AccountNumber { get; set; }
 
-        [Display(Name = "Тип оплаты")]
+        public PaymentType PaymentType { get; set; }
         public int PaymentTypeId { get; set; }
 
+        public Worker Worker { get; set; }
         public int WorkerId { get; set; }
     }
 }

@@ -27,15 +27,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             _authorizationService = authorizationService;
         }
 
-        public class OutputModel
-        {
-            public PoolExpertiseReference PoolExpertise { get; set; }
-            public Car Car { get; set; }
-            public MarkAndModel MarkAndModel { get; set; }
-            public Worker Worker { get; set; }
-        }
-
-        public OutputModel OutModel { get; set; }
+        public PoolExpertiseReference PoolExpertise { get; set; }
 
         public bool ShowEditButton { get; set; }
 
@@ -46,26 +38,21 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            OutModel = await
+            PoolExpertise = await
                 (from exp in _context.PoolExpertiseReferences
+                .Include(x => x.Car).ThenInclude(x => x.MarkAndModel)
+                .Include(x => x.Worker)
                  where exp.CarId == id
-                 join car in _context.Cars on exp.CarId equals car.CarId
-                 join worker in _context.Workers on exp.WorkerId equals worker.WorkerId
-                 select new OutputModel
-                 {
-                     PoolExpertise = exp,
-                     Car = car,
-                     MarkAndModel = car.MarkAndModel,
-                     Worker = worker
-                 }).AsNoTracking().FirstOrDefaultAsync();
+                 select exp).AsNoTracking().FirstOrDefaultAsync();
 
-            if(OutModel==null)
+
+            if(PoolExpertise==null)
             {
                 return NotFound();
             }
 
             var isAuthorized = await _authorizationService
-                .AuthorizeAsync(User, OutModel.PoolExpertise, Operations.Details);
+                .AuthorizeAsync(User, PoolExpertise, Operations.Details);
 
             if(!isAuthorized.Succeeded)
             {
@@ -82,7 +69,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var isWorkerExist = await _context.WorkerUsers.AnyAsync(x => x.UserID == user.Id);
 
             isAuthorized = await _authorizationService
-                 .AuthorizeAsync(User, OutModel.PoolExpertise, Operations.Update);
+                 .AuthorizeAsync(User, PoolExpertise, Operations.Update);
 
             ShowEditButton = isWorkerExist && isAuthorized.Succeeded;
 

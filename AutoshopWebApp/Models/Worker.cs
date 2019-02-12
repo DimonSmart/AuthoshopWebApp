@@ -26,7 +26,7 @@ namespace AutoshopWebApp.Models
         [DataType(DataType.Date)]
         public DateTime BornDate { get; set; }
 
-        [Display(Name = "ID улицы")]
+        public Street Street { get; set; }
         public int StreetId { get; set; }
 
         [Display(Name = "Номер дома")]
@@ -35,7 +35,7 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Номер квартиры")]
         public int ApartmentNumber { get; set; }
 
-        [Display(Name = "ID должности")]
+        public Position Position { get; set; }
         public int PositionId { get; set; }
     }
 }

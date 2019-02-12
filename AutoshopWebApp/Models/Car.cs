@@ -14,7 +14,6 @@ namespace AutoshopWebApp.Models
 
        
         [Required]
-        [Display(Name = "Марка и модель")]
         public MarkAndModel MarkAndModel { get; set; }
         public int MarkAndModelId { get; set; }
 

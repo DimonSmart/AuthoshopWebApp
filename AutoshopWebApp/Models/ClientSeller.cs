@@ -43,7 +43,7 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Паспорт выдан")]
         public string PasIssueBy { get; set; }
 
-        [Display(Name = "ID улицы")]
+        public Street Street { get; set; }
         public int StreetId { get; set; }
 
         [Display(Name = "Номер дома")]
@@ -52,7 +52,7 @@ namespace AutoshopWebApp.Models
         [Display(Name = "Номер квартиры")]
         public int ApartmentNumber { get; set; }
 
-        [Display(Name = "ID автомобиля")]
+        public Car Car { get; set; }
         public int CarId { get; set; }
 
         [Display(Name = "Дата продажи")]
@@ -78,6 +78,7 @@ namespace AutoshopWebApp.Models
         [MaxLength(100)]
         public string OwnDocIssuedBy { get; set; }
 
+        public Worker Worker { get; set; }
         public int WorkerId { get; set; }
     }
 }

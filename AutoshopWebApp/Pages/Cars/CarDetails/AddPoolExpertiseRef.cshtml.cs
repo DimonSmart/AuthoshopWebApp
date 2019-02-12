@@ -32,7 +32,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
         [BindProperty]
         public PoolExpertiseReference PoolExpertiseReference { get; set; }
-
+        public int CarId { get; set; }
         public MarkAndModel MarkAndModel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -42,7 +42,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            var expertiseCheck = await _context.PoolExpertiseReferences
+            var expertiseCheck = await _context
+                .PoolExpertiseReferences
                 .AnyAsync(x => x.CarId == id);
 
             if (expertiseCheck)
@@ -50,14 +51,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return RedirectToPage("ExpertiseReference", new { id = id.Value });
             }
 
-            var carData = await
-                (from car in _context.Cars
-                 where car.CarId == id
-                 select 
-                 new { car.CarId, car.MarkAndModel }
-                 ).FirstOrDefaultAsync();
+            var markAndModel = await
+                 (from car in _context.Cars
+                  where car.CarId == id
+                  select car.MarkAndModel)
+                  .FirstOrDefaultAsync();
 
-            if(carData==null)
+            if(markAndModel==null)
             {
                 return NotFound();
             }
@@ -69,24 +69,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            var workerId = await
-                (from workerUser in _context.WorkerUsers
-                 where workerUser.UserID == user.Id
-                 select new int?(workerUser.WorkerID)).FirstOrDefaultAsync();
-
-            if(workerId==null)
-            {
-                return NotFound();
-            }
-
-            PoolExpertiseReference = new PoolExpertiseReference
-            {
-                CarId = carData.CarId,
-                WorkerId = workerId.Value,
-                IssueDate = DateTime.Now,
-            };
-
-            MarkAndModel = carData.MarkAndModel;
+            MarkAndModel = markAndModel;
+            CarId = id.Value;
 
             return Page();
         }
@@ -105,6 +89,26 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             {
                 return new ChallengeResult();
             }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var workerId = await
+            (from workerUser in _context.WorkerUsers
+             where workerUser.UserID == user.Id
+             select new int?(workerUser.WorkerID))
+             .FirstOrDefaultAsync();
+
+            if(workerId==null)
+            {
+                return NotFound();
+            }
+
+            PoolExpertiseReference.WorkerId = workerId.Value;
 
             await _context.PoolExpertiseReferences.AddAsync(PoolExpertiseReference);
             await _context.SaveChangesAsync();

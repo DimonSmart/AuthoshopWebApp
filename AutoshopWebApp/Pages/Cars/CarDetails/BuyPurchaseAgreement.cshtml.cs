@@ -44,29 +44,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var buyQuery =
                 from buyer in _context.ClientBuyers
-                join car in _context.Cars.Include(x => x.MarkAndModel)
-                on buyer.CarId equals car.CarId
-                join paymentType in _context.PaymentTypes
-                on buyer.PaymentTypeId equals paymentType.PaymentTypeId
-                join buyerStreet in _context.Streets
-                on buyer.StreetId equals buyerStreet.StreetId
-                join worker in _context.Workers
-                on buyer.WorkerId equals worker.WorkerId
-                join workerPos in _context.Positions
-                on worker.PositionId equals workerPos.PositionId
-                select new
-                {
-                    buyer, car, paymentType, buyerStreet, workerPos,
-                    worker = new Worker
-                    {
-                        Firstname = worker.Firstname,
-                        Lastname = worker.Lastname,
-                        Patronymic = worker.Patronymic
-                    }
-                };
+                .Include(x => x.Car).ThenInclude(x => x.MarkAndModel)
+                .Include(x => x.PaymentType)
+                .Include(x => x.Street)
+                .Include(x => x.Worker).ThenInclude(x => x.Position)
+                select buyer;
 
             var buyData = await buyQuery
-                .FirstOrDefaultAsync(x => x.car.CarId == id);
+                .FirstOrDefaultAsync(x => x.CarId == id);
 
             if(buyData == null)
             {
@@ -74,26 +59,26 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var isAuthorize = await _authorizationService
-                .AuthorizeAsync(User, buyData.buyer, Operations.Details);
+                .AuthorizeAsync(User, buyData, Operations.Details);
 
             if(!isAuthorize.Succeeded)
             {
                 return new ChallengeResult();
             }
 
-            ClientBuyer = buyData.buyer;
-            Car = buyData.car;
-            MarkAndModel = buyData.car.MarkAndModel;
-            PaymentType = buyData.paymentType;
-            BuyerStreet = buyData.buyerStreet;
-            Position = buyData.workerPos;
-            Worker = buyData.worker;
+            ClientBuyer = buyData;
+            Car = buyData.Car;
+            MarkAndModel = buyData.Car.MarkAndModel;
+            PaymentType = buyData.PaymentType;
+            BuyerStreet = buyData.Street;
+            Position = buyData.Worker.Position;
+            Worker = buyData.Worker;
 
             var isWorkerExist = await _context.WorkerUsers
                 .AnyAsync(x => x.UserID == user.Id);
 
             isAuthorize = await _authorizationService
-                .AuthorizeAsync(User, buyData.buyer, Operations.Update);
+                .AuthorizeAsync(User, buyData, Operations.Update);
 
             ShowEditButton = isWorkerExist && isAuthorize.Succeeded;
 

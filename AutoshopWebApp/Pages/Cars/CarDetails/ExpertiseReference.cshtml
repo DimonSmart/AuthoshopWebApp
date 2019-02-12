@@ -7,42 +7,42 @@
 
 <h2>Справка о взятии автомобиля на экспертизу</h2>
 <p>
-    Выдана гражданину @Model.OutModel.PoolExpertise.ClientLastname @Model.OutModel.PoolExpertise.ClientFirstname
-    @Model.OutModel.PoolExpertise.ClientPatronymic в связи с тем, что принадлежащее ему транспортное
+    Выдана гражданину @Model.PoolExpertise.ClientLastname @Model.PoolExpertise.ClientFirstname
+    @Model.PoolExpertise.ClientPatronymic в связи с тем, что принадлежащее ему транспортное
     средство будет временно находится в пользовании автосалона, с целью проведения технической экспертизы.
     Автосалон обязуется вернуть автомобиль владельцу в течение трёх рабочих дней со дня выдачи данной справки.
 </p>
 <p>
-    Автомобиль @Model.OutModel.MarkAndModel.CarMark @Model.OutModel.MarkAndModel.CarModel;
-    @Html.DisplayNameFor(m => m.OutModel.Car.Color).ToLower():
-    @Html.DisplayFor(m => m.OutModel.Car.Color);
-    @Html.DisplayNameFor(m => m.OutModel.Car.EngineNumber).ToLower():
-    @Html.DisplayFor(m => m.OutModel.Car.EngineNumber);
-    @Html.DisplayNameFor(m => m.OutModel.Car.BodyNumber).ToLower():
-    @Html.DisplayFor(m => m.OutModel.Car.BodyNumber);
-    @Html.DisplayNameFor(m => m.OutModel.Car.ReleaseDate).ToLower():
-    @Html.DisplayFor(m => m.OutModel.Car.ReleaseDate);
-    @if (!string.IsNullOrEmpty(Model.OutModel.Car.RegNumber))
+    Автомобиль @Model.PoolExpertise.Car.MarkAndModel.CarMark @Model.PoolExpertise.Car.MarkAndModel.CarModel;
+    @Html.DisplayNameFor(m => m.PoolExpertise.Car.Color).ToLower():
+    @Html.DisplayFor(m => m.PoolExpertise.Car.Color);
+    @Html.DisplayNameFor(m => m.PoolExpertise.Car.EngineNumber).ToLower():
+    @Html.DisplayFor(m => m.PoolExpertise.Car.EngineNumber);
+    @Html.DisplayNameFor(m => m.PoolExpertise.Car.BodyNumber).ToLower():
+    @Html.DisplayFor(m => m.PoolExpertise.Car.BodyNumber);
+    @Html.DisplayNameFor(m => m.PoolExpertise.Car.ReleaseDate).ToLower():
+    @Html.DisplayFor(m => m.PoolExpertise.Car.ReleaseDate);
+    @if (!string.IsNullOrEmpty(Model.PoolExpertise.Car.RegNumber))
     {
         <text>
-            @Html.DisplayNameFor(m => m.OutModel.Car.RegNumber).ToLower():
-            @Html.DisplayFor(m => m.OutModel.Car.RegNumber);
+            @Html.DisplayNameFor(m => m.PoolExpertise.Car.RegNumber).ToLower():
+            @Html.DisplayFor(m => m.PoolExpertise.Car.RegNumber);
         </text>
     }
-    @Html.DisplayNameFor(m => m.OutModel.Car.Run).ToLower():
-    @Html.DisplayFor(m => m.OutModel.Car.Run);
+    @Html.DisplayNameFor(m => m.PoolExpertise.Car.Run).ToLower():
+    @Html.DisplayFor(m => m.PoolExpertise.Car.Run);
 </p>
 <p>
-    Дата выдачи справки: @Html.DisplayFor(model => model.OutModel.PoolExpertise.IssueDate)
+    Дата выдачи справки: @Html.DisplayFor(model => model.PoolExpertise.IssueDate)
     <span style="float:right">
         Подпись клиента:_______________
     </span>
 </p>
 <p>
     Сотрудник:
-    @Model.OutModel.Worker.Lastname
-    @Model.OutModel.Worker.Firstname
-    @Model.OutModel.Worker.Patronymic
+    @Model.PoolExpertise.Worker.Lastname
+    @Model.PoolExpertise.Worker.Firstname
+    @Model.PoolExpertise.Worker.Patronymic
     <span style="float:right">
         Подпись сотрудника:_______________
     </span>
@@ -50,13 +50,13 @@
 
 @section Buttons{
     <div class="noPrint">
-        <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.OutModel.Car.CarId">
+        <a class="btn btn-default" asp-page="./Index" asp-route-id="@Model.PoolExpertise.Car.CarId">
             Назад
         </a>
         <input class="btn btn-default" type="button" onclick="window.print()" value="Печать" />
         @if (Model.ShowEditButton)
         {
-            <a class="btn btn-default" asp-page="./EditExpertiseRef" asp-route-id="@Model.OutModel.Car.CarId">
+            <a class="btn btn-default" asp-page="./EditExpertiseRef" asp-route-id="@Model.PoolExpertise.Car.CarId">
                 Редактровать
             </a>
         }

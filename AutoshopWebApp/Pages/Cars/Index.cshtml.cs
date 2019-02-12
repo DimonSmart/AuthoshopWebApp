@@ -20,7 +20,7 @@ namespace AutoshopWebApp.Pages.Cars
             _context = context;
         }
 
-        public IList<Car> OutputCarModels { get;set; }
+        public IList<Car> OutputCarModels { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string search)
         {

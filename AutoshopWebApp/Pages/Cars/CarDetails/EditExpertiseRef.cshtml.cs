@@ -43,9 +43,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var loadedExpData = await
                 (from reference in _context.PoolExpertiseReferences
-                 join car in _context.Cars on reference.CarId equals car.CarId
-                 where reference.CarId == id
-                 select new { reference, car.MarkAndModel }
+                 select new { reference, reference.Car.MarkAndModel }
                  ).FirstOrDefaultAsync();
 
             if (loadedExpData == null)

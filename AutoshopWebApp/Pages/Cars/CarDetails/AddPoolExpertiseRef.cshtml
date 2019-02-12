@@ -12,8 +12,7 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PoolExpertiseReference.CarId" />
-            <input type="hidden" asp-for="PoolExpertiseReference.WorkerId" />
+            <input type="hidden" asp-for="PoolExpertiseReference.CarId" value="@Model.CarId"/>
             <div class="form-group">
                 <label asp-for="PoolExpertiseReference.ClientFirstname" class="control-label"></label>
                 <input asp-for="PoolExpertiseReference.ClientFirstname" class="form-control" />
@@ -42,7 +41,7 @@
 </div>
 
 <div>
-    <a asp-page="Index">Назад</a>
+    <a asp-page="Index" asp-route-id="@Model.CarId">Назад</a>
 </div>
 
 @section Scripts {

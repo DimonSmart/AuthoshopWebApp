@@ -33,12 +33,9 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var queryData = await
-                (from car in _context.Cars
-                 select new
-                 {
-                     car.CarId,
-                     car.MarkAndModel
-                 }).FirstOrDefaultAsync();
+                (from car in _context.Cars.Include(x => x.MarkAndModel)
+                 where car.CarId == id
+                 select new { car.CarId, car.MarkAndModel }).FirstOrDefaultAsync();
 
             if(queryData==null)
             {
@@ -51,11 +48,9 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             return Page();
         }
 
-        public int CarId { get; set; }
-
         [BindProperty]
         public CarStateRef CarStateRef { get; set; }
-
+        public int CarId { get; set; }
         public MarkAndModel MarkAndModel { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
@@ -73,7 +68,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return new ChallengeResult();
             }
 
-            _context.CarStateRefId.Add(CarStateRef);
+            await _context.CarStateRefId.AddAsync(CarStateRef);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index", new { id = CarStateRef.CarId });

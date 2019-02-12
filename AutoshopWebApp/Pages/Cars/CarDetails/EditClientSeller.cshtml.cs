@@ -61,12 +61,12 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             var queryData = await
                 (from seller in _context.ClientSellers
                  where seller.CarId == id
-                 join car in _context.Cars
-                 on seller.CarId equals car.CarId
-                 join street in _context.Streets
-                 on seller.StreetId equals street.StreetId
-                 select new { seller, street, car.MarkAndModel })
-                 .AsNoTracking().FirstOrDefaultAsync();
+                 select new
+                 {
+                     seller,
+                     seller.Street,
+                     seller.Car.MarkAndModel
+                 }).AsNoTracking().FirstOrDefaultAsync();
 
             if(queryData == null)
             {
@@ -85,7 +85,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             ClientSeller.WorkerId = workerUser.WorkerID;
 
             MarkAndModel = queryData.MarkAndModel;
-            Street = queryData.street;
+            Street = queryData.Street;
 
             return Page();
         }

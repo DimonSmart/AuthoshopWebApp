@@ -44,32 +44,17 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
 
             var carQuery =
-                from car in _context.Cars
-                where car.BuyingPrice != null
-                join seller in _context.ClientSellers
-                on car.CarId equals seller.CarId
-                join sellerStreet in _context.Streets
-                on seller.StreetId equals sellerStreet.StreetId
+                from seller in _context.ClientSellers
+                .Include(x=> x.Car).ThenInclude(x=>x.MarkAndModel)
+                .Include(x=> x.Street)
+                .Include(x => x.Worker).ThenInclude(x => x.Position)
                 join stateRef in _context.CarStateRefId
-                on car.CarId equals stateRef.CarId
-                join worker in _context.Workers
-                on seller.WorkerId equals worker.WorkerId
-                join position in _context.Positions
-                on worker.PositionId equals position.PositionId
-                let finalPrice = car.BuyingPrice.Value - stateRef.ExpertisePrice
-                select new
-                {
-                    car, car.MarkAndModel, seller, sellerStreet, finalPrice, position,
-                    worker = new Worker
-                    {
-                        Firstname = worker.Firstname,
-                        Lastname = worker.Lastname,
-                        Patronymic = worker.Patronymic,
-                    }
-                };
+                on seller.CarId equals stateRef.CarId
+                let finalPrice = seller.Car.BuyingPrice.Value - stateRef.ExpertisePrice
+                select new { seller, stateRef, finalPrice };
 
             var queryData = await carQuery
-                .FirstOrDefaultAsync(x => x.car.CarId == id);
+                .FirstOrDefaultAsync(x => x.seller.CarId == id);
 
             if(queryData == null)
             {
@@ -84,13 +69,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return new ChallengeResult();
             }
 
-            Worker = queryData.worker;
-            Car = queryData.car;
+            Worker = queryData.seller.Worker;
+            Car = queryData.seller.Car;
             ClientSeller = queryData.seller;
-            SellerStreet = queryData.sellerStreet;
-            MarkAndModel = queryData.MarkAndModel;
+            SellerStreet = queryData.seller.Street;
+            MarkAndModel = queryData.seller.Car.MarkAndModel;
             FinalPrice = queryData.finalPrice;
-            WorkerPosition = queryData.position;
+            WorkerPosition = queryData.seller.Worker.Position;
 
             isAuthorized = await _authorizationService
                 .AuthorizeAsync(User, queryData.seller, Operations.Update);
