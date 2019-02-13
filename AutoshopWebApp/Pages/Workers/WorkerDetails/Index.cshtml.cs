@@ -92,7 +92,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 from orders in ordersData.DefaultIfEmpty()
                 let ordersList = orders == null ? null : orders.ToList()
                 join workerUser in _context.WorkerUsers
-                on worker.WorkerId equals workerUser.WorkerID
+                on worker.WorkerId equals workerUser.WorkerId
                 into workerUserQuery
                 from workerUser in workerUserQuery.DefaultIfEmpty()
                 select new { worker, ordersList, workerUser };
@@ -114,7 +114,9 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             if (data.workerUser != null)
             {
-                var user = await _userManager.FindByIdAsync(data.workerUser.UserID);
+                var user = await _userManager
+                    .FindByIdAsync(data.workerUser.IdentityUserId);
+
                 await _userManager.DeleteAsync(user);
                 _context.Remove(data.workerUser);
             }

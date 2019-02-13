@@ -16,16 +16,17 @@ namespace AutoshopWebApp.Data
         {
             var workerUser = new WorkerUser
             {
-                WorkerID = workerId,
-                UserID = userId
+                WorkerId = workerId,
+                IdentityUserId = userId
             };
+
             await WorkerUsers.AddAsync(workerUser);
             await SaveChangesAsync();
         }
 
         public async Task RemoveUserFromWorkerAsync(int workerId)
         {
-            var workerUser = WorkerUsers.FirstOrDefault(item => item.WorkerID == workerId);
+            var workerUser = WorkerUsers.FirstOrDefault(item => item.WorkerId == workerId);
             if (workerUser == null) return;
 
             WorkerUsers.Remove(workerUser);
@@ -36,17 +37,16 @@ namespace AutoshopWebApp.Data
         {
             return await
                 (from workerUser in WorkerUsers
-                 where workerUser.WorkerID == workerId
-                 join user in Users on workerUser.UserID equals user.Id
-                 select user).FirstOrDefaultAsync();
+                 where workerUser.WorkerId == workerId
+                 select workerUser.IdentityUser).FirstOrDefaultAsync();
         }
 
         public async Task<int?> FindWorkerIdByUserIdAsync(string userId)
         {
             return await
                 (from workerUser in WorkerUsers
-                 where workerUser.UserID == userId
-                 select new int?(workerUser.WorkerID))
+                 where workerUser.IdentityUserId == userId
+                 select new int?(workerUser.WorkerId))
                 .FirstOrDefaultAsync();
         }
 

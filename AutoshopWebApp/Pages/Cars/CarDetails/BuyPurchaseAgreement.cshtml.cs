@@ -75,7 +75,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             Worker = buyData.Worker;
 
             var isWorkerExist = await _context.WorkerUsers
-                .AnyAsync(x => x.UserID == user.Id);
+                .AnyAsync(x => x.IdentityUserId == user.Id);
 
             isAuthorize = await _authorizationService
                 .AuthorizeAsync(User, buyData, Operations.Update);

@@ -119,7 +119,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            var isWokerExist = await _context.WorkerUsers.AnyAsync(x => user.Id == x.UserID);
+            var isWokerExist = await _context.WorkerUsers
+                .AnyAsync(x => user.Id == x.IdentityUserId);
 
             var authorizeEditRef = await _authorizationService
                 .AuthorizeAsync(User, queryData.stateRef, Operations.Update);

@@ -51,7 +51,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var workerUser = await _context.WorkerUsers
-                .FirstOrDefaultAsync(m => m.UserID == user.Id);
+                .FirstOrDefaultAsync(m => m.IdentityUserId == user.Id);
 
             if (workerUser == null)
             {
@@ -82,7 +82,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             ClientSeller = queryData.seller;
-            ClientSeller.WorkerId = workerUser.WorkerID;
+            ClientSeller.WorkerId = workerUser.WorkerId;
 
             MarkAndModel = queryData.MarkAndModel;
             Street = queryData.Street;

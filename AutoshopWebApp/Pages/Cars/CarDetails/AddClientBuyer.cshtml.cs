@@ -96,7 +96,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var workerUser = await _context.WorkerUsers
-                .FirstOrDefaultAsync(m => m.UserID == user.Id);
+                .FirstOrDefaultAsync(m => m.IdentityUserId == user.Id);
 
             if(workerUser==null)
             {
@@ -105,7 +105,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             Street = await _context.AddStreetAsync(Street.StreetName);
             ClientBuyer.StreetId = Street.StreetId;
-            ClientBuyer.WorkerId = workerUser.WorkerID;
+            ClientBuyer.WorkerId = workerUser.WorkerId;
 
             _context.ClientBuyers.Add(ClientBuyer);
             await _context.SaveChangesAsync();

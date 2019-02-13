@@ -50,14 +50,14 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             var workerUser = await _context.WorkerUsers
-                .FirstOrDefaultAsync(m => m.UserID == user.Id);
+                .FirstOrDefaultAsync(m => m.IdentityUserId == user.Id);
 
             if(workerUser == null)
             {
                 return NotFound();
             }
 
-            WorkerId = workerUser.WorkerID;
+            WorkerId = workerUser.WorkerId;
 
             var carQueryData = await
                 (from car in _context.Cars

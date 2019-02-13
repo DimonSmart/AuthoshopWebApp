@@ -99,8 +99,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
             var workerId = await
             (from workerUser in _context.WorkerUsers
-             where workerUser.UserID == user.Id
-             select new int?(workerUser.WorkerID))
+             where workerUser.IdentityUserId == user.Id
+             select new int?(workerUser.WorkerId))
              .FirstOrDefaultAsync();
 
             if(workerId==null)

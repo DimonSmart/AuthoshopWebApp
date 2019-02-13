@@ -69,7 +69,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             PageData = await
                 (from worker in _context.Workers
-                 join workerUser in _context.WorkerUsers on worker.WorkerId equals workerUser.WorkerID
+                 join workerUser in _context.WorkerUsers 
+                 on worker.WorkerId equals workerUser.WorkerId
                  where worker.WorkerId == id
                  select new AccountData
                  {
@@ -77,7 +78,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                      Lastname = worker.Lastname,
                      Patronymic = worker.Patronymic,
                      WorkerID = worker.WorkerId,
-                     UserID = workerUser.UserID,
+                     UserID = workerUser.IdentityUserId,
                  }).AsNoTracking().FirstOrDefaultAsync();
 
             if(PageData == null)
@@ -116,7 +117,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             }
 
             var workerUser = await _context.WorkerUsers
-                .FirstOrDefaultAsync(item => item.WorkerID == id);
+                .FirstOrDefaultAsync(item => item.WorkerId == id);
 
             if(workerUser==null)
             {
@@ -161,7 +162,7 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             }
 
             var workerUser = await _context.WorkerUsers
-                .FirstOrDefaultAsync(x => x.UserID == user.Id);
+                .FirstOrDefaultAsync(x => x.IdentityUserId == user.Id);
 
             if(workerUser!=null)
             {
@@ -170,8 +171,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
             workerUser = new WorkerUser
             {
-                UserID = user.Id,
-                WorkerID = id.Value,
+                IdentityUserId = user.Id,
+                WorkerId = id.Value,
             };
 
             await _context.WorkerUsers.AddAsync(workerUser);

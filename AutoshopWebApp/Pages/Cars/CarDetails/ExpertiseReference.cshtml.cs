@@ -66,7 +66,8 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            var isWorkerExist = await _context.WorkerUsers.AnyAsync(x => x.UserID == user.Id);
+            var isWorkerExist = await _context.WorkerUsers
+                .AnyAsync(x => x.IdentityUserId == user.Id);
 
             isAuthorized = await _authorizationService
                  .AuthorizeAsync(User, PoolExpertise, Operations.Update);

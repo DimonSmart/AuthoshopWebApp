@@ -81,7 +81,7 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 .AuthorizeAsync(User, queryData.seller, Operations.Update);
 
             var isWorkerExist = await _context.WorkerUsers
-                .AnyAsync(x => x.UserID == user.Id);
+                .AnyAsync(x => x.IdentityUserId == user.Id);
 
             ShowEditButton = isWorkerExist && isAuthorized.Succeeded;
 
