@@ -34,9 +34,9 @@
                 <span asp-validation-for="OutputModel.Worker.BornDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OutputModel.Street.StreetName" class="control-label"></label>
-                <input asp-for="OutputModel.Street.StreetName" class="form-control" />
-                <span asp-validation-for="OutputModel.Street.StreetName" class="text-danger"></span>
+                <label asp-for="OutputModel.Worker.Street.StreetName" class="control-label"></label>
+                <input asp-for="OutputModel.Worker.Street.StreetName" class="form-control" />
+                <span asp-validation-for="OutputModel.Worker.Street.StreetName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OutputModel.Worker.HouseNumber" class="control-label"></label>
@@ -49,8 +49,8 @@
                 <span asp-validation-for="OutputModel.Worker.ApartmentNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OutputModel.Position.PositionName" class="control-label"></label>
-                <p class="form-control" readonly="readonly">@Model.OutputModel.Position.PositionName</p>
+                <label asp-for="OutputModel.Worker.Position.PositionName" class="control-label"></label>
+                <p class="form-control" readonly="readonly">@Model.OutputModel.Worker.Position.PositionName</p>
             </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-default" />

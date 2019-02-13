@@ -22,9 +22,9 @@ namespace AutoshopWebApp.Models.ForShow
         public string Patronymic { get; set; }
         public int WorkerID { get; set; }
 
-        public static async Task<WorkerCrossPage> FindWorkerDataById(ApplicationDbContext context, int id)
+        public static Task<WorkerCrossPage> FindWorkerDataById(ApplicationDbContext context, int id)
         {
-            return await
+            return
                 (from worker in context.Workers
                 where worker.WorkerId == id
                 select new WorkerCrossPage

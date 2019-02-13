@@ -146,49 +146,9 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
 
         public async Task<IActionResult> OnPostDeleteAsync(int id)
         {
-            var query =
-                from car in _context.Cars
-                where id == car.CarId
-
-                join stateRef in _context.CarStateRefId
-                on car.CarId equals stateRef.CarId into selectedStateRef
-                from stateRef in selectedStateRef.DefaultIfEmpty()
-
-                join expertiseRef in _context.PoolExpertiseReferences
-                on car.CarId equals expertiseRef.CarId into seletedExpRef
-                from expertiseRef in seletedExpRef.DefaultIfEmpty()
-
-                join buyer in _context.ClientBuyers
-                on car.CarId equals buyer.CarId into buyerData
-                from buyer in buyerData.DefaultIfEmpty()
-
-                join seller in _context.ClientSellers
-                on car.CarId equals seller.CarId into sellerData
-                from seller in sellerData.DefaultIfEmpty()
-
-                select new { car, stateRef, expertiseRef, buyer, seller };
-
-            var data = await query.FirstOrDefaultAsync();
-
-            if (data==null)
-            {
-                return NotFound();
-            }
-
-            var isAuthorize = await _authorizationService
-               .AuthorizeAsync(User, data.car, Operations.Delete);
-
-            if (!isAuthorize.Succeeded)
-            {
-                return new ChallengeResult();
-            }
-
-            _context.Remove(data.car);
-            if (data.stateRef != null) _context.Remove(data.stateRef);
-            if (data.expertiseRef != null) _context.Remove(data.expertiseRef);
-            if (data.buyer != null) _context.Remove(data.buyer);
-            if (data.seller != null) _context.Remove(data.seller);
-
+            var car = new Car { CarId = id };
+            _context.Cars.Attach(car);
+            _context.Cars.Remove(car);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("../Index");

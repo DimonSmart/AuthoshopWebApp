@@ -25,16 +25,7 @@ namespace AutoshopWebApp.Pages.Workers
             AuthorizationService = authorizationService;
         }
 
-        public class WorkerModel
-        {
-            public int WorkerId { get; set; }
-
-            public Worker Worker { get; set; }
-
-            public Position Position { get; set; }
-        }
-
-        public IList<WorkerModel> Worker { get;set; }
+        public IList<Worker> Worker { get;set; }
 
         public bool IsShowDetails { get; set; }
 
@@ -44,29 +35,25 @@ namespace AutoshopWebApp.Pages.Workers
         {
             var workerQuery =
                 from worker in _context.Workers
-                join position in _context.Positions on worker.PositionId equals position.PositionId
-                select new WorkerModel
+                select new Worker
                 {
                     WorkerId = worker.WorkerId,
-                    Worker = new Worker
-                    {
-                        Firstname = worker.Firstname,
-                        Lastname = worker.Lastname,
-                        Patronymic = worker.Patronymic,
-                    },
-                    Position = position
+                    Firstname = worker.Firstname,
+                    Lastname = worker.Lastname,
+                    Patronymic = worker.Patronymic,
+                    Position = worker.Position
                 };
 
-            if(!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(search))
             {
                 var splitted = search.Split(' ');
                 foreach (var item in splitted)
                 {
                     workerQuery =
                         from worker in workerQuery
-                        where worker.Worker.Firstname.Contains(item) ||
-                        worker.Worker.Lastname.Contains(item) ||
-                        worker.Worker.Patronymic.Contains(item) ||
+                        where worker.Firstname.Contains(item) ||
+                        worker.Lastname.Contains(item) ||
+                        worker.Patronymic.Contains(item) ||
                         worker.Position.PositionName.Contains(item)
                         select worker;
                 }

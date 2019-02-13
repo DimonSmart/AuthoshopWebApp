@@ -37,5 +37,7 @@ namespace AutoshopWebApp.Models
 
         public Position Position { get; set; }
         public int PositionId { get; set; }
+
+        public List<TransactionOrder> TransactionOrders { get; set; }
     }
 }

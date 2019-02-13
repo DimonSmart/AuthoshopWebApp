@@ -23,9 +23,9 @@ namespace AutoshopWebApp.Models
         public decimal Salary { get; set; }
 
 
-        public static async Task<IList<SelectListItem>> GetSelectListItems(ApplicationDbContext context)
+        public static Task<List<SelectListItem>> GetSelectListItems(ApplicationDbContext context)
         {
-            return await
+            return
                 (from pos in context.Positions
                  select new SelectListItem
                  {

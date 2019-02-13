@@ -60,6 +60,11 @@ namespace AutoshopWebApp.Pages.Workers
 
             Position = await _context.Positions.FindAsync(id);
 
+            if(Position == null)
+            {
+                return NotFound();
+            }
+
             var isAuthorize = await _authorizationService
               .AuthorizeAsync(User, Position, Operations.Delete);
 
@@ -68,11 +73,8 @@ namespace AutoshopWebApp.Pages.Workers
                 return new ChallengeResult();
             }
 
-            if (Position != null)
-            {
-                _context.Positions.Remove(Position);
-                await _context.SaveChangesAsync();
-            }
+            _context.Positions.Remove(Position);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./PositionsMain");
         }

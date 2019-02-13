@@ -35,7 +35,8 @@ namespace AutoshopWebApp.Pages.Workers
                 return NotFound();
             }
 
-            Position = await _context.Positions.FirstOrDefaultAsync(m => m.PositionId == id);
+            Position = await _context.Positions
+                .FirstOrDefaultAsync(m => m.PositionId == id);
 
             var isAuthorize = await _authorizationService.
                 AuthorizeAsync(User, Position, Operations.Update);

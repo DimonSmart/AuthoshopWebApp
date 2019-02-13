@@ -46,5 +46,29 @@ namespace AutoshopWebApp.Data
 
         public DbSet<PoolExpertiseReference> PoolExpertiseReferences { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<TransactionOrder>()
+                .HasOne(x => x.Position)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Worker>()
+                .HasOne(x => x.Street)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ClientBuyer>()
+                .HasOne(x => x.Street)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<ClientSeller>()
+               .HasOne(x => x.Street)
+               .WithMany()
+               .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
+        }
     }
 }

@@ -11,8 +11,6 @@ namespace AutoshopWebApp.Models.ForShow
     public class OutputWorkerModel : IWorkerCrossPageData
     {
         public Worker Worker { get; set; }
-        public Street Street { get; set; }
-        public Position Position { get; set; }
         public string Firstname => Worker.Firstname;
         public string Lastname => Worker.Lastname;
         public string Patronymic => Worker.Patronymic;
@@ -22,13 +20,11 @@ namespace AutoshopWebApp.Models.ForShow
         {
             return
                 from worker in context.Workers
-                join street in context.Streets on worker.StreetId equals street.StreetId
-                join position in context.Positions on worker.PositionId equals position.PositionId
+                .Include(x => x.Street)
+                .Include(x => x.Position)
                 select new OutputWorkerModel
                 {
-                    Worker = worker,
-                    Street = street,
-                    Position = position
+                    Worker = worker
                 };
         }
     }

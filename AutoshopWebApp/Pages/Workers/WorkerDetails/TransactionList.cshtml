@@ -14,35 +14,35 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].TransactionOrder.OrderNumber)
+                @Html.DisplayNameFor(model => model.OutputData.Worker.TransactionOrders[0].OrderNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].Position.PositionName)
+                @Html.DisplayNameFor(model => model.OutputData.Worker.TransactionOrders[0].Position.PositionName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].TransactionOrder.OrderDate)
+                @Html.DisplayNameFor(model => model.OutputData.Worker.TransactionOrders[0].OrderDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.OutputData.TransactionOrders[0].TransactionOrder.Reason)
+                @Html.DisplayNameFor(model => model.OutputData.Worker.TransactionOrders[0].Reason)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.OutputData.TransactionOrders)
+        @foreach (var item in Model.OutputData.Worker.TransactionOrders)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(model => item.TransactionOrder.OrderNumber)
+                    @Html.DisplayFor(model => item.OrderNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(model => item.Position.PositionName)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.TransactionOrder.OrderDate)
+                    @Html.DisplayFor(model => item.OrderDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.TransactionOrder.Reason)
+                    @Html.DisplayFor(model => item.Reason)
                 </td>
             </tr>
         }

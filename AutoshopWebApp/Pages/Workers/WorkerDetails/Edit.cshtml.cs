@@ -56,7 +56,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return new ChallengeResult();
             }
 
-            var street = await _context.AddStreetAsync(OutputModel.Street.StreetName);
+            var street = await _context
+                .AddStreetAsync(OutputModel.Worker.Street.StreetName);
 
             OutputModel.Worker.StreetId = street.StreetId;
 

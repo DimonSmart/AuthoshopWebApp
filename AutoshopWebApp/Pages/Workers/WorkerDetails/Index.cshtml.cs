@@ -47,10 +47,18 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
                 return NotFound();
             }
 
-            OutputModel = await OutputWorkerModel
-                .GetQuery(_context)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(item => item.WorkerID == id);
+            OutputModel = await
+                (from worker in _context.Workers
+                 .Include(x => x.Street)
+                 .Include(x => x.Position)
+                 where worker.WorkerId == id
+                 select new OutputWorkerModel { Worker = worker })
+                .FirstOrDefaultAsync();
+
+            if(OutputModel == null)
+            {
+                return NotFound();
+            }
 
             var isAuthorized = await _authorizationService
                 .AuthorizeAsync(User, OutputModel.Worker, Operations.Details);
@@ -75,29 +83,8 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
 
         public async Task<IActionResult> OnPostDeleteAsync()
         {
-            var ordersQuery =
-               from order in _context.TransactionOrders
-               where order.WorkerId == WorkerId
-               join position in _context.Positions
-               on order.PositionId equals position.PositionId
-               group new { order, position } 
-               by order.WorkerId;
-
-            var queryData =
-                from worker in _context.Workers
-                where worker.WorkerId == WorkerId
-                join orders in ordersQuery
-                on worker.WorkerId equals orders.Key
-                into ordersData
-                from orders in ordersData.DefaultIfEmpty()
-                let ordersList = orders == null ? null : orders.ToList()
-                join workerUser in _context.WorkerUsers
-                on worker.WorkerId equals workerUser.WorkerId
-                into workerUserQuery
-                from workerUser in workerUserQuery.DefaultIfEmpty()
-                select new { worker, ordersList, workerUser };
-
-            var data = await queryData.FirstOrDefaultAsync();
+            var data = await _context.Workers
+                .FirstOrDefaultAsync(x => x.WorkerId == WorkerId);
 
             if(data == null)
             {
@@ -105,32 +92,14 @@ namespace AutoshopWebApp.Pages.Workers.WorkerDetails
             }
 
             var isAuthorize = await _authorizationService
-                .AuthorizeAsync(User, data.worker, Operations.Delete);
+                .AuthorizeAsync(User, data, Operations.Delete);
             
             if(!isAuthorize.Succeeded)
             {
                 return new ChallengeResult();
             }
 
-            if (data.workerUser != null)
-            {
-                var user = await _userManager
-                    .FindByIdAsync(data.workerUser.IdentityUserId);
-
-                await _userManager.DeleteAsync(user);
-                _context.Remove(data.workerUser);
-            }
-
-            if(data.ordersList!=null)
-            {
-                foreach (var item in data.ordersList)
-                {
-                    _context.Remove(item);
-                }
-            }
-           
-
-            _context.Remove(data.worker);
+            _context.Workers.Remove(data);
 
             await _context.SaveChangesAsync();
 

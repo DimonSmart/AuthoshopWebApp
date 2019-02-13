@@ -12,8 +12,6 @@ namespace AutoshopWebApp.Models
     {
         public int CarId { get; set; }
 
-       
-        [Required]
         public MarkAndModel MarkAndModel { get; set; }
         public int MarkAndModelId { get; set; }
 

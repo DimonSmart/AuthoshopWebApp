@@ -30,6 +30,20 @@
     <Compile Remove="Data\Migrations\20181114120713_RemoveCarSaleStatus.Designer.cs" />
     <Compile Remove="Data\Migrations\20190210121157_ChangeMarkAndModelStructure.cs" />
     <Compile Remove="Data\Migrations\20190210121157_ChangeMarkAndModelStructure.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213035831_CascadeDelete.cs" />
+    <Compile Remove="Data\Migrations\20190213035831_CascadeDelete.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213040511_CascadeDelete.cs" />
+    <Compile Remove="Data\Migrations\20190213040511_CascadeDelete.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213042340_CascadeDelete.cs" />
+    <Compile Remove="Data\Migrations\20190213042340_CascadeDelete.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213044319_CascadeDeleting.cs" />
+    <Compile Remove="Data\Migrations\20190213044319_CascadeDeleting.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213045233_CascadeDeleting.cs" />
+    <Compile Remove="Data\Migrations\20190213045233_CascadeDeleting.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213045631_CascadeDeleting.cs" />
+    <Compile Remove="Data\Migrations\20190213045631_CascadeDeleting.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190213050055_CascadeDeleting.cs" />
+    <Compile Remove="Data\Migrations\20190213050055_CascadeDeleting.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
