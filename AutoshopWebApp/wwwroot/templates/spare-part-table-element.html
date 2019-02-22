@@ -1,0 +1,16 @@
+﻿<tr>
+    <td>{{partName}}</td>
+    <td>{{carMark}}</td>
+    <td>{{carModel}}</td>
+    <td>{{partPrice}}</td>
+    <td>{{partCount}}</td>
+    <td>
+        <a class="btn btn-default" href="./SpareParts/Edit?id={{sparePartId}}">Изменить</a>
+    </td>
+    @if (Model.ShowDeleteButton)
+    {
+    <td>
+        <a class="btn btn-danger" href="./SpareParts/Delete?id={{sparePartId}}">Удалить</a>
+    </td>
+    }
+</tr>

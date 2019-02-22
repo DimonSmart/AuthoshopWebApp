@@ -25,29 +25,8 @@ namespace AutoshopWebApp.Pages.SpareParts
 
         public bool ShowDeleteButton { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string search)
+        public IActionResult OnGet(string search)
         {
-            var query = _context.SpareParts.Select(sp => sp);
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                var substrings = search.Split(' ');
-
-                foreach (var item in substrings)
-                {
-                    foreach (var str in substrings)
-                    {
-                        query =
-                            from partData in query
-                            where partData.MarkAndModel.CarMark.Contains(str, StringComparison.OrdinalIgnoreCase) ||
-                            partData.MarkAndModel.CarModel.Contains(str, StringComparison.OrdinalIgnoreCase) ||
-                            partData.PartName.Contains(str, StringComparison.OrdinalIgnoreCase)
-                            select partData;
-                    }
-                }
-            }
-
-            SparePart = await query.AsNoTracking().ToListAsync();
 
             ShowDeleteButton = User.IsInRole(Constants.AdministratorRole);
 

@@ -32,9 +32,6 @@ namespace AutoshopWebApp.Pages.SpareParts
         [BindProperty]
         public SparePart SparePart { get; set; }
 
-        [BindProperty]
-        public MarkAndModel MarkAndModel { get; set; }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -50,10 +47,8 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return new ChallengeResult();
             }
 
-            MarkAndModel = await _context
-                .AddMarkAndModelAsync(MarkAndModel.CarMark, MarkAndModel.CarModel);
-
-            SparePart.MarkAndModelId = MarkAndModel.MarkAndModelId;
+            SparePart.MarkAndModel = await _context
+                .AddMarkAndModelAsync(SparePart.MarkAndModel.CarMark, SparePart.MarkAndModel.CarModel);
 
             await _context.SpareParts.AddAsync(SparePart);
             await _context.SaveChangesAsync();
