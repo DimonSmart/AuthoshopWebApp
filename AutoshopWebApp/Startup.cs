@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using AutoshopWebApp.Authorization.Handlers;
+using AutoshopWebApp.Services;
 
 namespace AutoshopWebApp
 {
@@ -58,15 +59,9 @@ namespace AutoshopWebApp
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton<IAuthorizationHandler, WorkerAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, TransactionAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, PositionAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, CarAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, BuyerAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, SellerAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, StateAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, ExpertiseAuthorizationHandler>();
-            services.AddSingleton<IAuthorizationHandler, SparePartAuthorizationHandler>();
+            services
+                .AddCRUDServices()
+                .AddAuthorizationHandlers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

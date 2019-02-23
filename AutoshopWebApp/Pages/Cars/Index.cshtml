@@ -8,10 +8,10 @@
 
 <h2>Список автомобилей</h2>
 
-<form class="form-inline" method="get">
+<form class="form-inline" id="searchForm" method="get">
     <div class="form-group" style="font-size:20px">
-         Поиск: <input class="form-control" type="text" name="search" />
-        <button type="submit" class="btn btn-default">Найти</button>
+        Поиск: <input class="form-control" type="text" name="search" />
+        <button type="button" class="btn btn-default" onclick="getData()">Найти</button>
     </div>
     <a class="btn btn-default" asp-page="Create">Добавить</a>
 </form>
@@ -48,41 +48,60 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        @foreach (var item in Model.OutputCarModels)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MarkAndModel.CarMark)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MarkAndModel.CarModel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Color)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EngineNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RegNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BodyNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReleaseDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Run)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SellingPrice)
-                </td>
-                <td>
-                    <a class="btn btn-default" asp-page="./CarDetails/Index" asp-route-id="@item.CarId">Детали</a>
-                </td>
-            </tr>
-        }
-    </tbody>
+    <tbody id="cars"></tbody>
 </table>
+
+@section Scripts {
+    <script id="btnPreset" type="text/template">
+        <tr>
+            <td>{{carMark}}</td>
+            <td>{{carModel}}</td>
+            <td>{{color}}</td>
+            <td>{{engineNumber}}</td>
+            <td>{{regNumber}}</td>
+            <td>{{bodyNumber}}</td>
+            <td>{{releaseDate}}</td>
+            <td>{{run}}</td>
+            <td>{{sellingPrice}}</td>
+            <td>
+                <a class="btn btn-default" href="/Cars/CarDetails/{{carId}}">Детали</a>
+            </td>
+        </tr>
+    </script>
+
+    <script>
+        const uri = "api/cars"
+        let cars = null;
+
+        $(document).ready(function () {
+            getData();
+        });
+
+        function getData() {
+            const searchData = $("#searchForm").serialize();
+
+            $.ajax({
+                type: "GET",
+                url: uri,
+                data: searchData,
+                cache: false,
+                success: function (data) {
+                    const tbody = $("#cars");
+                    $(tbody).empty();
+                    const template = $.trim($("#btnPreset").html());
+
+                    $.each(data, function (key, value) {
+                        let temp = makeFromTemplateRecoursive(value, template);
+
+                        const finalRegex = /{{\w*}}/ig;
+                        temp = temp.replace(finalRegex, "");
+
+                        tbody.append(temp);
+                    });
+
+                    cars = data;
+                }
+            })
+        }
+    </script>
+}

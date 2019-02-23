@@ -25,7 +25,7 @@ namespace AutoshopWebApp.Pages.SpareParts
 
         public bool ShowDeleteButton { get; set; }
 
-        public IActionResult OnGet(string search)
+        public IActionResult OnGet()
         {
 
             ShowDeleteButton = User.IsInRole(Constants.AdministratorRole);

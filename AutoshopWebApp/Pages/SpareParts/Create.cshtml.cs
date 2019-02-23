@@ -9,18 +9,19 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using AutoshopWebApp.Authorization;
+using AutoshopWebApp.Services;
 
 namespace AutoshopWebApp.Pages.SpareParts
 {
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISparePartService _sparePartService;
         private readonly IAuthorizationService _authorizationService;
 
-        public CreateModel(ApplicationDbContext context,
+        public CreateModel(ISparePartService sparePartService,
             IAuthorizationService authorizationService)
         {
-            _context = context;
+            _sparePartService = sparePartService;
             _authorizationService = authorizationService;
         }
 
@@ -47,11 +48,7 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return new ChallengeResult();
             }
 
-            SparePart.MarkAndModel = await _context
-                .AddMarkAndModelAsync(SparePart.MarkAndModel.CarMark, SparePart.MarkAndModel.CarModel);
-
-            await _context.SpareParts.AddAsync(SparePart);
-            await _context.SaveChangesAsync();
+            await _sparePartService.CreateAsync(SparePart);
 
             return RedirectToPage("./Index");
         }

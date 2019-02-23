@@ -8,7 +8,7 @@
 <h2>Запчасти</h2>
 
 
-<form class="form-inline" id="searchForm" method="get" onsubmit="">
+<form class="form-inline" id="searchForm" method="get">
     <div class="form-group" style="font-size:20px">
         Поиск: <input class="form-control" id="search" type="text" name="search" />
         <button type="button" onclick="getData()" class="btn btn-default">Найти</button>
@@ -41,6 +41,25 @@
 </table>
 
 @section Scripts {
+    <script id="btnPreset" type="text/template">
+        <tr>
+            <td>{{partName}}</td>
+            <td>{{carMark}}</td>
+            <td>{{carModel}}</td>
+            <td>{{partPrice}}</td>
+            <td>{{partCount}}</td>
+            <td>
+                <a class="btn btn-default" href="./SpareParts/Edit?id={{sparePartId}}">Изменить</a>
+            </td>
+            @if (Model.ShowDeleteButton)
+            {
+                <td>
+                    <a class="btn btn-danger" href="./SpareParts/Delete?id={{sparePartId}}">Удалить</a>
+                </td>
+            }
+        </tr>
+    </script>
+
     <script>
         const uri = "api/spareparts"
         let spareParts = null;
@@ -61,36 +80,16 @@
                 success: function (data) {
                     const tbody = $("#sparts");
                     $(tbody).empty();
+                    const template = $.trim($("#btnPreset").html());
 
-                    $.get("/templates/spare-part-table-element.html", function (result) {
-                        const template = $.trim(result);
-
-                        $.each(data, function (key, value) {
-                            let temp = makeFromTemplateRecoursive(value, template);
-                            tbody.append(temp);
-                        });
-
-                        spareParts = data;
+                    $.each(data, function (key, value) {
+                        let temp = makeFromTemplateRecoursive(value, template);
+                        tbody.append(temp);
                     });
+
+                    spareParts = data;
                 }
             })
-        }
-
-        function makeFromTemplateRecoursive(value, template) {
-            let temp = template;
-
-            $.each(value, function (k, v) {
-
-                if (typeof (v) != 'object') {
-                    const regex = new RegExp('{{' + k + '}}', 'ig')
-                    temp = temp.replace(regex, v);
-                }
-                else {
-                    temp = makeFromTemplateRecoursive(v, temp)
-                }
-            });
-
-            return temp;
         }
     </script>
 }

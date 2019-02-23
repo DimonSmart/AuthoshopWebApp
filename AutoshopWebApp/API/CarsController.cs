@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using AutoshopWebApp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -14,75 +15,75 @@ namespace AutoshopWebApp.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SparePartsController : ControllerBase
+    public class CarsController : ControllerBase
     {
-        private readonly ISparePartService _sparePartService;
-        private readonly IAuthorizationService _authorizationService;
+        ICarService _carService;
+        IAuthorizationService _authorizationService;
 
-        public SparePartsController(ISparePartService sparePartService, 
-            IAuthorizationService authorizationService)
+        public CarsController(ICarService carService, IAuthorizationService authorizationService)
         {
+            _carService = carService;
             _authorizationService = authorizationService;
-            _sparePartService = sparePartService;
         }
 
-        // GET: api/SpareParts
+        // GET: api/Cars
         [HttpGet]
-        public async Task<IEnumerable<SparePart>> GetSpareParts([FromQuery] string search)
+        public async Task<IEnumerable<Car>> GetCars([FromQuery] string search)
         {
-            if (string.IsNullOrEmpty(search))
+            if(string.IsNullOrEmpty(search))
             {
-                return await _sparePartService.ReadAllAsync();
+                return await _carService.ReadAllAsync();
             }
             else
             {
-                return await _sparePartService.ReadAllAsync(search);
+                return await _carService.ReadAllAsync(search);
             }
         }
 
-        // GET: api/SpareParts/5
+        // GET: api/Cars/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSparePart([FromRoute] int id)
+        public async Task<IActionResult> GetCar([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var sparePart = await _sparePartService.ReadAsync(id);
+            var car = await _carService.ReadAsync(id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
 
             var isAuthorized = await _authorizationService
-               .AuthorizeAsync(User, sparePart, Operations.Details);
+                .AuthorizeAsync(User, car, Operations.Details);
 
             if(!isAuthorized.Succeeded)
             {
                 return Unauthorized();
             }
 
-            if (sparePart == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(sparePart);
+            return Ok(car);
         }
 
-        // PUT: api/SpareParts/5
+        // PUT: api/Cars/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSparePart([FromRoute] int id, [FromBody] SparePart sparePart)
+        public async Task<IActionResult> PutCar([FromRoute] int id, [FromBody] Car car)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != sparePart.SparePartId)
+            if (id != car.CarId)
             {
                 return BadRequest();
             }
 
+
             var isAuthorized = await _authorizationService
-               .AuthorizeAsync(User, sparePart, Operations.Update);
+               .AuthorizeAsync(User, car, Operations.Update);
 
             if (!isAuthorized.Succeeded)
             {
@@ -91,11 +92,11 @@ namespace AutoshopWebApp.API
 
             try
             {
-                await _sparePartService.UpdateAsync(sparePart);
+                await _carService.UpdateAsync(car);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!await _sparePartService.IsExistAsync(id))
+                if (!await _carService.IsExistAsync(id))
                 {
                     return NotFound();
                 }
@@ -108,9 +109,9 @@ namespace AutoshopWebApp.API
             return NoContent();
         }
 
-        // POST: api/SpareParts
+        // POST: api/Cars
         [HttpPost]
-        public async Task<IActionResult> PostSparePart([FromBody] SparePart sparePart)
+        public async Task<IActionResult> PostCar([FromBody] Car car)
         {
             if (!ModelState.IsValid)
             {
@@ -118,21 +119,21 @@ namespace AutoshopWebApp.API
             }
 
             var isAuthorized = await _authorizationService
-               .AuthorizeAsync(User, sparePart, Operations.Create);
+               .AuthorizeAsync(User, car, Operations.Create);
 
             if (!isAuthorized.Succeeded)
             {
                 return Unauthorized();
             }
 
-            await _sparePartService.CreateAsync(sparePart);
+            await _carService.CreateAsync(car);
 
-            return CreatedAtAction("GetSparePart", new { id = sparePart.SparePartId }, sparePart);
+            return CreatedAtAction("GetCar", new { id = car.CarId }, car);
         }
 
-        // DELETE: api/SpareParts/5
+        // DELETE: api/Cars/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSparePart([FromRoute] int id)
+        public async Task<IActionResult> DeleteCar([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -140,21 +141,21 @@ namespace AutoshopWebApp.API
             }
 
             var isAuthorized = await _authorizationService
-               .AuthorizeAsync(User, new SparePart() { SparePartId = id }, Operations.Delete);
+               .AuthorizeAsync(User, new Car { CarId = id }, Operations.Delete);
 
             if (!isAuthorized.Succeeded)
             {
                 return Unauthorized();
             }
 
-            var sparePart = await _sparePartService.DeleteAsync(id);
+            var result = await _carService.DeleteAsync(id);
 
-            if (sparePart == null)
+            if (result == null)
             {
                 return NotFound();
             }
 
-            return Ok(sparePart);
+            return Ok(result);
         }
     }
 }

@@ -11,18 +11,19 @@ using AutoshopWebApp.Models.ForShow;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using AutoshopWebApp.Authorization;
+using AutoshopWebApp.Services;
 
 namespace AutoshopWebApp.Pages.Cars
 {
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
         private readonly IAuthorizationService _authorizationService;
+        private readonly ICarService _carService;
 
-        public CreateModel(ApplicationDbContext context, IAuthorizationService authorizationService)
+        public CreateModel(IAuthorizationService authorizationService, ICarService carService)
         {
-            _context = context;
             _authorizationService = authorizationService;
+            _carService = carService;
         }
 
         public IActionResult OnGet()
@@ -32,8 +33,6 @@ namespace AutoshopWebApp.Pages.Cars
 
         [BindProperty]
         public Car CarData { get; set; }
-
-        public List<SelectListItem> CarStatusSelectList { get; set; }
 
 
         public async Task<IActionResult> OnPostAsync()
@@ -51,14 +50,7 @@ namespace AutoshopWebApp.Pages.Cars
                 return new ChallengeResult();
             }
 
-            var carModel = await _context
-                .AddMarkAndModelAsync(CarData.MarkAndModel.CarMark, CarData.MarkAndModel.CarModel);
-
-            CarData.MarkAndModel = carModel;
-
-            _context.Cars.Add(CarData);
-
-            await _context.SaveChangesAsync();
+            await _carService.CreateAsync(CarData);
 
             return RedirectToPage("./CarDetails/Index", new { id = CarData.CarId });
         }

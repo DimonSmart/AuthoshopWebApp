@@ -22,14 +22,8 @@ namespace AutoshopWebApp.Pages.Cars
 
         public IList<Car> OutputCarModels { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string search)
+        public IActionResult OnGet(string search)
         {
-            var query =
-                from car in _context.Cars.Include(x => x.MarkAndModel)
-                select car;
-
-            OutputCarModels = await query.AsNoTracking().ToListAsync();
-
             return Page();
         }
     }

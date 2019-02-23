@@ -10,18 +10,19 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using AutoshopWebApp.Authorization;
+using AutoshopWebApp.Services;
 
 namespace AutoshopWebApp.Pages.Cars.CarDetails
 {
     public class EditCarModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICarService _carService;
         private readonly IAuthorizationService _authorizationService;
 
-        public EditCarModel(ApplicationDbContext context,
+        public EditCarModel(ICarService carService,
             IAuthorizationService authorizationService)
         {
-            _context = context;
+            _carService = carService;
             _authorizationService = authorizationService;
         }
 
@@ -35,26 +36,22 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return NotFound();
             }
 
-            var query = await
-                (from car in _context.Cars.Include(x => x.MarkAndModel)
-                 where car.CarId == id
-                 select new { car, car.MarkAndModel }
-                 ).FirstOrDefaultAsync();
+            var car = await _carService.ReadAsync(id.Value);
 
-            if(query==null)
+            if(car==null)
             {
                 return NotFound();
             }
 
             var isAuthorize = await _authorizationService
-               .AuthorizeAsync(User, query.car, Operations.Update);
+               .AuthorizeAsync(User, car, Operations.Update);
 
             if (!isAuthorize.Succeeded)
             {
                 return new ChallengeResult();
             }
 
-            Car = query.car;
+            Car = car;
 
             return Page();
         }
@@ -74,20 +71,13 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
                 return new ChallengeResult();
             }
 
-            var mark = await _context
-                .AddMarkAndModelAsync(Car.MarkAndModel.CarMark, Car.MarkAndModel.CarModel);
-
-            Car.MarkAndModel = mark;
-
-            _context.Attach(Car).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _carService.UpdateAsync(Car);
             }
             catch (DbUpdateConcurrencyException)
-            {
-                if (!CarExists(Car.CarId))
+            { 
+                if (!(await _carService.IsExistAsync(Car.CarId)))
                 {
                     return NotFound();
                 }
@@ -98,11 +88,6 @@ namespace AutoshopWebApp.Pages.Cars.CarDetails
             }
 
             return RedirectToPage("./Index", new { id = Car.CarId });
-        }
-
-        private bool CarExists(int id)
-        {
-            return _context.Cars.Any(e => e.CarId == id);
         }
     }
 }

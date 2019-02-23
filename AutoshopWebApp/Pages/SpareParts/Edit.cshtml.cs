@@ -10,18 +10,19 @@ using AutoshopWebApp.Data;
 using AutoshopWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using AutoshopWebApp.Authorization;
+using AutoshopWebApp.Services;
 
 namespace AutoshopWebApp.Pages.SpareParts
 {
     public class EditModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ISparePartService _sparePartService;
         private readonly IAuthorizationService _authorizationService;
 
-        public EditModel(AutoshopWebApp.Data.ApplicationDbContext context,
+        public EditModel(ISparePartService sparePartService,
             IAuthorizationService authorizationService)
         {
-            _context = context;
+            _sparePartService = sparePartService;
             _authorizationService = authorizationService;
         }
 
@@ -35,9 +36,7 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return NotFound();
             }
 
-            var queryData = await _context.SpareParts
-                .Include(x => x.MarkAndModel)
-                .FirstOrDefaultAsync(m => m.SparePartId == id);
+            var queryData = await _sparePartService.ReadAsync(id.Value);
 
             if (queryData == null)
             {
@@ -72,20 +71,13 @@ namespace AutoshopWebApp.Pages.SpareParts
                 return new ChallengeResult();
             }
 
-            SparePart.MarkAndModel = await _context
-                .AddMarkAndModelAsync(SparePart.MarkAndModel.CarMark, SparePart.MarkAndModel.CarModel);
-
-            //SparePart.MarkAndModelId = MarkAndModel.MarkAndModelId;
-
-            _context.Attach(SparePart).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _sparePartService.UpdateAsync(SparePart);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SparePartExists(SparePart.SparePartId))
+                if (!await _sparePartService.IsExistAsync(SparePart.SparePartId))
                 {
                     return NotFound();
                 }
@@ -96,11 +88,6 @@ namespace AutoshopWebApp.Pages.SpareParts
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool SparePartExists(int id)
-        {
-            return _context.SpareParts.Any(e => e.SparePartId == id);
         }
     }
 }
