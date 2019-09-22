@@ -18,6 +18,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using AutoshopWebApp.Authorization.Handlers;
 using AutoshopWebApp.Services;
+using Npgsql;
 
 namespace AutoshopWebApp
 {
@@ -41,7 +42,7 @@ namespace AutoshopWebApp
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services
                 .AddIdentity<IdentityUser, IdentityRole>()
@@ -78,13 +79,13 @@ namespace AutoshopWebApp
                 app.UseHsts();
             }
 
-            //Локализационный костыль
+            //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
             app.UseRequestLocalization("ru-RU");
 
-            //Конец костыля
+            //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

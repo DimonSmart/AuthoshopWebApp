@@ -1,0 +1,32 @@
+version: "3"
+networks:
+  mynetwork:
+    driver: bridge
+services:
+    web:
+        build: .
+        ports:
+            - 80:80
+        depends_on:
+            - db
+        networks:
+            - mynetwork
+        restart: always
+    db:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: qwertyuiop
+            POSTGRES_USER: sb
+            POSTGRES_DB: my_db
+        ports:
+            - 5432:5432
+        networks:
+            - mynetwork
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080

@@ -3,35 +3,35 @@ using System;
 using AutoshopWebApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace AutoshopWebApp.Data.Migrations
+namespace AutoshopWebApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181104152228_ChangeClients")]
-    partial class ChangeClients
+    [Migration("20190922041011_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("AutoshopWebApp.Models.Car", b =>
                 {
                     b.Property<int>("CarId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("BodyNumber")
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<decimal?>("BuyingPrice");
+                    b.Property<decimal?>("BuyingPrice")
+                        .HasColumnType("decimal(16,2)");
 
                     b.Property<string>("ChassisNumber")
                         .HasMaxLength(100);
@@ -43,22 +43,24 @@ namespace AutoshopWebApp.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<int>("MarkAndModelID");
+                    b.Property<int>("MarkAndModelId");
 
                     b.Property<string>("RegNumber")
                         .HasMaxLength(10);
 
                     b.Property<DateTime>("ReleaseDate");
 
-                    b.Property<decimal?>("ReleasePrice");
+                    b.Property<decimal?>("ReleasePrice")
+                        .HasColumnType("decimal(16,2)");
 
                     b.Property<int>("Run");
 
-                    b.Property<int>("SaleStatus");
-
-                    b.Property<decimal?>("SellingPrice");
+                    b.Property<decimal?>("SellingPrice")
+                        .HasColumnType("decimal(16,2)");
 
                     b.HasKey("CarId");
+
+                    b.HasIndex("MarkAndModelId");
 
                     b.ToTable("Cars");
                 });
@@ -66,15 +68,15 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("AutoshopWebApp.Models.CarStateRef", b =>
                 {
                     b.Property<int>("CarStateRefId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("CarId");
 
                     b.Property<string>("Expert")
                         .HasMaxLength(100);
 
-                    b.Property<decimal>("ExpertisePrice");
+                    b.Property<decimal>("ExpertisePrice")
+                        .HasColumnType("decimal(16,2)");
 
                     b.Property<DateTime>("ReferenceDate");
 
@@ -83,14 +85,15 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("CarStateRefId");
 
+                    b.HasIndex("CarId");
+
                     b.ToTable("CarStateRefId");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.ClientBuyer", b =>
                 {
                     b.Property<int>("ClientBuyerId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccountNumber")
                         .HasMaxLength(50);
@@ -117,6 +120,8 @@ namespace AutoshopWebApp.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<DateTime>("PasIssueDate");
+
                     b.Property<string>("PasNumber")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -133,14 +138,21 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("ClientBuyerId");
 
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("PaymentTypeId");
+
+                    b.HasIndex("StreetId");
+
+                    b.HasIndex("WorkerId");
+
                     b.ToTable("ClientBuyers");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.ClientSeller", b =>
                 {
                     b.Property<int>("ClientSellerId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("ApartmentNumber");
 
@@ -176,6 +188,8 @@ namespace AutoshopWebApp.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                    b.Property<DateTime>("PasIssueDate");
+
                     b.Property<string>("PasNumber")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -192,14 +206,19 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("ClientSellerId");
 
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("StreetId");
+
+                    b.HasIndex("WorkerId");
+
                     b.ToTable("ClientSellers");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.MarkAndModel", b =>
                 {
                     b.Property<int>("MarkAndModelId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("CarMark")
                         .IsRequired()
@@ -217,8 +236,7 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("AutoshopWebApp.Models.PaymentType", b =>
                 {
                     b.Property<int>("PaymentTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("PaymentTypeName")
                         .HasMaxLength(100);
@@ -231,8 +249,7 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("AutoshopWebApp.Models.PoolExpertiseReference", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("CarId");
 
@@ -251,14 +268,17 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("WorkerId");
+
                     b.ToTable("PoolExpertiseReferences");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.Position", b =>
                 {
                     b.Property<int>("PositionId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("PositionName")
                         .HasMaxLength(100);
@@ -273,14 +293,14 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("AutoshopWebApp.Models.SparePart", b =>
                 {
                     b.Property<int>("SparePartId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("MarkAndModelId");
 
                     b.Property<int>("PartCount");
 
                     b.Property<string>("PartName")
+                        .IsRequired()
                         .HasMaxLength(100);
 
                     b.Property<decimal>("PartPrice")
@@ -288,14 +308,15 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("SparePartId");
 
+                    b.HasIndex("MarkAndModelId");
+
                     b.ToTable("SpareParts");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.Street", b =>
                 {
                     b.Property<int>("StreetId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("StreetName")
                         .HasMaxLength(100);
@@ -308,8 +329,7 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("AutoshopWebApp.Models.TransactionOrder", b =>
                 {
                     b.Property<int>("TransactionOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("OrderDate");
 
@@ -326,14 +346,17 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("TransactionOrderId");
 
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("WorkerId");
+
                     b.ToTable("TransactionOrders");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.Worker", b =>
                 {
                     b.Property<int>("WorkerId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("ApartmentNumber");
 
@@ -356,20 +379,27 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasKey("WorkerId");
 
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("StreetId");
+
                     b.ToTable("Workers");
                 });
 
             modelBuilder.Entity("AutoshopWebApp.Models.WorkerUser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("UserID");
+                    b.Property<string>("IdentityUserId");
 
-                    b.Property<int>("WorkerID");
+                    b.Property<int>("WorkerId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("WorkerId");
 
                     b.ToTable("WorkerUsers");
                 });
@@ -392,8 +422,7 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -401,8 +430,7 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -463,8 +491,7 @@ namespace AutoshopWebApp.Data.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -472,8 +499,7 @@ namespace AutoshopWebApp.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
 
@@ -533,6 +559,122 @@ namespace AutoshopWebApp.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.Car", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.MarkAndModel", "MarkAndModel")
+                        .WithMany()
+                        .HasForeignKey("MarkAndModelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.CarStateRef", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.ClientBuyer", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AutoshopWebApp.Models.PaymentType", "PaymentType")
+                        .WithMany()
+                        .HasForeignKey("PaymentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AutoshopWebApp.Models.Street", "Street")
+                        .WithMany()
+                        .HasForeignKey("StreetId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoshopWebApp.Models.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.ClientSeller", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AutoshopWebApp.Models.Street", "Street")
+                        .WithMany()
+                        .HasForeignKey("StreetId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoshopWebApp.Models.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.PoolExpertiseReference", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AutoshopWebApp.Models.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.SparePart", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.MarkAndModel", "MarkAndModel")
+                        .WithMany()
+                        .HasForeignKey("MarkAndModelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.TransactionOrder", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("AutoshopWebApp.Models.Worker", "Worker")
+                        .WithMany("TransactionOrders")
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.Worker", b =>
+                {
+                    b.HasOne("AutoshopWebApp.Models.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AutoshopWebApp.Models.Street", "Street")
+                        .WithMany()
+                        .HasForeignKey("StreetId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("AutoshopWebApp.Models.WorkerUser", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("AutoshopWebApp.Models.Worker", "Worker")
+                        .WithMany()
+                        .HasForeignKey("WorkerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
