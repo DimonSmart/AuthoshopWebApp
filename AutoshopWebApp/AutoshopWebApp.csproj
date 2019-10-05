@@ -6,47 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20180922094609_FirstMigration.cs" />
-    <Compile Remove="Data\Migrations\20180922094609_FirstMigration.Designer.cs" />
-    <Compile Remove="Data\Migrations\20180928145333_DatabaseSchemeCreation.cs" />
-    <Compile Remove="Data\Migrations\20180928145333_DatabaseSchemeCreation.Designer.cs" />
-    <Compile Remove="Data\Migrations\20180929145433_TryHangeSheme.cs" />
-    <Compile Remove="Data\Migrations\20180929145433_TryHangeSheme.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181021051024_AutoGenerateMiddleTables.cs" />
-    <Compile Remove="Data\Migrations\20181021051024_AutoGenerateMiddleTables.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181031035952_PoolExpersiseChange.cs" />
-    <Compile Remove="Data\Migrations\20181031035952_PoolExpersiseChange.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181101052457_ChangePoolRef.cs" />
-    <Compile Remove="Data\Migrations\20181101052457_ChangePoolRef.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181101053508_ChangePoolRef.cs" />
-    <Compile Remove="Data\Migrations\20181101053508_ChangePoolRef.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181104085316_ChangeSeller.cs" />
-    <Compile Remove="Data\Migrations\20181104085316_ChangeSeller.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181104115008_ChangeClients.cs" />
-    <Compile Remove="Data\Migrations\20181104115008_ChangeClients.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181104151537_ChangeClients.cs" />
-    <Compile Remove="Data\Migrations\20181104151537_ChangeClients.Designer.cs" />
-    <Compile Remove="Data\Migrations\20181114120713_RemoveCarSaleStatus.cs" />
-    <Compile Remove="Data\Migrations\20181114120713_RemoveCarSaleStatus.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190210121157_ChangeMarkAndModelStructure.cs" />
-    <Compile Remove="Data\Migrations\20190210121157_ChangeMarkAndModelStructure.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213035831_CascadeDelete.cs" />
-    <Compile Remove="Data\Migrations\20190213035831_CascadeDelete.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213040511_CascadeDelete.cs" />
-    <Compile Remove="Data\Migrations\20190213040511_CascadeDelete.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213042340_CascadeDelete.cs" />
-    <Compile Remove="Data\Migrations\20190213042340_CascadeDelete.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213044319_CascadeDeleting.cs" />
-    <Compile Remove="Data\Migrations\20190213044319_CascadeDeleting.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213045233_CascadeDeleting.cs" />
-    <Compile Remove="Data\Migrations\20190213045233_CascadeDeleting.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213045631_CascadeDeleting.cs" />
-    <Compile Remove="Data\Migrations\20190213045631_CascadeDeleting.Designer.cs" />
-    <Compile Remove="Data\Migrations\20190213050055_CascadeDeleting.cs" />
-    <Compile Remove="Data\Migrations\20190213050055_CascadeDeleting.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
